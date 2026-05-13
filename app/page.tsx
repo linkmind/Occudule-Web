@@ -1,0 +1,21 @@
+import { Header } from "@/components/Header";
+import { Hero } from "@/components/Hero";
+import { Features } from "@/components/Features";
+import { SocialProof } from "@/components/SocialProof";
+import { ClosingCta } from "@/components/ClosingCta";
+import { Footer } from "@/components/Footer";
+
+export default function HomePage() {
+  return (
+    <>
+      <Header />
+      <main>
+        <Hero />
+        <Features />
+        <SocialProof />
+        <ClosingCta />
+      </main>
+      <Footer />
+    </>
+  );
+}

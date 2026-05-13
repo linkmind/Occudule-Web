@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * Single source of truth: edit these custom properties to retheme the site.
+ * Tailwind maps these in tailwind.config.ts (colors.*, spacing.*, etc.).
+ */
+:root {
+  /* Brand palette */
+  --color-primary: #0a2540;
+  --color-accent: #67e8f9;
+  --color-success: #34d399;
+  --color-cta: #f97316;
+
+  /* Derived surfaces */
+  --color-surface: #ffffff;
+  --color-surface-muted: #f1f5f9;
+  --color-border: #e2e8f0;
+
+  /* Layout */
+  --spacing-section: 5rem;
+  --spacing-gutter: 1.5rem;
+  --max-width-content: 72rem;
+  --radius-card: 1rem;
+  --shadow-card: 0 1px 3px rgb(10 37 64 / 0.06), 0 12px 40px rgb(10 37 64 / 0.06);
+  --shadow-glow: 0 0 120px 60px rgb(103 232 249 / 0.35);
+
+  /* Hero radial (cyan) — used via arbitrary bg or utility */
+  --gradient-hero-glow: radial-gradient(
+    ellipse 80% 50% at 50% -20%,
+    rgb(103 232 249 / 0.45) 0%,
+    transparent 55%
+  );
+}
+
+@media (min-width: 768px) {
+  :root {
+    --spacing-section: 6.5rem;
+    --spacing-gutter: 2rem;
+  }
+}
+
+body {
+  @apply bg-surface text-primary antialiased;
+}
