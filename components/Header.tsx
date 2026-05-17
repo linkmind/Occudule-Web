@@ -4,23 +4,21 @@ import { CtaButton } from "@/components/CtaButton";
 const navLinks = [
   { href: "#how-it-works", label: "How it works" },
   { href: "#proof", label: "Results" },
-  { href: "#pricing-preview", label: "Pricing" },
+  { href: "#pricing", label: "Pricing" },
 ];
 
 export function Header() {
   return (
     <header className="sticky top-0 z-50 border-b border-border/80 bg-surface/90 backdrop-blur-md">
       <div className="mx-auto flex max-w-content flex-wrap items-center justify-between gap-x-4 gap-y-3 px-gutter py-4">
-        <Link href="/" className="flex items-center gap-2">
+        <Link href="#top" className="flex items-center gap-2">
           <span
             className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-sm font-semibold text-accent"
             aria-hidden
           >
             O
           </span>
-          <span className="text-lg font-semibold tracking-tight text-primary">
-            Occudule
-          </span>
+          <span className="text-lg font-semibold tracking-tight text-primary">Occudule</span>
         </Link>
         <nav
           className="order-last flex w-full basis-full items-center justify-center gap-6 text-sm font-medium text-primary/80 sm:order-none sm:w-auto sm:basis-auto sm:justify-end md:flex-1 lg:justify-center"

@@ -3,6 +3,7 @@ import { CtaButton } from "@/components/CtaButton";
 export function Hero() {
   return (
     <section
+      id="top"
       className="relative overflow-hidden border-b border-border bg-surface-muted"
       aria-labelledby="hero-heading"
     >
@@ -18,12 +19,11 @@ export function Hero() {
           id="hero-heading"
           className="mx-auto max-w-4xl text-center text-4xl font-bold tracking-tight text-primary md:text-5xl lg:text-6xl"
         >
-          Your inbox, handled—so you can be present at home.
+          Your inbox, handled—so you can be present at home and work.
         </h1>
         <p className="mx-auto mt-6 max-w-2xl text-center text-lg leading-relaxed text-primary/75 md:text-xl">
-          Occudule uses AI to triage school threads, summarize long chains, and
-          draft replies in your voice—cutting email time without dropping the
-          ball on what matters for your family.
+        Occudule uses AI to triage school threads, automatically create events and to-dos, draft replies, and detect time conflicts—cutting the time 
+        spent on email and manual tasks without dropping the ball on what matters for your family.
         </p>
         <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-5">
           <CtaButton href="#waitlist" size="lg">

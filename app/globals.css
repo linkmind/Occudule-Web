@@ -32,6 +32,10 @@
     rgb(103 232 249 / 0.45) 0%,
     transparent 55%
   );
+
+  --gradient-mesh: radial-gradient(at 40% 20%, rgb(103 232 249 / 0.2) 0px, transparent 50%),
+    radial-gradient(at 80% 0%, rgb(52 211 153 / 0.12) 0px, transparent 45%),
+    radial-gradient(at 0% 50%, rgb(10 37 64 / 0.06) 0px, transparent 40%);
 }
 
 @media (min-width: 768px) {
