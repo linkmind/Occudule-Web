@@ -2,17 +2,21 @@ import Link from "next/link";
 
 const footerColumns = [
   {
-    title: "Product",
+    title: "Quick links",
     links: [
+      { href: "#top", label: "Home" },
+      { href: "#why-occudule", label: "Features" },
       { href: "#how-it-works", label: "How it works" },
-      { href: "#proof", label: "Results" },
-      { href: "#waitlist", label: "Waitlist" },
+      { href: "#pricing", label: "Pricing" },
+      { href: "#faq", label: "FAQ" },
     ],
   },
   {
-    title: "Company",
+    title: "Resources",
     links: [
-      { href: "#footer", label: "About" },
+      { href: "#articles", label: "Articles" },
+      { href: "#testimonials", label: "Stories" },
+      { href: "#waitlist", label: "Waitlist" },
       { href: "mailto:support@occudule.com", label: "Contact" },
     ],
   },
@@ -27,17 +31,25 @@ const footerColumns = [
 
 export function Footer() {
   return (
-    <footer id="footer" className="border-t border-border bg-primary py-16 text-surface">
+    <footer id="footer" className="bg-primary py-16 text-surface">
       <div className="mx-auto max-w-content px-gutter">
         <div className="flex flex-col gap-12 lg:flex-row lg:justify-between">
           <div className="max-w-sm">
-            <p className="text-lg font-semibold tracking-tight">Occudule</p>
+            <div className="flex items-center gap-2">
+              <span
+                className="flex h-9 w-9 items-center justify-center rounded-lg bg-accent/20 text-sm font-semibold text-accent"
+                aria-hidden
+              >
+                O
+              </span>
+              <span className="text-lg font-semibold tracking-tight">Occudule</span>
+            </div>
             <p className="mt-1 text-xs font-medium uppercase tracking-wider text-white/50">
               Outvblue Technology Inc.
             </p>
-            <p className="mt-3 text-sm leading-relaxed text-white/70">
-              AI email productivity built for parents who need fewer tabs, fewer “sorry for the
-              delay” messages, and more presence with their kids.
+            <p className="mt-4 text-sm leading-relaxed text-white/70">
+              Occudule helps you track, triage, and answer family email effortlessly—without another
+              complicated dashboard.
             </p>
             <address className="mt-5 text-sm not-italic leading-relaxed text-white/65">
               Suite 500, 7030 Woodbine Avenue

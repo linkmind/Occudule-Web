@@ -4,32 +4,35 @@ export function ClosingCta() {
   return (
     <section
       id="waitlist"
-      className="relative overflow-hidden bg-surface-muted py-section"
+      className="relative overflow-hidden border-b border-border bg-primary py-section text-surface"
       aria-labelledby="closing-heading"
     >
       <div
-        className="pointer-events-none absolute inset-0 bg-hero-glow opacity-60"
+        className="pointer-events-none absolute inset-0 bg-hero-glow opacity-40 mix-blend-screen"
         aria-hidden
       />
       <div className="relative mx-auto max-w-content px-gutter text-center">
         <h2
           id="closing-heading"
-          className="mx-auto max-w-3xl text-3xl font-bold tracking-tight text-primary md:text-4xl"
+          className="mx-auto max-w-3xl text-3xl font-bold tracking-tight md:text-4xl lg:text-[2.5rem]"
         >
-          Ready to take email off your mental load?
+          Take control of family email with clarity and confidence.
         </h2>
-        <p className="mx-auto mt-4 max-w-xl text-lg text-primary/70">
-          Join the Occudule waitlist—be first to get AI that respects your family&apos;s privacy
-          and your time.
+        <p className="mx-auto mt-5 max-w-2xl text-lg text-white/75">
+          Track what needs you, draft in your voice, and protect time for what happens off-screen.
         </p>
-        <div className="mt-10 flex justify-center">
+        <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-5">
           <CtaButton href="mailto:support@occudule.com?subject=Occudule%20waitlist" size="lg">
-            Email us to join the waitlist
+            Get early access
+          </CtaButton>
+          <CtaButton
+            href="mailto:support@occudule.com?subject=Occudule%20demo"
+            variant="onDark"
+            size="lg"
+          >
+            Book a demo
           </CtaButton>
         </div>
-        <p id="pricing-preview" className="mt-6 text-sm text-primary/50">
-          Simple pricing at launch—no surprise tiers for families.
-        </p>
       </div>
     </section>
   );

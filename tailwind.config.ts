@@ -40,6 +40,16 @@ const config: Config = {
       },
       backgroundImage: {
         "hero-glow": "var(--gradient-hero-glow)",
+        "mesh": "var(--gradient-mesh)",
+      },
+      animation: {
+        marquee: "marquee 40s linear infinite",
+      },
+      keyframes: {
+        marquee: {
+          "0%": { transform: "translateX(0)" },
+          "100%": { transform: "translateX(-50%)" },
+        },
       },
     },
   },
