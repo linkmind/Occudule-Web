@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Logo } from "@/components/Logo";
 
 const footerColumns = [
   {
@@ -35,15 +36,7 @@ export function Footer() {
       <div className="mx-auto max-w-content px-gutter">
         <div className="flex flex-col gap-12 lg:flex-row lg:justify-between">
           <div className="max-w-sm">
-            <div className="flex items-center gap-2">
-              <span
-                className="flex h-9 w-9 items-center justify-center rounded-lg bg-accent/20 text-sm font-semibold text-accent"
-                aria-hidden
-              >
-                O
-              </span>
-              <span className="text-lg font-semibold tracking-tight">Occudule</span>
-            </div>
+            <Logo wordmarkClassName="text-surface" />
             <p className="mt-1 text-xs font-medium uppercase tracking-wider text-white/50">
               Outvblue Technology Inc.
             </p>
