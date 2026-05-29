@@ -3,9 +3,11 @@ import { CtaButton } from "@/components/CtaButton";
 import { Logo } from "@/components/Logo";
 
 const navLinks = [
-  { href: "#how-it-works", label: "How it works" },
-  { href: "#proof", label: "Results" },
-  { href: "#pricing", label: "Pricing" },
+  { href: "/#why-occudule", label: "Why Occudule" },
+  { href: "/#features", label: "Features" },
+  { href: "/#how-it-works", label: "How it works" },
+  { href: "/#pricing", label: "Pricing" },
+  { href: "/#faq", label: "FAQ" },
 ];
 
 export function Header() {
@@ -34,7 +36,7 @@ export function Header() {
           >
             Sign in
           </Link>
-          <CtaButton href="#waitlist" size="sm">
+          <CtaButton href="/waitlist" size="sm">
             Get early access
           </CtaButton>
         </div>

@@ -146,12 +146,12 @@ export function PricingSection() {
                   </ul>
                   <div className="mt-8">
                     {plan.highlight ? (
-                      <CtaButton href="#waitlist" className="w-full justify-center" size="md">
+                      <CtaButton href="/waitlist" className="w-full justify-center" size="md">
                         Get started
                       </CtaButton>
                     ) : (
                       <CtaButton
-                        href="#waitlist"
+                        href="/waitlist"
                         variant="secondary"
                         className="w-full justify-center"
                         size="md"

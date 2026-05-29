@@ -36,4 +36,18 @@ npm run lint
 2. **Font** — change the `Inter` import in `app/layout.tsx` to another `next/font/google` family, and keep `variable: "--font-sans"` so `globals.css` / Tailwind `font-sans` stay wired.
 3. **Tailwind aliases** — if you add new CSS variables, extend `tailwind.config.ts` under `theme.extend` so they become utilities.
 
-Contact: **support@occudule.com**. Company: **Outvblue Technology Inc.** (Suite 500, 7030 Woodbine Avenue, Markham, Ontario L3R 6G2). Update footer legal links when you have dedicated Privacy/Terms pages.
+Contact: **support@occudule.com**. Company: **Outvblue Technology Inc.** (Suite 500, 7030 Woodbine Avenue, Markham, Ontario L3R 6G2). Legal pages: `/privacy` and `/terms` (source: `content/legal/*.md`, synced from the mobile app).
+
+## Waitlist form (Postmark)
+
+The `/waitlist` form posts to `/api/waitlist`, which uses **Postmark** (same transactional stack as the Occudule app) when configured:
+
+1. In [Postmark](https://postmarkapp.com), use your **Server API token** and a **verified sender** (`POSTMARK_FROM_EMAIL`).
+2. In Vercel → **Environment Variables**, set:
+   - `POSTMARK_SERVER_TOKEN`
+   - `POSTMARK_FROM_EMAIL` (e.g. `Occudule <support@occudule.com>`)
+   - Optional: `WAITLIST_NOTIFY_EMAIL` (defaults to `support@occudule.com`)
+3. Redeploy.
+
+On each signup, Postmark sends a **team notification** (with `Reply-To` set to the subscriber) and a **confirmation email** to the person who joined. See `.env.example` for local testing (create `.env.local` with the same vars).
+

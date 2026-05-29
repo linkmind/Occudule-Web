@@ -5,27 +5,27 @@ const footerColumns = [
   {
     title: "Quick links",
     links: [
-      { href: "#top", label: "Home" },
-      { href: "#why-occudule", label: "Features" },
-      { href: "#how-it-works", label: "How it works" },
-      { href: "#pricing", label: "Pricing" },
-      { href: "#faq", label: "FAQ" },
+      { href: "/", label: "Home" },
+      { href: "/#features", label: "Features" },
+      { href: "/#how-it-works", label: "How it works" },
+      { href: "/#pricing", label: "Pricing" },
+      { href: "/#faq", label: "FAQ" },
     ],
   },
   {
-    title: "Resources",
+    title: "Corporate",
     links: [
-      { href: "#articles", label: "Articles" },
-      { href: "#testimonials", label: "Stories" },
-      { href: "#waitlist", label: "Waitlist" },
-      { href: "mailto:support@occudule.com", label: "Contact" },
+      { href: "/about", label: "About Us" },
+      { href: "/news", label: "News" },
+      { href: "/articles", label: "Articles" },
+      { href: "/contact", label: "Contact" },
     ],
   },
   {
     title: "Legal",
     links: [
-      { href: "#footer", label: "Privacy" },
-      { href: "#footer", label: "Terms" },
+      { href: "/privacy", label: "Privacy" },
+      { href: "/terms", label: "Terms" },
     ],
   },
 ];
