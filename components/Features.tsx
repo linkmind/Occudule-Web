@@ -1,33 +1,39 @@
 const features = [
   {
-    title: "Smart triage",
+    title: "Optimized specially for family emails",
+    tagline: "Purpose-built context mapping for household logistics.",
     description:
-      "Important messages from schools, coaches, and caregivers surface first—newsletters and noise wait their turn.",
+      "An AI engine configured with specialized workflows to instantly recognize and prioritize child-related emails, school announcements, and youth activities.",
   },
   {
-    title: "Drafts in your voice",
+    title: "Smart email analysis & extraction",
+    tagline: "Say goodbye to manual sorting.",
     description:
-      "Occudule learns how you write so replies sound like you, not a robot—edit in seconds and send with confidence.",
+      "Instantly analyzes incoming messages to extract key dates, locations, and action items, cleanly categorizing them so nothing gets lost in the noise.",
   },
   {
-    title: "Family-aware context",
+    title: "Automated task management & reminders",
+    tagline: "Turning communication into direct action.",
     description:
-      "Link calendars and threads so follow-ups, deadlines, and “who’s picking up whom” stay tied together.",
+      "Instantly converts incoming emails into structured to-do lists, calendar events, and reference info cards. It automatically schedules reminders and delegates tasks, keeping your entire household perfectly on track.",
   },
   {
-    title: "Events & to-dos from email",
+    title: "Family co-working hub",
+    tagline: "Share the mental load seamlessly.",
     description:
-      "School dates, forms, and action items are extracted automatically so you spend less time copying into your calendar.",
+      "A unified digital workspace that enables parents and family members to collaborate, share the mental load, and coordinate logistics in real time.",
   },
   {
-    title: "Conflict detection",
+    title: "Intelligent auto-draft replies",
+    tagline: "Communication on autopilot.",
     description:
-      "See when new commitments clash with what’s already on the family calendar before you double-book.",
+      "Saves time with smart, context-aware email responses drafted automatically and ready for you to review and send with a single tap.",
   },
   {
-    title: "One calm inbox view",
+    title: "Smart conflict detection",
+    tagline: "Protect your family calendar.",
     description:
-      "Household, school, and work threads in one prioritized stream—without merging accounts blindly.",
+      "Scans family schedules in real time to instantly detect overlapping activities and time conflicts before they become scheduling nightmares.",
   },
 ];
 
@@ -46,17 +52,22 @@ export function Features() {
           id="features-heading"
           className="mx-auto mt-3 max-w-3xl text-center text-3xl font-bold tracking-tight text-primary md:text-4xl"
         >
-          Everything you need to stay on top of family email
+          Core product features
         </h2>
         <p className="mx-auto mt-4 max-w-2xl text-center text-primary/70">
-          Built for how parents actually manage school, sports, work, and home—without another
+          Purpose-built modules that turn family email into organized action—without another
           complicated dashboard.
         </p>
         <ul className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {features.map((item) => (
             <li key={item.title}>
               <article className="flex h-full flex-col rounded-card border border-border bg-surface-muted/60 p-6 shadow-card">
-                <h3 className="text-lg font-semibold tracking-tight text-primary">{item.title}</h3>
+                <p className="text-xs font-semibold uppercase tracking-wider text-accent">
+                  {item.tagline}
+                </p>
+                <h3 className="mt-3 text-lg font-semibold tracking-tight text-primary">
+                  {item.title}
+                </h3>
                 <p className="mt-3 flex-1 text-sm leading-relaxed text-primary/70">
                   {item.description}
                 </p>
