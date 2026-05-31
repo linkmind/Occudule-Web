@@ -1,12 +1,12 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { CtaButton } from "@/components/CtaButton";
 import { Logo } from "@/components/Logo";
 
-const navLinks = [
-  { href: "/#why-occudule", label: "Why Occudule" },
+const navLinksAfterPrimary = [
   { href: "/#features", label: "Features" },
   { href: "/#how-it-works", label: "How it works" },
   { href: "/#pricing", label: "Pricing" },
@@ -16,17 +16,21 @@ const navLinks = [
 const HERO_SECTION_ID = "top";
 
 export function Header() {
-  const [showEarlyAccess, setShowEarlyAccess] = useState(false);
+  const pathname = usePathname();
+  const [heroInView, setHeroInView] = useState(pathname === "/");
+  const [showEarlyAccess, setShowEarlyAccess] = useState(pathname !== "/");
 
   useEffect(() => {
     const hero = document.getElementById(HERO_SECTION_ID);
     if (!hero) {
+      setHeroInView(false);
       setShowEarlyAccess(true);
       return;
     }
 
     const observer = new IntersectionObserver(
       ([entry]) => {
+        setHeroInView(entry.isIntersecting);
         setShowEarlyAccess(!entry.isIntersecting);
       },
       {
@@ -37,7 +41,13 @@ export function Header() {
 
     observer.observe(hero);
     return () => observer.disconnect();
-  }, []);
+  }, [pathname]);
+
+  const primaryNavLink = heroInView
+    ? { href: "/#why-occudule", label: "Why Occudule" }
+    : { href: "/#top", label: "Home" };
+
+  const navLinks = [primaryNavLink, ...navLinksAfterPrimary];
 
   return (
     <header className="sticky top-0 z-50 border-b border-border/80 bg-surface/90 backdrop-blur-md">
