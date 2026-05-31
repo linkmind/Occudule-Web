@@ -1,14 +1,44 @@
+"use client";
+
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { CtaButton } from "@/components/CtaButton";
 import { Logo } from "@/components/Logo";
 
 const navLinks = [
-  { href: "#how-it-works", label: "How it works" },
-  { href: "#proof", label: "Results" },
-  { href: "#pricing", label: "Pricing" },
+  { href: "/#why-occudule", label: "Why Occudule" },
+  { href: "/#features", label: "Features" },
+  { href: "/#how-it-works", label: "How it works" },
+  { href: "/#pricing", label: "Pricing" },
+  { href: "/#faq", label: "FAQ" },
 ];
 
+const HERO_SECTION_ID = "top";
+
 export function Header() {
+  const [showEarlyAccess, setShowEarlyAccess] = useState(false);
+
+  useEffect(() => {
+    const hero = document.getElementById(HERO_SECTION_ID);
+    if (!hero) {
+      setShowEarlyAccess(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setShowEarlyAccess(!entry.isIntersecting);
+      },
+      {
+        threshold: 0,
+        rootMargin: "-1px 0px 0px 0px",
+      },
+    );
+
+    observer.observe(hero);
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <header className="sticky top-0 z-50 border-b border-border/80 bg-surface/90 backdrop-blur-md">
       <div className="mx-auto flex max-w-content flex-wrap items-center justify-between gap-x-4 gap-y-3 px-gutter py-4">
@@ -28,15 +58,18 @@ export function Header() {
           ))}
         </nav>
         <div className="flex shrink-0 items-center gap-3">
-          <Link
-            href="#footer"
-            className="hidden text-sm font-medium text-primary/70 hover:text-primary sm:inline"
+          <div
+            className={`overflow-hidden transition-[max-width,opacity] duration-300 ease-out ${
+              showEarlyAccess
+                ? "max-w-[14rem] opacity-100"
+                : "pointer-events-none max-w-0 opacity-0"
+            }`}
+            aria-hidden={!showEarlyAccess}
           >
-            Sign in
-          </Link>
-          <CtaButton href="#waitlist" size="sm">
-            Get early access
-          </CtaButton>
+            <CtaButton href="/waitlist" size="sm" className="whitespace-nowrap">
+              Join the Waitlist
+            </CtaButton>
+          </div>
         </div>
       </div>
     </header>

@@ -9,7 +9,7 @@ type LogoProps = {
 };
 
 export function Logo({
-  href = "#top",
+  href = "/",
   showWordmark = true,
   wordmarkClassName = "text-primary",
   size = 36,

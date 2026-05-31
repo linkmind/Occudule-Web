@@ -5,27 +5,27 @@ const footerColumns = [
   {
     title: "Quick links",
     links: [
-      { href: "#top", label: "Home" },
-      { href: "#why-occudule", label: "Features" },
-      { href: "#how-it-works", label: "How it works" },
-      { href: "#pricing", label: "Pricing" },
-      { href: "#faq", label: "FAQ" },
+      { href: "/", label: "Home" },
+      { href: "/#features", label: "Features" },
+      { href: "/#how-it-works", label: "How it works" },
+      { href: "/#pricing", label: "Pricing" },
+      { href: "/#faq", label: "FAQ" },
     ],
   },
   {
-    title: "Resources",
+    title: "Corporate",
     links: [
-      { href: "#articles", label: "Articles" },
-      { href: "#testimonials", label: "Stories" },
-      { href: "#waitlist", label: "Waitlist" },
-      { href: "mailto:support@occudule.com", label: "Contact" },
+      { href: "/about", label: "About Us" },
+      { href: "/news", label: "News" },
+      { href: "/articles", label: "Articles" },
+      { href: "/contact", label: "Contact" },
     ],
   },
   {
     title: "Legal",
     links: [
-      { href: "#footer", label: "Privacy" },
-      { href: "#footer", label: "Terms" },
+      { href: "/privacy", label: "Privacy" },
+      { href: "/terms", label: "Terms" },
     ],
   },
 ];
@@ -44,18 +44,6 @@ export function Footer() {
               Occudule helps you track, triage, and answer family email effortlessly—without another
               complicated dashboard.
             </p>
-            <address className="mt-5 text-sm not-italic leading-relaxed text-white/65">
-              Suite 500, 7030 Woodbine Avenue
-              <br />
-              Markham, Ontario L3R 6G2
-              <br />
-              <a
-                href="mailto:support@occudule.com"
-                className="mt-2 inline-block text-accent transition hover:text-accent/90"
-              >
-                support@occudule.com
-              </a>
-            </address>
           </div>
           <div className="grid grid-cols-2 gap-10 sm:grid-cols-3 lg:gap-16">
             {footerColumns.map((col) => (
@@ -81,7 +69,7 @@ export function Footer() {
         </div>
         <div className="mt-14 flex flex-col items-start justify-between gap-4 border-t border-white/10 pt-8 text-sm text-white/55 sm:flex-row sm:items-center">
           <p>© {new Date().getFullYear()} Outvblue Technology Inc. All rights reserved.</p>
-          <p>Occudule — made for busy parents everywhere.</p>
+          <p>Made by parents for parents</p>
         </div>
       </div>
     </footer>

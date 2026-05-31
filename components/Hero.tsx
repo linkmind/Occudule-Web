@@ -26,10 +26,10 @@ export function Hero() {
         spent on email and manual tasks without dropping the ball on what matters for your family.
         </p>
         <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-5">
-          <CtaButton href="#waitlist" size="lg">
+          <CtaButton href="/waitlist" size="lg">
             Join the waitlist
           </CtaButton>
-          <CtaButton href="#how-it-works" variant="secondary" size="lg">
+          <CtaButton href="/#how-it-works" variant="secondary" size="lg">
             See how it works
           </CtaButton>
         </div>
