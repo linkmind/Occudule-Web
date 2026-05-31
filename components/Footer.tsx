@@ -69,7 +69,7 @@ export function Footer() {
         </div>
         <div className="mt-14 flex flex-col items-start justify-between gap-4 border-t border-white/10 pt-8 text-sm text-white/55 sm:flex-row sm:items-center">
           <p>© {new Date().getFullYear()} Outvblue Technology Inc. All rights reserved.</p>
-          <p>Made by parents, for parents</p>
+          <p>Made by parents for parents</p>
         </div>
       </div>
     </footer>
