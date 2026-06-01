@@ -38,9 +38,6 @@ export function FaqSection() {
         >
           Got questions? We&apos;ve got answers.
         </h2>
-        <p className="mx-auto mt-4 max-w-2xl text-center text-primary/70">
-          Straightforward details so you can decide if Occudule fits your household.
-        </p>
         <div className="mx-auto mt-12 max-w-3xl divide-y divide-border rounded-card border border-border bg-surface-muted/30">
           {faqs.map((item, index) => (
             <details key={item.q} className="group px-5 py-1 sm:px-6">

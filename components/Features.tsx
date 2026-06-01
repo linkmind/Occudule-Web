@@ -52,12 +52,9 @@ export function Features() {
           id="features-heading"
           className="mx-auto mt-3 max-w-3xl text-center text-3xl font-bold tracking-tight text-primary md:text-4xl"
         >
-          Core product features
+          Purpose-built modules that turn family email into action—without a complicated
+          dashboard.
         </h2>
-        <p className="mx-auto mt-4 max-w-2xl text-center text-primary/70">
-          Purpose-built modules that turn family email into organized action—without another
-          complicated dashboard.
-        </p>
         <ul className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {features.map((item) => (
             <li key={item.title}>

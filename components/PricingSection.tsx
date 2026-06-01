@@ -1,7 +1,6 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { CtaButton } from "@/components/CtaButton";
 
 type PlanTier = "premium" | "diamond";
 type Billing = "yearly" | "monthly";
@@ -107,10 +106,7 @@ export function PricingSection() {
         >
           Plans that grow with your family
         </h2>
-        <p className="mx-auto mt-4 max-w-2xl text-center text-primary/70">
-          Start free, then upgrade to Premium or Diamond when you need more capacity and automation.
-        </p>
-        <p className="mx-auto mt-2 text-center text-xs text-primary/50">
+        <p className="mx-auto mt-4 text-center text-xs text-primary/50">
           All prices are in USD.
         </p>
 
@@ -181,15 +177,6 @@ export function PricingSection() {
               );
             })}
           </div>
-
-          <div className="mt-8 flex justify-center">
-            <CtaButton href="/waitlist" size="lg">
-              Join the waitlist
-            </CtaButton>
-          </div>
-          <p className="mt-3 text-center text-xs text-primary/50">
-            Subscriptions are available in the Occudule app via Apple App Store and Google Play.
-          </p>
         </div>
 
         <div className="mx-auto mt-14 max-w-3xl overflow-hidden rounded-card border border-border shadow-card">

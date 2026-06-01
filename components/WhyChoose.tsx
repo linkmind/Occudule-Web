@@ -1,27 +1,19 @@
 const pillars = [
   {
-    title: "Live thread awareness",
-    body: "Stay current as messages arrive—Occudule highlights what needs you today versus what can wait.",
+    title: "Everything in one centralized space",
+    body: "Forget the old routine of opening an email, manually creating a calendar event, copying notes into a separate app, typing out reminders, and holding stressful family meetings to sync schedules. Occudule replaces the chaos, handling your entire workflow in one beautiful, cohesive experience.",
   },
   {
-    title: "Unified family view",
-    body: "School, sports, medical, and co-parenting threads stay grouped so nothing slips through.",
+    title: "Built with a privacy-first mindset",
+    body: "We respect your personal data. To minimize data collection, Occudule extracts only the essential logistics and action items rather than storing your entire email history. Backed by strict internal data management policies, we ensure full compliance with modern data regulations to keep your information safe.",
   },
   {
-    title: "Tone-matched drafts",
-    body: "Replies sound like you: warm with teachers, crisp at work, quick with coaches.",
+    title: "Made by parents, for parents",
+    body: 'We lived the exact same daily logistical chaos you are experiencing. Grounded in our core philosophy—"Made by parents, for parents"—we engineered Occudule with deep empathy and a singular goal: to eliminate the mental burden of family logistics.',
   },
   {
-    title: "Deadline extraction",
-    body: "Forms, payments, and RSVP dates surface automatically from long email chains.",
-  },
-  {
-    title: "Noise containment",
-    body: "Newsletters and promos sink into the background until you choose to batch-read.",
-  },
-  {
-    title: "Privacy-minded design",
-    body: "Built so family data stays yours—clear controls as we move toward broader access.",
+    title: "Optimized specially for school & extracurriculars",
+    body: "Unlike generic AI tools, Occudule's specialized workflows are purpose-built to navigate the unique nuances of school announcements, permission slips, sports leagues, and after-school programs.",
   },
 ];
 
@@ -40,13 +32,9 @@ export function WhyChoose() {
           id="why-heading"
           className="mx-auto mt-3 max-w-3xl text-center text-3xl font-bold tracking-tight text-primary md:text-4xl"
         >
-          Designed to scale with your household—not add another chore.
+          Built for the way families actually manage email
         </h2>
-        <p className="mx-auto mt-4 max-w-2xl text-center text-primary/70">
-          From one child to three activities and a full-time job, the same calm workflow keeps
-          your attention where it belongs.
-        </p>
-        <ul className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <ul className="mt-14 grid gap-5 sm:grid-cols-2">
           {pillars.map((item) => (
             <li key={item.title}>
               <article className="h-full rounded-card border border-border bg-surface p-6 shadow-card transition hover:border-primary/15 hover:shadow-lg">

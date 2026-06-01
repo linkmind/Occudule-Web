@@ -40,10 +40,6 @@ export function Footer() {
             <p className="mt-1 text-xs font-medium uppercase tracking-wider text-white/50">
               Outvblue Technology Inc.
             </p>
-            <p className="mt-4 text-sm leading-relaxed text-white/70">
-              Occudule helps you track, triage, and answer family email effortlessly—without another
-              complicated dashboard.
-            </p>
           </div>
           <div className="grid grid-cols-2 gap-10 sm:grid-cols-3 lg:gap-16">
             {footerColumns.map((col) => (
