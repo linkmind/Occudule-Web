@@ -38,7 +38,7 @@ export function Footer() {
           <div className="max-w-sm">
             <Logo wordmarkClassName="text-surface" />
             <p className="mt-1 text-xs font-medium uppercase tracking-wider text-white/50">
-              Outvblue Technology Inc.
+              Occudule is a trademark of Outvblue Technology Inc.
             </p>
           </div>
           <div className="grid grid-cols-2 gap-10 sm:grid-cols-3 lg:gap-16">
