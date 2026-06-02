@@ -17,9 +17,13 @@ const config: Config = {
         accent: "var(--color-accent)",
         success: "var(--color-success)",
         cta: "var(--color-cta)",
+        background: "var(--color-background)",
+        "background-elevated": "var(--color-background-elevated)",
+        "background-card": "var(--color-background-card)",
         surface: "var(--color-surface)",
         "surface-muted": "var(--color-surface-muted)",
         border: "var(--color-border)",
+        "border-dark": "var(--color-border-dark)",
       },
       fontFamily: {
         sans: ["var(--font-sans)", "system-ui", "sans-serif"],
@@ -40,7 +44,9 @@ const config: Config = {
       },
       backgroundImage: {
         "hero-glow": "var(--gradient-hero-glow)",
-        "mesh": "var(--gradient-mesh)",
+        mesh: "var(--gradient-mesh)",
+        "section-gradient": "var(--gradient-section)",
+        "cta-band": "var(--gradient-cta-band)",
       },
       animation: {
         marquee: "marquee 40s linear infinite",

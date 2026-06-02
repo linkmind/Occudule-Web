@@ -50,18 +50,18 @@ export function Header() {
   const navLinks = [primaryNavLink, ...navLinksAfterPrimary];
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border/80 bg-surface/90 backdrop-blur-md">
+    <header className="sticky top-0 z-50 border-b border-white/10 bg-background/80 backdrop-blur-xl">
       <div className="mx-auto flex max-w-content flex-wrap items-center justify-between gap-x-4 gap-y-3 px-gutter py-4">
-        <Logo />
+        <Logo wordmarkClassName="text-white" />
         <nav
-          className="order-last flex w-full basis-full items-center justify-center gap-6 text-sm font-medium text-primary/80 sm:order-none sm:w-auto sm:basis-auto sm:justify-end md:flex-1 lg:justify-center"
+          className="order-last flex w-full basis-full items-center justify-center gap-6 text-sm font-medium text-white/70 sm:order-none sm:w-auto sm:basis-auto sm:justify-end md:flex-1 lg:justify-center"
           aria-label="Primary"
         >
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="transition-colors hover:text-primary"
+              className="transition-colors hover:text-white"
             >
               {link.label}
             </Link>

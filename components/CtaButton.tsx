@@ -4,7 +4,7 @@ import type { ReactNode } from "react";
 type CtaButtonProps = {
   children: ReactNode;
   href: string;
-  variant?: "primary" | "secondary" | "onDark";
+  variant?: "primary" | "secondary" | "onDark" | "ghost";
   size?: "sm" | "md" | "lg";
   className?: string;
 };
@@ -30,7 +30,9 @@ export function CtaButton({
       ? "bg-cta text-white shadow-md hover:brightness-110 focus-visible:outline-cta"
       : variant === "onDark"
         ? "border-2 border-white/30 bg-transparent text-white hover:border-white/50 hover:bg-white/5 focus-visible:outline-white"
-        : "border-2 border-primary/15 bg-surface text-primary hover:border-primary/25 focus-visible:outline-primary";
+        : variant === "ghost"
+          ? "border border-white/20 bg-white/5 text-white hover:border-white/35 hover:bg-white/10 focus-visible:outline-white"
+          : "border-2 border-white/15 bg-transparent text-white hover:border-white/30 hover:bg-white/5 focus-visible:outline-white";
 
   return (
     <Link href={href} className={`${base} ${sizeClasses[size]} ${styles} ${className}`}>

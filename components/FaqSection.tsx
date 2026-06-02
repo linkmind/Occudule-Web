@@ -1,3 +1,5 @@
+import { SectionHeader } from "@/components/SectionHeader";
+
 const faqs = [
   {
     q: "How does Occudule connect to my email?",
@@ -23,39 +25,33 @@ const faqs = [
 
 export function FaqSection() {
   return (
-    <section
-      id="faq"
-      className="border-b border-border bg-surface py-section"
-      aria-labelledby="faq-heading"
-    >
-      <div className="mx-auto max-w-content px-gutter">
-        <p className="text-center text-xs font-semibold uppercase tracking-widest text-primary/50">
-          FAQ
-        </p>
-        <h2
-          id="faq-heading"
-          className="mx-auto mt-3 max-w-3xl text-center text-3xl font-bold tracking-tight text-primary md:text-4xl"
-        >
-          Got questions? We&apos;ve got answers.
-        </h2>
-        <div className="mx-auto mt-12 max-w-3xl divide-y divide-border rounded-card border border-border bg-surface-muted/30">
+    <section id="faq" className="section-gradient py-section" aria-labelledby="faq-heading">
+      <div className="relative mx-auto max-w-content px-gutter">
+        <div className="mx-auto text-center">
+          <SectionHeader
+            label="FAQ"
+            title="Got questions? We've got answers."
+            titleId="faq-heading"
+          />
+        </div>
+        <div className="mx-auto mt-12 max-w-3xl divide-y divide-white/10 glass-card">
           {faqs.map((item, index) => (
             <details key={item.q} className="group px-5 py-1 sm:px-6">
-              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 py-4 text-left font-semibold text-primary marker:content-none [&::-webkit-details-marker]:hidden">
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 py-4 text-left font-semibold text-white marker:content-none [&::-webkit-details-marker]:hidden">
                 <span className="flex items-start gap-3">
-                  <span className="mt-0.5 text-sm font-bold text-accent tabular-nums">
-                    {String(index + 1).padStart(2, "0")}
+                  <span className="mt-0.5 text-xs font-medium tabular-nums text-white/40">
+                    [ {String(index + 1).padStart(2, "0")} ]
                   </span>
                   <span>{item.q}</span>
                 </span>
                 <span
-                  className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-border text-lg leading-none text-primary/50 transition group-open:rotate-45 group-open:border-accent/50 group-open:text-accent"
+                  className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-white/15 text-lg leading-none text-white/50 transition group-open:rotate-45 group-open:border-accent/50 group-open:text-accent"
                   aria-hidden
                 >
                   +
                 </span>
               </summary>
-              <p className="pb-4 pl-9 text-sm leading-relaxed text-primary/70">{item.a}</p>
+              <p className="pb-4 pl-12 text-sm leading-relaxed text-white/55">{item.a}</p>
             </details>
           ))}
         </div>

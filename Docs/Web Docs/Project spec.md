@@ -1,6 +1,6 @@
 Act as an expert Senior Frontend Engineer specializing in React, Next.js (App Router), and Tailwind CSS.
 
-Build a fully functioning, high-conversion marketing site for **Occudule** (AI email productivity for busy parents), owned by **Outvblue Technology Inc.** Layout and visual rhythm may take inspiration from [Nexora](https://nexora-finance-template.webflow.io/), but **section order and footer structure must follow this spec exactly**.
+Build a fully functioning, high-conversion marketing site for **Occudule** (AI email productivity for busy parents), owned by **Outvblue Technology Inc.** Layout and visual rhythm may take inspiration from [Nexora](https://bima-ai.webflow.io/), but **section order and footer structure must follow this spec exactly**.
 
 Use a **Single Source of Truth** for design so colors, fonts, and global layout spacing can be swapped instantly from a central file.
 

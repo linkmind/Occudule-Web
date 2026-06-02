@@ -6,6 +6,7 @@ import { Features } from "@/components/Features";
 import { StepsSection } from "@/components/StepsSection";
 import { PricingSection } from "@/components/PricingSection";
 import { FaqSection } from "@/components/FaqSection";
+import { ClosingCta } from "@/components/ClosingCta";
 import { Footer } from "@/components/Footer";
 
 export default function HomePage() {
@@ -20,6 +21,7 @@ export default function HomePage() {
         <StepsSection />
         <PricingSection />
         <FaqSection />
+        <ClosingCta />
       </main>
       <Footer />
     </>
