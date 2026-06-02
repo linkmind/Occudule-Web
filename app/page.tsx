@@ -1,5 +1,6 @@
 import { Header } from "@/components/Header";
 import { Hero } from "@/components/Hero";
+import { SoundFamiliar } from "@/components/SoundFamiliar";
 import { WhyChoose } from "@/components/WhyChoose";
 import { Features } from "@/components/Features";
 import { StepsSection } from "@/components/StepsSection";
@@ -13,6 +14,7 @@ export default function HomePage() {
       <Header />
       <main>
         <Hero />
+        <SoundFamiliar />
         <WhyChoose />
         <Features />
         <StepsSection />
