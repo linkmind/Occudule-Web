@@ -9,6 +9,7 @@ export const metadata: Metadata = {
 export default function NewsPage() {
   return (
     <ContentPageShell
+      sectionLabel="NEWS"
       title="News"
       description="Content coming soon. Check back for product updates and company announcements."
     />

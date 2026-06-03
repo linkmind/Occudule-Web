@@ -44,16 +44,20 @@ export function getZohoLoadState(): ZohoLoadState {
 export function subscribeZohoLoadState(listener: (state: ZohoLoadState) => void) {
   listener(loadState);
   stateListeners.add(listener);
-  return () => stateListeners.delete(listener);
+  return () => {
+    stateListeners.delete(listener);
+  };
 }
 
 export function whenZohoReady(listener: () => void) {
   if (loadState === "ready") {
     listener();
-    return () => undefined;
+    return () => {};
   }
   readyListeners.add(listener);
-  return () => readyListeners.delete(listener);
+  return () => {
+    readyListeners.delete(listener);
+  };
 }
 
 /** True when the real SalesIQ widget APIs or UI are present (not just our init stub). */
