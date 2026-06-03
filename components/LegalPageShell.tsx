@@ -5,24 +5,41 @@ import { LegalMarkdown } from "@/components/LegalMarkdown";
 
 type LegalPageShellProps = {
   content: string;
+  sectionLabel: string;
 };
 
-export function LegalPageShell({ content }: LegalPageShellProps) {
+export function LegalPageShell({ content, sectionLabel }: LegalPageShellProps) {
   return (
     <>
       <Header />
-      <main className="border-b border-border bg-surface">
-        <div className="mx-auto max-w-3xl px-gutter py-12 md:py-16">
-          <Link
-            href="/"
-            className="text-sm font-medium text-primary/60 transition hover:text-primary"
-          >
-            ← Back to home
-          </Link>
-          <div className="mt-8">
-            <LegalMarkdown content={content} />
+      <main>
+        <section className="relative overflow-hidden border-b border-white/10 bg-background">
+          <div className="mesh-overlay" aria-hidden />
+          <div
+            className="pointer-events-none absolute inset-0 bg-hero-glow bg-cover bg-top bg-no-repeat"
+            aria-hidden
+          />
+          <div className="relative mx-auto max-w-content px-gutter pb-10 pt-8 md:pb-12">
+            <Link
+              href="/"
+              className="text-sm font-medium text-white/50 transition hover:text-white"
+            >
+              ← Back to home
+            </Link>
+            <p className="mx-auto mt-10 max-w-3xl text-center text-xs font-medium tracking-wide text-white/45">
+              [ {sectionLabel} ]
+            </p>
           </div>
-        </div>
+        </section>
+
+        <section className="section-dark pb-section pt-10 md:pt-12" aria-label={sectionLabel}>
+          <div className="mesh-overlay opacity-40" aria-hidden />
+          <div className="relative mx-auto max-w-3xl px-gutter">
+            <div className="glass-card p-6 md:p-10">
+              <LegalMarkdown content={content} />
+            </div>
+          </div>
+        </section>
       </main>
       <Footer />
     </>

@@ -10,5 +10,5 @@ export const metadata: Metadata = {
 
 export default function TermsOfServicePage() {
   const content = getLegalMarkdown(LEGAL_FILES.terms);
-  return <LegalPageShell content={content} />;
+  return <LegalPageShell content={content} sectionLabel="TERMS OF SERVICE" />;
 }

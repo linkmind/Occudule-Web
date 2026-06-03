@@ -7,7 +7,7 @@ import { isValidEmail } from "@/lib/validate-email";
 type FormStatus = "idle" | "loading" | "success" | "error";
 
 const inputClassName =
-  "mt-2 w-full rounded-lg border border-border bg-surface px-4 py-3 text-primary outline-none transition placeholder:text-primary/40 focus:border-primary/30 focus:ring-2 focus:ring-accent/40";
+  "mt-2 w-full rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-white outline-none transition placeholder:text-white/35 focus:border-accent/40 focus:ring-2 focus:ring-accent/20 disabled:opacity-60";
 
 export function ContactForm() {
   const [name, setName] = useState("");
@@ -88,19 +88,19 @@ export function ContactForm() {
   if (status === "success") {
     return (
       <div
-        className="rounded-card border border-success/30 bg-success/5 p-8"
+        className="glass-card border-success/30 bg-success/10 p-8"
         role="status"
         aria-live="polite"
       >
-        <p className="text-lg font-semibold text-primary">Message sent</p>
-        <p className="mt-3 text-sm leading-relaxed text-primary/75">
+        <p className="text-lg font-semibold text-white">Message sent</p>
+        <p className="mt-3 text-sm leading-relaxed text-white/60">
           Thanks for reaching out. We&apos;ve received your message and sent a confirmation to your
           inbox. Our team will reply as soon as we can.
         </p>
         <button
           type="button"
           onClick={() => setStatus("idle")}
-          className="mt-6 text-sm font-medium text-primary underline decoration-primary/30 underline-offset-2 hover:decoration-primary"
+          className="mt-6 text-sm font-medium text-accent underline decoration-accent/30 underline-offset-2 transition hover:text-white hover:decoration-white/50"
         >
           Send another message
         </button>
@@ -110,14 +110,14 @@ export function ContactForm() {
 
   return (
     <form
+      id="contact-form-heading"
       onSubmit={handleSubmit}
-      className="rounded-card border border-border bg-surface p-6 shadow-card md:p-8"
+      className="glass-card p-6 md:p-8"
       noValidate
     >
-      <h2 className="text-xl font-semibold tracking-tight text-primary">Send us a message</h2>
-      <p className="mt-2 text-sm text-primary/65">
-        We typically respond within one business day.
-      </p>
+      <p className="text-xs font-medium tracking-wide text-white/45">[ SEND A MESSAGE ]</p>
+      <h2 className="mt-3 text-xl font-semibold tracking-tight text-white">Contact form</h2>
+      <p className="mt-2 text-sm text-white/55">We typically respond within one business day.</p>
 
       <div className="sr-only" aria-hidden>
         <label htmlFor="contact-website">Website</label>
@@ -125,7 +125,7 @@ export function ContactForm() {
       </div>
 
       <div className="mt-6">
-        <label htmlFor="contact-name" className="block text-sm font-medium text-primary">
+        <label htmlFor="contact-name" className="block text-sm font-medium text-white/80">
           Name <span className="text-cta">*</span>
         </label>
         <input
@@ -143,7 +143,7 @@ export function ContactForm() {
       </div>
 
       <div className="mt-5">
-        <label htmlFor="contact-email" className="block text-sm font-medium text-primary">
+        <label htmlFor="contact-email" className="block text-sm font-medium text-white/80">
           Email <span className="text-cta">*</span>
         </label>
         <input
@@ -162,7 +162,7 @@ export function ContactForm() {
       </div>
 
       <div className="mt-5">
-        <label htmlFor="contact-subject" className="block text-sm font-medium text-primary">
+        <label htmlFor="contact-subject" className="block text-sm font-medium text-white/80">
           Subject <span className="text-cta">*</span>
         </label>
         <input
@@ -179,7 +179,7 @@ export function ContactForm() {
       </div>
 
       <div className="mt-5">
-        <label htmlFor="contact-message" className="block text-sm font-medium text-primary">
+        <label htmlFor="contact-message" className="block text-sm font-medium text-white/80">
           Message <span className="text-cta">*</span>
         </label>
         <textarea
@@ -190,7 +190,7 @@ export function ContactForm() {
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           placeholder="Tell us a bit about your question or feedback…"
-          className={`${inputClassName} resize-y min-h-[8rem]`}
+          className={`${inputClassName} min-h-[8rem] resize-y`}
           disabled={status === "loading"}
         />
       </div>
@@ -200,7 +200,7 @@ export function ContactForm() {
           {errorMessage}{" "}
           <a
             href="mailto:support@occudule.com"
-            className="font-medium underline underline-offset-2"
+            className="font-medium text-white underline underline-offset-2 hover:text-accent"
           >
             Email us instead
           </a>
@@ -215,9 +215,12 @@ export function ContactForm() {
         {status === "loading" ? "Sending…" : "Send message"}
       </button>
 
-      <p className="mt-4 text-xs leading-relaxed text-primary/55">
+      <p className="mt-4 text-xs leading-relaxed text-white/45">
         By submitting, you agree that we may use your details to respond. See our{" "}
-        <Link href="/privacy" className="underline underline-offset-2 hover:text-primary">
+        <Link
+          href="/privacy"
+          className="text-white/60 underline underline-offset-2 transition hover:text-accent"
+        >
           Privacy Policy
         </Link>
         .

@@ -4,30 +4,32 @@ import type { Components } from "react-markdown";
 
 const components: Components = {
   h1: ({ children }) => (
-    <h1 className="text-3xl font-bold tracking-tight text-primary md:text-4xl">{children}</h1>
+    <h1 className="text-gradient text-3xl font-semibold tracking-tight md:text-4xl">
+      {children}
+    </h1>
   ),
   h2: ({ children }) => (
-    <h2 className="mt-10 text-xl font-semibold tracking-tight text-primary md:text-2xl">
+    <h2 className="mt-10 text-xl font-semibold tracking-tight text-white md:text-2xl">
       {children}
     </h2>
   ),
   h3: ({ children }) => (
-    <h3 className="mt-6 text-lg font-semibold text-primary">{children}</h3>
+    <h3 className="mt-6 text-lg font-semibold text-white/90">{children}</h3>
   ),
-  p: ({ children }) => <p className="mt-4 leading-relaxed text-primary/80">{children}</p>,
+  p: ({ children }) => <p className="mt-4 leading-relaxed text-white/65">{children}</p>,
   ul: ({ children }) => (
-    <ul className="mt-4 list-disc space-y-2 pl-6 text-primary/80">{children}</ul>
+    <ul className="mt-4 list-disc space-y-2 pl-6 text-white/65">{children}</ul>
   ),
   ol: ({ children }) => (
-    <ol className="mt-4 list-decimal space-y-2 pl-6 text-primary/80">{children}</ol>
+    <ol className="mt-4 list-decimal space-y-2 pl-6 text-white/65">{children}</ol>
   ),
   li: ({ children }) => <li className="leading-relaxed">{children}</li>,
-  strong: ({ children }) => <strong className="font-semibold text-primary">{children}</strong>,
-  hr: () => <hr className="my-8 border-border" />,
+  strong: ({ children }) => <strong className="font-semibold text-white">{children}</strong>,
+  hr: () => <hr className="my-8 border-white/10" />,
   a: ({ href, children }) => (
     <a
       href={href}
-      className="font-medium text-primary underline decoration-primary/30 underline-offset-2 hover:decoration-primary"
+      className="font-medium text-accent underline decoration-accent/30 underline-offset-2 transition hover:text-white hover:decoration-white/50"
       target={href?.startsWith("http") ? "_blank" : undefined}
       rel={href?.startsWith("http") ? "noopener noreferrer" : undefined}
     >
@@ -35,16 +37,16 @@ const components: Components = {
     </a>
   ),
   table: ({ children }) => (
-    <div className="mt-6 overflow-x-auto rounded-card border border-border">
+    <div className="mt-6 overflow-x-auto rounded-card border border-white/10">
       <table className="w-full min-w-[32rem] border-collapse text-left text-sm">{children}</table>
     </div>
   ),
-  thead: ({ children }) => <thead className="bg-surface-muted">{children}</thead>,
+  thead: ({ children }) => <thead className="bg-white/5">{children}</thead>,
   th: ({ children }) => (
-    <th className="border-b border-border px-4 py-3 font-semibold text-primary">{children}</th>
+    <th className="border-b border-white/10 px-4 py-3 font-semibold text-white">{children}</th>
   ),
   td: ({ children }) => (
-    <td className="border-b border-border px-4 py-3 text-primary/80">{children}</td>
+    <td className="border-b border-white/10 px-4 py-3 text-white/65">{children}</td>
   ),
 };
 

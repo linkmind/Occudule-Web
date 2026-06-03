@@ -10,5 +10,5 @@ export const metadata: Metadata = {
 
 export default function PrivacyPolicyPage() {
   const content = getLegalMarkdown(LEGAL_FILES.privacy);
-  return <LegalPageShell content={content} />;
+  return <LegalPageShell content={content} sectionLabel="PRIVACY POLICY" />;
 }

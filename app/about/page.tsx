@@ -26,7 +26,7 @@ export default function AboutPage() {
       <main>
         <Link
           href="/"
-          className="mx-auto block max-w-content px-gutter pt-8 text-sm font-medium text-primary/60 transition hover:text-primary"
+          className="mx-auto block max-w-content px-gutter pt-8 text-sm font-medium text-white/50 transition hover:text-white"
         >
           ← Back to home
         </Link>
