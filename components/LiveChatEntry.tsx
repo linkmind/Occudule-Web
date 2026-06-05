@@ -6,7 +6,6 @@ import {
   isZohoLiveChatConfigured,
   openZohoLiveChat,
   subscribeZohoLoadState,
-  zohoSalesIQWidgetCode,
   type ZohoLoadState,
 } from "@/components/ZohoSalesIQ";
 
@@ -35,7 +34,7 @@ function statusMessage(state: ZohoLoadState): string | null {
     return "Loading chat widget…";
   }
   if (state === "error") {
-    return "Chat could not load. Check that your widget code is only the wc= value from Zoho Embed (not the full script), add localhost under allowed domains in SalesIQ, disable ad blockers, then restart npm run dev.";
+    return "Chat could not load. In Zoho: Settings → Brands → Installation → Website, copy the widgetcode value from the embed snippet (not the full script). Add your site domain under allowed domains, set NEXT_PUBLIC_ZOHO_SALESIQ_HOST if you use EU/IN/AU (e.g. salesiq.zoho.eu), disable ad blockers, then restart the dev server.";
   }
   return null;
 }
@@ -73,22 +72,20 @@ export function LiveChatEntry() {
           :
         </p>
         <pre className="mt-3 overflow-x-auto rounded-lg border border-white/10 bg-black/30 p-3 text-xs text-white/70">
-          NEXT_PUBLIC_ZOHO_SALESIQ_WIDGET_CODE=your_wc_value_only
+          {`NEXT_PUBLIC_ZOHO_SALESIQ_WIDGET_CODE=your_widgetcode_value
+# Optional if not on US data center:
+# NEXT_PUBLIC_ZOHO_SALESIQ_HOST=salesiq.zoho.eu`}
         </pre>
         <p className="mt-3 text-xs leading-relaxed text-white/40">
-          In Zoho: Settings → Brands → Embed. Copy only the value after{" "}
-          <strong className="text-white/55">wc=</strong> in the script URL (often shorter than a
-          long hash). Restart <code className="text-white/50">npm run dev</code> after saving.
+          In Zoho: Settings → Brands → Installation → Website. Copy the{" "}
+          <strong className="text-white/55">widgetcode</strong> string from the embed snippet.
+          Restart <code className="text-white/50">npm run dev</code> after saving.
         </p>
       </div>
     );
   }
 
-  const codeLooksInvalid = zohoSalesIQWidgetCode.length > 64;
-  const hint =
-    codeLooksInvalid && loadState !== "ready"
-      ? "This widget code looks too long. In Zoho Embed, copy only the short value after wc= in the script URL (not a long hash or API key)."
-      : statusMessage(loadState);
+  const hint = statusMessage(loadState);
   const label = isOpening
     ? "Opening live chat…"
     : loadState === "ready"

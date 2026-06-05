@@ -6,8 +6,11 @@ declare global {
   interface Window {
     $zoho?: {
       salesiq?: {
-        ready: (callback: () => void) => void;
+        ready: ((callback?: () => void) => void) | (() => void);
         floatwindow?: {
+          visible: (action: "show" | "hide" | string) => void;
+        };
+        floatbutton?: {
           visible: (action: "show" | "hide" | string) => void;
         };
         chatwindow?: {
@@ -18,9 +21,16 @@ declare global {
   }
 }
 
-/** Public widget code from Zoho SalesIQ → Settings → Embed (the `wc=` value only). */
+/**
+ * Zoho SalesIQ embed `widgetcode` from Settings → Brands → Installation → Website.
+ * Copy the value from the `widgetcode:"..."` line in the embed snippet (not the old `wc=` query param).
+ */
 export const zohoSalesIQWidgetCode =
   process.env.NEXT_PUBLIC_ZOHO_SALESIQ_WIDGET_CODE?.trim() || "";
+
+/** Zoho widget host for your data center, e.g. salesiq.zoho.com or salesiq.zoho.eu */
+export const zohoSalesIQHost =
+  process.env.NEXT_PUBLIC_ZOHO_SALESIQ_HOST?.trim() || "salesiq.zoho.com";
 
 export type ZohoLoadState = "idle" | "loading" | "ready" | "error";
 
@@ -60,25 +70,22 @@ export function whenZohoReady(listener: () => void) {
   };
 }
 
-/** True when the real SalesIQ widget APIs or UI are present (not just our init stub). */
-export function isZohoWidgetReady(): boolean {
+function hasZohoOpenApis(): boolean {
   const salesiq = window.$zoho?.salesiq;
-  if (!salesiq) return false;
+  return (
+    typeof salesiq?.floatwindow?.visible === "function" ||
+    typeof salesiq?.floatbutton?.visible === "function" ||
+    typeof salesiq?.chatwindow?.visible === "function"
+  );
+}
 
-  const hasApis =
-    typeof salesiq.floatwindow?.visible === "function" ||
-    typeof salesiq.chatwindow?.visible === "function";
-
-  const hasDom =
-    document.getElementById("zsiq_float") !== null ||
-    document.getElementById("zsiqbtn") !== null ||
-    document.querySelector("[id^='zsiq']") !== null;
-
-  return hasApis || hasDom;
+/** True when SalesIQ APIs are available (not just our init stub). */
+export function isZohoWidgetReady(): boolean {
+  return hasZohoOpenApis();
 }
 
 function clickZohoFloatButton(): boolean {
-  const selectors = ["#zsiqbtn", "#zsiq_float", "[id^='zsiq']"];
+  const selectors = ["#zsiqbtn", "#zsiq_float [role='button']", "#zsiq_float"];
   for (const selector of selectors) {
     const el = document.querySelector<HTMLElement>(selector);
     if (el) {
@@ -89,25 +96,38 @@ function clickZohoFloatButton(): boolean {
   return false;
 }
 
-function showChatWidget() {
+function showChatWidget(): boolean {
   const salesiq = window.$zoho?.salesiq;
   if (!salesiq) return false;
 
-  salesiq.ready(() => {
-    salesiq.floatwindow?.visible("show");
-    salesiq.chatwindow?.visible("show");
+  const open = () => {
+    salesiq.floatbutton?.visible?.("show");
+    salesiq.floatwindow?.visible?.("show");
+    salesiq.chatwindow?.visible?.("show");
     clickZohoFloatButton();
-  });
+  };
+
+  if (hasZohoOpenApis()) {
+    open();
+    return true;
+  }
+
+  const priorReady = salesiq.ready;
+  salesiq.ready = function (...args: unknown[]) {
+    if (typeof priorReady === "function" && priorReady !== salesiq.ready) {
+      (priorReady as (...inner: unknown[]) => void).apply(salesiq, args);
+    }
+    open();
+  };
 
   return clickZohoFloatButton();
 }
 
-function pollUntilReady(maxMs = 15000) {
+function pollUntilReady(maxMs = 20000) {
   const started = Date.now();
   const tick = () => {
     if (isZohoWidgetReady()) {
       setLoadState("ready");
-      showChatWidget();
       return;
     }
     if (Date.now() - started >= maxMs) {
@@ -145,12 +165,14 @@ export function isZohoLiveChatConfigured(): boolean {
 export function ZohoSalesIQ() {
   if (!zohoSalesIQWidgetCode) return null;
 
-  const widgetUrl = `https://salesiq.zohopublic.com/widget?wc=${encodeURIComponent(zohoSalesIQWidgetCode)}`;
+  const widgetUrl = `https://${zohoSalesIQHost}/widget`;
+  const initScript = `window.$zoho=window.$zoho||{};$zoho.salesiq=$zoho.salesiq||{mode:"async",widgetcode:${JSON.stringify(zohoSalesIQWidgetCode)},values:{},ready:function(){}};`;
 
   return (
     <>
+      <div id="zsiqwidget" className="hidden" aria-hidden />
       <Script id="zoho-salesiq-init" strategy="afterInteractive">
-        {`window.$zoho=window.$zoho||{};$zoho.salesiq=$zoho.salesiq||{ready:function(){}};`}
+        {initScript}
       </Script>
       <Script
         id="zsiqscript"
