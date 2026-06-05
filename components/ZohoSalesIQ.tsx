@@ -24,6 +24,14 @@ declare global {
   }
 }
 
+type EmbedStyle = "wc" | "widgetcode";
+
+type ZohoEmbedConfig = {
+  code: string;
+  host: string;
+  style: EmbedStyle;
+};
+
 function normalizeWidgetCode(raw: string): string {
   const trimmed = raw.trim();
   const fromSnippet = trimmed.match(/widgetcode\s*:\s*["']([^"']+)["']/i);
@@ -35,16 +43,53 @@ function normalizeWidgetCode(raw: string): string {
   return trimmed.replace(/^["']|["']$/g, "");
 }
 
-/**
- * Zoho SalesIQ embed `widgetcode` from Settings → Brands → Installation → Website.
- */
-export const zohoSalesIQWidgetCode = normalizeWidgetCode(
-  process.env.NEXT_PUBLIC_ZOHO_SALESIQ_WIDGET_CODE || "",
-);
+function resolveEmbedConfig(): ZohoEmbedConfig | null {
+  const rawCode = process.env.NEXT_PUBLIC_ZOHO_SALESIQ_WIDGET_CODE?.trim() || "";
+  if (!rawCode) return null;
 
-/** Zoho widget host for your data center, e.g. salesiq.zoho.com or salesiq.zoho.eu */
-export const zohoSalesIQHost =
-  process.env.NEXT_PUBLIC_ZOHO_SALESIQ_HOST?.trim() || "salesiq.zoho.com";
+  const rawHost =
+    process.env.NEXT_PUBLIC_ZOHO_SALESIQ_WIDGET_HOST?.trim() ||
+    process.env.NEXT_PUBLIC_ZOHO_SALESIQ_HOST?.trim() ||
+    "";
+
+  const explicitStyle = process.env.NEXT_PUBLIC_ZOHO_SALESIQ_EMBED_STYLE?.trim() as
+    | EmbedStyle
+    | undefined;
+
+  const srcMatch = rawCode.match(/src=["'](https:\/\/[^"']+\/widget\?[^"']+)["']/i);
+  if (srcMatch) {
+    const url = new URL(srcMatch[1]);
+    const code =
+      url.searchParams.get("wc") ||
+      url.searchParams.get("widgetcode") ||
+      normalizeWidgetCode(rawCode);
+    const style: EmbedStyle =
+      explicitStyle ||
+      (url.searchParams.has("wc") ? "wc" : "widgetcode");
+
+    return {
+      code,
+      host: url.host,
+      style,
+    };
+  }
+
+  const code = normalizeWidgetCode(rawCode);
+  const style: EmbedStyle =
+    explicitStyle || (rawHost.includes("zohopublic") ? "wc" : "widgetcode");
+  const host =
+    rawHost || (style === "wc" ? "salesiq.zohopublic.com" : "salesiq.zoho.com");
+
+  return { code, host, style };
+}
+
+const embedConfig = resolveEmbedConfig();
+
+/** Public widget id: the `wc=` or `widgetcode` value from Zoho embed. */
+export const zohoSalesIQWidgetCode = embedConfig?.code || "";
+
+/** Zoho widget script host, e.g. salesiq.zohopublic.ca */
+export const zohoSalesIQHost = embedConfig?.host || "";
 
 export type ZohoLoadState = "idle" | "loading" | "ready" | "error";
 
@@ -108,6 +153,11 @@ export function isZohoWidgetReady(): boolean {
   return hasZohoOpenApis() || hasZohoWidgetDom();
 }
 
+function widgetScriptUrl(config: ZohoEmbedConfig): string {
+  const param = config.style === "wc" ? "wc" : "widgetcode";
+  return `https://${config.host}/widget?${param}=${encodeURIComponent(config.code)}`;
+}
+
 function clickZohoFloatButton(): boolean {
   const selectors = ["#zsiqbtn", "#zsiq_float [role='button']", "#zsiq_float"];
   for (const selector of selectors) {
@@ -168,25 +218,26 @@ function pollUntilReady(maxMs = 30000) {
 }
 
 function installZohoEmbed() {
-  if (!zohoSalesIQWidgetCode || embedStarted) {
-    if (zohoSalesIQWidgetCode) pollUntilReady();
+  if (!embedConfig) return;
+
+  if (embedStarted) {
+    pollUntilReady();
     return;
   }
   embedStarted = true;
   setLoadState("loading");
 
   window.$zoho = window.$zoho || {};
-  window.$zoho.salesiq = window.$zoho.salesiq || {
-    values: {},
-    ready: function () {},
-  };
-  window.$zoho.salesiq.mode = "async";
-  window.$zoho.salesiq.widgetcode = zohoSalesIQWidgetCode;
 
-  if (!document.getElementById("zsiqwidget")) {
-    const mount = document.createElement("div");
-    mount.id = "zsiqwidget";
-    document.body.appendChild(mount);
+  if (embedConfig.style === "wc") {
+    window.$zoho.salesiq = window.$zoho.salesiq || { ready: function () {} };
+  } else {
+    window.$zoho.salesiq = window.$zoho.salesiq || {
+      values: {},
+      ready: function () {},
+    };
+    window.$zoho.salesiq.mode = "async";
+    window.$zoho.salesiq.widgetcode = embedConfig.code;
   }
 
   const priorReady = window.$zoho.salesiq.ready;
@@ -208,7 +259,7 @@ function installZohoEmbed() {
   script.type = "text/javascript";
   script.id = "zsiqscript";
   script.defer = true;
-  script.src = `https://${zohoSalesIQHost}/widget?widgetcode=${encodeURIComponent(zohoSalesIQWidgetCode)}`;
+  script.src = widgetScriptUrl(embedConfig);
   script.onload = () => pollUntilReady();
   script.onerror = () => setLoadState("error");
 
@@ -222,7 +273,7 @@ function installZohoEmbed() {
 
 /** Opens SalesIQ chat. Returns false if widget code is missing. */
 export function openZohoLiveChat(): boolean {
-  if (!zohoSalesIQWidgetCode) return false;
+  if (!embedConfig) return false;
 
   installZohoEmbed();
 
@@ -242,7 +293,7 @@ export function openZohoLiveChat(): boolean {
 }
 
 export function isZohoLiveChatConfigured(): boolean {
-  return Boolean(zohoSalesIQWidgetCode);
+  return Boolean(embedConfig);
 }
 
 export function ZohoSalesIQ() {

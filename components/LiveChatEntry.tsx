@@ -35,7 +35,7 @@ function statusMessage(state: ZohoLoadState): string | null {
     return "Loading chat widget…";
   }
   if (state === "error") {
-    return "Chat could not load. In Zoho: Settings → Brands → Installation → Website, copy the widgetcode value from the embed snippet (not the full script). Add your site domain under allowed domains, set NEXT_PUBLIC_ZOHO_SALESIQ_HOST if you use EU/IN/AU (e.g. salesiq.zoho.eu), disable ad blockers, then restart the dev server.";
+    return "Chat could not load. Copy the wc= value and script host from your Zoho embed (e.g. salesiq.zohopublic.ca), set NEXT_PUBLIC_ZOHO_SALESIQ_WIDGET_HOST, add your site domain under allowed domains in Zoho, disable ad blockers, then restart the dev server.";
   }
   return null;
 }
@@ -89,14 +89,14 @@ export function LiveChatEntry() {
           :
         </p>
         <pre className="mt-3 overflow-x-auto rounded-lg border border-white/10 bg-black/30 p-3 text-xs text-white/70">
-          {`NEXT_PUBLIC_ZOHO_SALESIQ_WIDGET_CODE=your_widgetcode_value
-# Optional if not on US data center:
-# NEXT_PUBLIC_ZOHO_SALESIQ_HOST=salesiq.zoho.eu`}
+          {`NEXT_PUBLIC_ZOHO_SALESIQ_WIDGET_CODE=your_wc_value
+NEXT_PUBLIC_ZOHO_SALESIQ_WIDGET_HOST=salesiq.zohopublic.ca`}
         </pre>
         <p className="mt-3 text-xs leading-relaxed text-white/40">
           In Zoho: Settings → Brands → Installation → Website. Copy the{" "}
-          <strong className="text-white/55">widgetcode</strong> string from the embed snippet.
-          Restart <code className="text-white/50">npm run dev</code> after saving.
+          <strong className="text-white/55">wc=</strong> value and host from the{" "}
+          <strong className="text-white/55">zsiqscript</strong> src URL. Restart{" "}
+          <code className="text-white/50">npm run dev</code> after saving.
         </p>
       </div>
     );
