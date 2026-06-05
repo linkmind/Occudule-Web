@@ -1,11 +1,14 @@
 "use client";
 
-import Script from "next/script";
+import { useEffect } from "react";
 
 declare global {
   interface Window {
     $zoho?: {
       salesiq?: {
+        mode?: string;
+        widgetcode?: string;
+        values?: Record<string, unknown>;
         ready: ((callback?: () => void) => void) | (() => void);
         floatwindow?: {
           visible: (action: "show" | "hide" | string) => void;
@@ -21,12 +24,23 @@ declare global {
   }
 }
 
+function normalizeWidgetCode(raw: string): string {
+  const trimmed = raw.trim();
+  const fromSnippet = trimmed.match(/widgetcode\s*:\s*["']([^"']+)["']/i);
+  if (fromSnippet) return fromSnippet[1];
+
+  const fromUrl = trimmed.match(/[?&](?:widgetcode|wc)=([^&"'\s]+)/i);
+  if (fromUrl) return fromUrl[1];
+
+  return trimmed.replace(/^["']|["']$/g, "");
+}
+
 /**
  * Zoho SalesIQ embed `widgetcode` from Settings → Brands → Installation → Website.
- * Copy the value from the `widgetcode:"..."` line in the embed snippet (not the old `wc=` query param).
  */
-export const zohoSalesIQWidgetCode =
-  process.env.NEXT_PUBLIC_ZOHO_SALESIQ_WIDGET_CODE?.trim() || "";
+export const zohoSalesIQWidgetCode = normalizeWidgetCode(
+  process.env.NEXT_PUBLIC_ZOHO_SALESIQ_WIDGET_CODE || "",
+);
 
 /** Zoho widget host for your data center, e.g. salesiq.zoho.com or salesiq.zoho.eu */
 export const zohoSalesIQHost =
@@ -35,10 +49,12 @@ export const zohoSalesIQHost =
 export type ZohoLoadState = "idle" | "loading" | "ready" | "error";
 
 let loadState: ZohoLoadState = zohoSalesIQWidgetCode ? "loading" : "idle";
+let embedStarted = false;
 const readyListeners = new Set<() => void>();
 const stateListeners = new Set<(state: ZohoLoadState) => void>();
 
 function setLoadState(next: ZohoLoadState) {
+  if (loadState === next) return;
   loadState = next;
   stateListeners.forEach((fn) => fn(next));
   if (next === "ready") {
@@ -79,9 +95,17 @@ function hasZohoOpenApis(): boolean {
   );
 }
 
-/** True when SalesIQ APIs are available (not just our init stub). */
+function hasZohoWidgetDom(): boolean {
+  return (
+    document.getElementById("zsiq_float") !== null ||
+    document.getElementById("zsiqbtn") !== null ||
+    document.getElementById("zsiq_chat") !== null
+  );
+}
+
+/** True when SalesIQ APIs or the float UI are present. */
 export function isZohoWidgetReady(): boolean {
-  return hasZohoOpenApis();
+  return hasZohoOpenApis() || hasZohoWidgetDom();
 }
 
 function clickZohoFloatButton(): boolean {
@@ -98,7 +122,7 @@ function clickZohoFloatButton(): boolean {
 
 function showChatWidget(): boolean {
   const salesiq = window.$zoho?.salesiq;
-  if (!salesiq) return false;
+  if (!salesiq) return clickZohoFloatButton();
 
   const open = () => {
     salesiq.floatbutton?.visible?.("show");
@@ -112,6 +136,10 @@ function showChatWidget(): boolean {
     return true;
   }
 
+  if (hasZohoWidgetDom()) {
+    return clickZohoFloatButton();
+  }
+
   const priorReady = salesiq.ready;
   salesiq.ready = function (...args: unknown[]) {
     if (typeof priorReady === "function" && priorReady !== salesiq.ready) {
@@ -123,7 +151,7 @@ function showChatWidget(): boolean {
   return clickZohoFloatButton();
 }
 
-function pollUntilReady(maxMs = 20000) {
+function pollUntilReady(maxMs = 30000) {
   const started = Date.now();
   const tick = () => {
     if (isZohoWidgetReady()) {
@@ -139,18 +167,73 @@ function pollUntilReady(maxMs = 20000) {
   tick();
 }
 
+function installZohoEmbed() {
+  if (!zohoSalesIQWidgetCode || embedStarted) {
+    if (zohoSalesIQWidgetCode) pollUntilReady();
+    return;
+  }
+  embedStarted = true;
+  setLoadState("loading");
+
+  window.$zoho = window.$zoho || {};
+  window.$zoho.salesiq = window.$zoho.salesiq || {
+    values: {},
+    ready: function () {},
+  };
+  window.$zoho.salesiq.mode = "async";
+  window.$zoho.salesiq.widgetcode = zohoSalesIQWidgetCode;
+
+  if (!document.getElementById("zsiqwidget")) {
+    const mount = document.createElement("div");
+    mount.id = "zsiqwidget";
+    document.body.appendChild(mount);
+  }
+
+  const priorReady = window.$zoho.salesiq.ready;
+  window.$zoho.salesiq.ready = function (...args: unknown[]) {
+    if (typeof priorReady === "function" && priorReady !== window.$zoho?.salesiq?.ready) {
+      (priorReady as (...inner: unknown[]) => void).apply(window.$zoho?.salesiq, args);
+    }
+    window.setTimeout(() => {
+      if (isZohoWidgetReady()) setLoadState("ready");
+    }, 0);
+  };
+
+  if (document.getElementById("zsiqscript")) {
+    pollUntilReady();
+    return;
+  }
+
+  const script = document.createElement("script");
+  script.type = "text/javascript";
+  script.id = "zsiqscript";
+  script.defer = true;
+  script.src = `https://${zohoSalesIQHost}/widget?widgetcode=${encodeURIComponent(zohoSalesIQWidgetCode)}`;
+  script.onload = () => pollUntilReady();
+  script.onerror = () => setLoadState("error");
+
+  const firstScript = document.getElementsByTagName("script")[0];
+  if (firstScript?.parentNode) {
+    firstScript.parentNode.insertBefore(script, firstScript);
+  } else {
+    document.head.appendChild(script);
+  }
+}
+
 /** Opens SalesIQ chat. Returns false if widget code is missing. */
 export function openZohoLiveChat(): boolean {
   if (!zohoSalesIQWidgetCode) return false;
+
+  installZohoEmbed();
+
+  if (loadState === "error") {
+    return false;
+  }
 
   if (loadState === "ready" || isZohoWidgetReady()) {
     setLoadState("ready");
     showChatWidget();
     return true;
-  }
-
-  if (loadState === "error") {
-    return false;
   }
 
   whenZohoReady(() => showChatWidget());
@@ -163,24 +246,9 @@ export function isZohoLiveChatConfigured(): boolean {
 }
 
 export function ZohoSalesIQ() {
-  if (!zohoSalesIQWidgetCode) return null;
+  useEffect(() => {
+    installZohoEmbed();
+  }, []);
 
-  const widgetUrl = `https://${zohoSalesIQHost}/widget`;
-  const initScript = `window.$zoho=window.$zoho||{};$zoho.salesiq=$zoho.salesiq||{mode:"async",widgetcode:${JSON.stringify(zohoSalesIQWidgetCode)},values:{},ready:function(){}};`;
-
-  return (
-    <>
-      <div id="zsiqwidget" className="hidden" aria-hidden />
-      <Script id="zoho-salesiq-init" strategy="afterInteractive">
-        {initScript}
-      </Script>
-      <Script
-        id="zsiqscript"
-        src={widgetUrl}
-        strategy="afterInteractive"
-        onLoad={() => pollUntilReady()}
-        onError={() => setLoadState("error")}
-      />
-    </>
-  );
+  return null;
 }

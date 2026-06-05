@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import {
   getZohoLoadState,
   isZohoLiveChatConfigured,
+  isZohoWidgetReady,
   openZohoLiveChat,
   subscribeZohoLoadState,
   type ZohoLoadState,
@@ -57,7 +58,23 @@ export function LiveChatEntry() {
     setIsOpening(true);
     openZohoLiveChat();
 
-    window.setTimeout(() => setIsOpening(false), 1500);
+    if (isZohoWidgetReady()) {
+      setIsOpening(false);
+      return;
+    }
+
+    const stopOpening = () => setIsOpening(false);
+    let unsubscribe = () => {};
+    unsubscribe = subscribeZohoLoadState((state) => {
+      if (state === "ready" || state === "error") {
+        stopOpening();
+        unsubscribe();
+      }
+    });
+    window.setTimeout(() => {
+      stopOpening();
+      unsubscribe();
+    }, 12000);
   }, [configured, loadState]);
 
   if (!configured) {

@@ -69,6 +69,13 @@ body {
   @apply bg-background text-white antialiased;
 }
 
+/* Keep Zoho SalesIQ float/chat above site chrome */
+#zsiq_float,
+#zsiq_chat,
+#zsiqwidget {
+  z-index: 999999 !important;
+}
+
 @layer components {
   .text-gradient {
     @apply bg-gradient-to-br from-white from-[20%] to-accent to-[65%] bg-clip-text text-transparent;
