@@ -17,10 +17,6 @@ const faqs = [
     q: "How do you handle children’s information in school threads?",
     a: "We treat minors’ data with extra care: minimization, retention limits, and settings to exclude specific senders or domains from AI processing.",
   },
-  {
-    q: "When will pricing go live?",
-    a: "Waitlist members get early access first, with founding rates. Final numbers will be published before billing begins.",
-  },
 ];
 
 export function FaqSection() {
