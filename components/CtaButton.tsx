@@ -7,6 +7,7 @@ type CtaButtonProps = {
   variant?: "primary" | "secondary" | "onDark" | "ghost";
   size?: "sm" | "md" | "lg";
   className?: string;
+  onClick?: () => void;
 };
 
 const sizeClasses = {
@@ -21,6 +22,7 @@ export function CtaButton({
   variant = "primary",
   size = "md",
   className = "",
+  onClick,
 }: CtaButtonProps) {
   const base =
     "inline-flex items-center justify-center rounded-full font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2";
@@ -35,7 +37,11 @@ export function CtaButton({
           : "border-2 border-white/15 bg-transparent text-white hover:border-white/30 hover:bg-white/5 focus-visible:outline-white";
 
   return (
-    <Link href={href} className={`${base} ${sizeClasses[size]} ${styles} ${className}`}>
+    <Link
+      href={href}
+      onClick={onClick}
+      className={`${base} ${sizeClasses[size]} ${styles} ${className}`}
+    >
       {children}
     </Link>
   );
