@@ -2,24 +2,30 @@
 
 import { useEffect } from "react";
 
+type ZohoSalesiqApi = {
+  mode?: string;
+  widgetcode?: string;
+  values?: Record<string, unknown>;
+  ready: ((callback?: () => void) => void) | (() => void);
+  floatwindow?: {
+    visible: (action: "show" | "hide" | string) => void;
+  };
+  floatbutton?: {
+    visible: (action: "show" | "hide" | string) => void;
+  };
+  chatwindow?: {
+    visible: (action: "show" | "hide" | string) => void;
+  };
+  chat?: {
+    start?: () => void;
+  };
+};
+
 declare global {
   interface Window {
     $zoho?: {
-      salesiq?: {
-        mode?: string;
-        widgetcode?: string;
-        values?: Record<string, unknown>;
-        ready: ((callback?: () => void) => void) | (() => void);
-        floatwindow?: {
-          visible: (action: "show" | "hide" | string) => void;
-        };
-        floatbutton?: {
-          visible: (action: "show" | "hide" | string) => void;
-        };
-        chatwindow?: {
-          visible: (action: "show" | "hide" | string) => void;
-        };
-      };
+      salesiq?: ZohoSalesiqApi;
+      livedesk?: ZohoSalesiqApi;
     };
   }
 }
@@ -95,8 +101,13 @@ export type ZohoLoadState = "idle" | "loading" | "ready" | "error";
 
 let loadState: ZohoLoadState = zohoSalesIQWidgetCode ? "loading" : "idle";
 let embedStarted = false;
+let zohoEmbedInitialized = false;
 const readyListeners = new Set<() => void>();
 const stateListeners = new Set<(state: ZohoLoadState) => void>();
+
+function getZohoSalesiq(): ZohoSalesiqApi | undefined {
+  return window.$zoho?.salesiq ?? window.$zoho?.livedesk;
+}
 
 function setLoadState(next: ZohoLoadState) {
   if (loadState === next) return;
@@ -132,11 +143,12 @@ export function whenZohoReady(listener: () => void) {
 }
 
 function hasZohoOpenApis(): boolean {
-  const salesiq = window.$zoho?.salesiq;
+  const salesiq = getZohoSalesiq();
   return (
     typeof salesiq?.floatwindow?.visible === "function" ||
     typeof salesiq?.floatbutton?.visible === "function" ||
-    typeof salesiq?.chatwindow?.visible === "function"
+    typeof salesiq?.chatwindow?.visible === "function" ||
+    typeof salesiq?.chat?.start === "function"
   );
 }
 
@@ -145,6 +157,18 @@ function hasZohoWidgetDom(): boolean {
     document.getElementById("zsiq_float") !== null ||
     document.getElementById("zsiqbtn") !== null ||
     document.getElementById("zsiq_chat") !== null
+  );
+}
+
+function isZohoChatWindowOpen(): boolean {
+  const chat = document.getElementById("zsiq_chat");
+  if (!chat) return false;
+
+  const style = window.getComputedStyle(chat);
+  return (
+    style.display !== "none" &&
+    style.visibility !== "hidden" &&
+    chat.getClientRects().length > 0
   );
 }
 
@@ -158,36 +182,77 @@ function widgetScriptUrl(config: ZohoEmbedConfig): string {
   return `https://${config.host}/widget?${param}=${encodeURIComponent(config.code)}`;
 }
 
-function clickZohoFloatButton(): boolean {
-  const selectors = ["#zsiqbtn", "#zsiq_float [role='button']", "#zsiq_float"];
-  for (const selector of selectors) {
-    const el = document.querySelector<HTMLElement>(selector);
-    if (el) {
-      el.click();
-      return true;
-    }
+function simulateClick(el: HTMLElement) {
+  el.focus?.();
+  for (const type of ["pointerdown", "mousedown", "pointerup", "mouseup", "click"]) {
+    el.dispatchEvent(
+      new MouseEvent(type, { bubbles: true, cancelable: true, view: window }),
+    );
   }
-  return false;
 }
 
-function showChatWidget(): boolean {
-  const salesiq = window.$zoho?.salesiq;
-  if (!salesiq) return clickZohoFloatButton();
+function clickZohoFloatButton(): boolean {
+  const selectors = [
+    "#zsiqbtn",
+    "#zsiq_float .zsiq_flt_rel",
+    "#zsiq_float [role='button']",
+    "#zsiq_float div[tabindex='0']",
+    "#zsiq_float > div:first-child",
+    "#zsiq_float",
+  ];
 
-  const open = () => {
-    salesiq.floatbutton?.visible?.("show");
-    salesiq.floatwindow?.visible?.("show");
-    salesiq.chatwindow?.visible?.("show");
-    clickZohoFloatButton();
-  };
+  let clicked = false;
+  for (const selector of selectors) {
+    const el = document.querySelector<HTMLElement>(selector);
+    if (!el) continue;
+    simulateClick(el);
+    clicked = true;
+  }
+  return clicked;
+}
 
-  if (hasZohoOpenApis()) {
-    open();
-    return true;
+function openViaZohoApis(): boolean {
+  const salesiq = getZohoSalesiq();
+  if (!salesiq) return false;
+
+  let opened = false;
+  salesiq.floatbutton?.visible?.("show");
+
+  if (typeof salesiq.floatwindow?.visible === "function") {
+    salesiq.floatwindow.visible("show");
+    opened = true;
+  }
+  if (typeof salesiq.chatwindow?.visible === "function") {
+    salesiq.chatwindow.visible("show");
+    opened = true;
+  }
+  if (typeof salesiq.chat?.start === "function") {
+    salesiq.chat.start();
+    opened = true;
   }
 
-  if (hasZohoWidgetDom()) {
-    return clickZohoFloatButton();
+  return opened;
+}
+
+/** Run inside Zoho's ready handler (required by their JS API docs). */
+function runInZohoReady(action: () => void) {
+  const salesiq = getZohoSalesiq();
+  if (!salesiq) {
+    clickZohoFloatButton();
+    return;
+  }
+
+  const execute = () => {
+    try {
+      action();
+    } catch {
+      clickZohoFloatButton();
+    }
+  };
+
+  if (zohoEmbedInitialized && hasZohoOpenApis()) {
+    execute();
+    return;
   }
 
   const priorReady = salesiq.ready;
@@ -195,10 +260,43 @@ function showChatWidget(): boolean {
     if (typeof priorReady === "function" && priorReady !== salesiq.ready) {
       (priorReady as (...inner: unknown[]) => void).apply(salesiq, args);
     }
-    open();
+    zohoEmbedInitialized = true;
+    execute();
   };
 
-  return clickZohoFloatButton();
+  execute();
+}
+
+function openZohoChatWindow() {
+  const tryOpen = () => {
+    runInZohoReady(() => {
+      const openedWithApi = openViaZohoApis();
+      if (!openedWithApi) {
+        clickZohoFloatButton();
+      }
+    });
+  };
+
+  tryOpen();
+
+  const started = Date.now();
+  const poll = () => {
+    if (isZohoChatWindowOpen()) return;
+
+    if (openViaZohoApis()) {
+      window.setTimeout(() => {
+        if (!isZohoChatWindowOpen()) clickZohoFloatButton();
+      }, 100);
+    } else {
+      clickZohoFloatButton();
+    }
+
+    if (Date.now() - started < 4000) {
+      window.setTimeout(poll, 250);
+    }
+  };
+
+  window.setTimeout(poll, 150);
 }
 
 function pollUntilReady(maxMs = 30000) {
@@ -245,6 +343,7 @@ function installZohoEmbed() {
     if (typeof priorReady === "function" && priorReady !== window.$zoho?.salesiq?.ready) {
       (priorReady as (...inner: unknown[]) => void).apply(window.$zoho?.salesiq, args);
     }
+    zohoEmbedInitialized = true;
     window.setTimeout(() => {
       if (isZohoWidgetReady()) setLoadState("ready");
     }, 0);
@@ -283,11 +382,11 @@ export function openZohoLiveChat(): boolean {
 
   if (loadState === "ready" || isZohoWidgetReady()) {
     setLoadState("ready");
-    showChatWidget();
+    openZohoChatWindow();
     return true;
   }
 
-  whenZohoReady(() => showChatWidget());
+  whenZohoReady(() => openZohoChatWindow());
   pollUntilReady();
   return true;
 }
