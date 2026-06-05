@@ -4,37 +4,37 @@ const features = [
   {
     title: "Optimized specially for family emails",
     description:
-      "An AI engine configured with specialized workflows to instantly recognize and prioritize child-related emails, school announcements, and youth activities.",
+      "An AI engine configured with specialized workflows for school and extracurriculars.",
     gradient: "from-primary via-primary/80 to-accent/30",
   },
   {
     title: "Smart email analysis & extraction",
     description:
-      "Instantly analyzes incoming messages to extract key dates, locations, and action items, cleanly categorizing them so nothing gets lost in the noise.",
+      "Extracts key dates, locations, and action items from messages so nothing gets lost.",
     gradient: "from-accent/40 via-primary to-success/20",
   },
   {
     title: "Automated task management & reminders",
     description:
-      "Instantly converts incoming emails into structured to-do lists, calendar events, and reference info cards with reminders that keep your household on track.",
+      "Converts emails into structured to-do lists, calendar events, and helpful reminders",
     gradient: "from-success/30 via-primary to-accent/20",
   },
   {
     title: "Family co-working hub",
     description:
-      "A unified digital workspace that enables parents and family members to collaborate, share the mental load, and coordinate logistics in real time.",
+      "A shared digital workspace for family members to coordinate logistics and share the mental load.",
     gradient: "from-primary to-background-elevated",
   },
   {
     title: "Intelligent auto-draft replies",
     description:
-      "Saves time with smart, context-aware email responses drafted automatically and ready for you to review and send with a single tap.",
+      "Automatically drafts context-aware email responses ready to send with a single tap.",
     gradient: "from-accent/25 via-primary to-primary",
   },
   {
     title: "Smart conflict detection",
     description:
-      "Scans family schedules in real time to instantly detect overlapping activities and time conflicts before they become scheduling nightmares.",
+      "Scans schedules in real time to catch overlapping activities before they cause issues.",
     gradient: "from-cta/20 via-primary to-accent/15",
   },
 ];
@@ -74,7 +74,7 @@ export function Features() {
         <div className="mx-auto text-center">
           <SectionHeader
             label="CORE FEATURES"
-            title="Purpose-built modules that turn family email into action—without a complicated dashboard."
+            title="Purpose-built modules that turn family email into action"
             titleId="features-heading"
           />
         </div>

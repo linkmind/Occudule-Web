@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { CtaButton } from "@/components/CtaButton";
 import { SectionHeader } from "@/components/SectionHeader";
 
 type PlanTier = "premium" | "diamond";
@@ -164,11 +163,6 @@ export function PricingSection() {
               <span className="text-lg text-white/50">{activeOption.period}</span>
             </p>
             <p className="mt-2 text-sm text-white/50">{activeOption.detail}</p>
-            <div className="mt-8">
-              <CtaButton href="/waitlist" size="lg" className="w-full sm:w-auto">
-                Join the waitlist
-              </CtaButton>
-            </div>
           </article>
         </div>
 

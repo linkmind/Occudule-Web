@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { CtaButton } from "@/components/CtaButton";
 import { SectionHeader } from "@/components/SectionHeader";
 
 type ContentNode = {
@@ -206,12 +205,6 @@ export function StepsSection() {
             </li>
           ))}
         </ol>
-
-        <div className="mt-12 text-center">
-          <CtaButton href="/waitlist" size="lg">
-            Join the waitlist
-          </CtaButton>
-        </div>
       </div>
     </section>
   );

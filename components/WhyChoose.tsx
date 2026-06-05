@@ -4,22 +4,22 @@ const pillars = [
   {
     label: "ONE HUB",
     title: "Everything in one centralized space",
-    body: "Forget the chaos of jumping between emails, calendars, notes, and reminders. Occudule replaces the old, scattered routine by handling your entire workflow in one beautiful, cohesive experience.",
+    body: "Replaces the chaos of scattered apps by handling your entire workflow in one cohesive experience.",
   },
   {
     label: "PRIVACY FIRST",
     title: "Built with a privacy-first mindset",
-    body: "We respect your personal data. Instead of storing your entire email history, Occudule extracts only the essential logistics and action items. Backed by strict internal management and full regulatory compliance.",
+    body: "Keeps your data safe by extracting only essential logistics instead of storing your full history.",
   },
   {
     label: "BY PARENTS",
     title: "Made by parents, for parents",
-    body: 'We lived the same chaotic routine you are experiencing. Engineered with deep empathy, Occudule was built with a single goal: to completely eliminate the mental burden of family logistics.',
+    body: 'Built with deep empathy by parents who lived the chaos, designed to eliminate your mental burden.',
   },
   {
     label: "SCHOOL READY",
     title: "Optimized specially for school & extracurriculars",
-    body: "Unlike generic AI tools, Occudule is purpose-built to navigate the unique nuances of school announcements, permission slips, sports leagues, and after-school programs.",
+    body: "Purpose-built to effortlessly handle the unique nuances of school schedules and extracurriculars.",
   },
 ];
 
