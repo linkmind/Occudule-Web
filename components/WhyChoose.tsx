@@ -4,22 +4,22 @@ const pillars = [
   {
     label: "ONE HUB",
     title: "Everything in one centralized space",
-    body: "Forget the old routine of opening an email, manually creating a calendar event, copying notes into a separate app, typing out reminders, and holding stressful family meetings to sync schedules. Occudule replaces the chaos, handling your entire workflow in one beautiful, cohesive experience.",
+    body: "Forget the chaos of jumping between emails, calendars, notes, and reminders. Occudule replaces the old, scattered routine by handling your entire workflow in one beautiful, cohesive experience.",
   },
   {
     label: "PRIVACY FIRST",
     title: "Built with a privacy-first mindset",
-    body: "We respect your personal data. To minimize data collection, Occudule extracts only the essential logistics and action items rather than storing your entire email history. Backed by strict internal data management policies, we ensure full compliance with modern data regulations to keep your information safe.",
+    body: "We respect your personal data. Instead of storing your entire email history, Occudule extracts only the essential logistics and action items. Backed by strict internal management and full regulatory compliance.",
   },
   {
     label: "BY PARENTS",
     title: "Made by parents, for parents",
-    body: 'We lived the exact same daily logistical chaos you are experiencing. Grounded in our core philosophy—"Made by parents, for parents"—we engineered Occudule with deep empathy and a singular goal: to eliminate the mental burden of family logistics.',
+    body: 'We lived the same chaotic routine you are experiencing. Engineered with deep empathy, Occudule was built with a single goal: to completely eliminate the mental burden of family logistics.',
   },
   {
     label: "SCHOOL READY",
     title: "Optimized specially for school & extracurriculars",
-    body: "Unlike generic AI tools, Occudule's specialized workflows are purpose-built to navigate the unique nuances of school announcements, permission slips, sports leagues, and after-school programs.",
+    body: "Unlike generic AI tools, Occudule is purpose-built to navigate the unique nuances of school announcements, permission slips, sports leagues, and after-school programs.",
   },
 ];
 
