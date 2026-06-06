@@ -102,6 +102,7 @@ export type ZohoLoadState = "idle" | "loading" | "ready" | "error";
 let loadState: ZohoLoadState = zohoSalesIQWidgetCode ? "loading" : "idle";
 let embedStarted = false;
 let zohoEmbedInitialized = false;
+let chatOpenRequestId = 0;
 const readyListeners = new Set<() => void>();
 const stateListeners = new Set<(state: ZohoLoadState) => void>();
 
@@ -192,111 +193,69 @@ function simulateClick(el: HTMLElement) {
 }
 
 function clickZohoFloatButton(): boolean {
-  const selectors = [
-    "#zsiqbtn",
-    "#zsiq_float .zsiq_flt_rel",
-    "#zsiq_float [role='button']",
-    "#zsiq_float div[tabindex='0']",
-    "#zsiq_float > div:first-child",
-    "#zsiq_float",
-  ];
+  const el =
+    document.querySelector<HTMLElement>("#zsiqbtn") ??
+    document.querySelector<HTMLElement>("#zsiq_float [role='button']") ??
+    document.querySelector<HTMLElement>("#zsiq_float > div:first-child");
 
-  let clicked = false;
-  for (const selector of selectors) {
-    const el = document.querySelector<HTMLElement>(selector);
-    if (!el) continue;
-    simulateClick(el);
-    clicked = true;
-  }
-  return clicked;
+  if (!el) return false;
+
+  simulateClick(el);
+  return true;
 }
 
-function openViaZohoApis(): boolean {
+function openViaZohoApi(): boolean {
   const salesiq = getZohoSalesiq();
   if (!salesiq) return false;
 
-  let opened = false;
-  salesiq.floatbutton?.visible?.("show");
-
   if (typeof salesiq.floatwindow?.visible === "function") {
     salesiq.floatwindow.visible("show");
-    opened = true;
+    return true;
   }
+
   if (typeof salesiq.chatwindow?.visible === "function") {
     salesiq.chatwindow.visible("show");
-    opened = true;
-  }
-  if (typeof salesiq.chat?.start === "function") {
-    salesiq.chat.start();
-    opened = true;
+    return true;
   }
 
-  return opened;
-}
-
-/** Run inside Zoho's ready handler (required by their JS API docs). */
-function runInZohoReady(action: () => void) {
-  const salesiq = getZohoSalesiq();
-  if (!salesiq) {
-    clickZohoFloatButton();
-    return;
-  }
-
-  const execute = () => {
-    try {
-      action();
-    } catch {
-      clickZohoFloatButton();
-    }
-  };
-
-  if (zohoEmbedInitialized && hasZohoOpenApis()) {
-    execute();
-    return;
-  }
-
-  const priorReady = salesiq.ready;
-  salesiq.ready = function (...args: unknown[]) {
-    if (typeof priorReady === "function" && priorReady !== salesiq.ready) {
-      (priorReady as (...inner: unknown[]) => void).apply(salesiq, args);
-    }
-    zohoEmbedInitialized = true;
-    execute();
-  };
-
-  execute();
+  return false;
 }
 
 function openZohoChatWindow() {
-  const tryOpen = () => {
-    runInZohoReady(() => {
-      const openedWithApi = openViaZohoApis();
-      if (!openedWithApi) {
-        clickZohoFloatButton();
-      }
-    });
+  if (isZohoChatWindowOpen()) return;
+
+  const requestId = ++chatOpenRequestId;
+
+  const tryOpenOnce = () => {
+    if (requestId !== chatOpenRequestId || isZohoChatWindowOpen()) return;
+
+    if (openViaZohoApi()) return;
+
+    clickZohoFloatButton();
   };
 
-  tryOpen();
-
-  const started = Date.now();
-  const poll = () => {
-    if (isZohoChatWindowOpen()) return;
-
-    if (openViaZohoApis()) {
-      window.setTimeout(() => {
-        if (!isZohoChatWindowOpen()) clickZohoFloatButton();
-      }, 100);
+  if (zohoEmbedInitialized) {
+    tryOpenOnce();
+  } else {
+    const salesiq = getZohoSalesiq();
+    if (salesiq) {
+      const priorReady = salesiq.ready;
+      salesiq.ready = function (...args: unknown[]) {
+        if (typeof priorReady === "function" && priorReady !== salesiq.ready) {
+          (priorReady as (...inner: unknown[]) => void).apply(salesiq, args);
+        }
+        zohoEmbedInitialized = true;
+        tryOpenOnce();
+      };
     } else {
-      clickZohoFloatButton();
+      tryOpenOnce();
     }
+  }
 
-    if (Date.now() - started < 4000) {
-      window.setTimeout(poll, 250);
-    }
-  };
-
-  window.setTimeout(poll, 150);
+  window.setTimeout(() => {
+    if (requestId !== chatOpenRequestId || isZohoChatWindowOpen()) return;
+    clickZohoFloatButton();
+  }, 350);
 }
 
 function pollUntilReady(maxMs = 30000) {
