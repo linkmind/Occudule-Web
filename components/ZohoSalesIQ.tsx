@@ -229,6 +229,7 @@ function openZohoChatWindow() {
   const tryOpenOnce = () => {
     if (requestId !== chatOpenRequestId || isZohoChatWindowOpen()) return;
 
+    // Prefer the API — clicking the float button toggles open/closed.
     if (openViaZohoApi()) return;
 
     clickZohoFloatButton();
@@ -251,11 +252,6 @@ function openZohoChatWindow() {
       tryOpenOnce();
     }
   }
-
-  window.setTimeout(() => {
-    if (requestId !== chatOpenRequestId || isZohoChatWindowOpen()) return;
-    clickZohoFloatButton();
-  }, 350);
 }
 
 function pollUntilReady(maxMs = 30000) {
