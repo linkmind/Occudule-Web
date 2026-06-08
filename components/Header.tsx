@@ -133,62 +133,54 @@ export function Header() {
             </CtaButton>
           </div>
 
-          <button
-            type="button"
-            className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-white/15 text-white transition hover:border-white/30 hover:bg-white/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent lg:hidden"
-            aria-expanded={menuOpen}
-            aria-controls={menuId}
-            aria-label={menuOpen ? "Close menu" : "Open menu"}
-            onClick={() => setMenuOpen((open) => !open)}
-          >
-            <MenuIcon open={menuOpen} />
-          </button>
+          <div className="relative lg:hidden">
+            <button
+              type="button"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-white/15 text-white transition hover:border-white/30 hover:bg-white/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+              aria-expanded={menuOpen}
+              aria-controls={menuId}
+              aria-label={menuOpen ? "Close menu" : "Open menu"}
+              onClick={() => setMenuOpen((open) => !open)}
+            >
+              <MenuIcon open={menuOpen} />
+            </button>
+
+            {menuOpen ? (
+              <button
+                type="button"
+                className="fixed inset-0 top-[65px] z-40 bg-black/50"
+                aria-label="Close menu"
+                onClick={closeMenu}
+              />
+            ) : null}
+
+            <nav
+              id={menuId}
+              className={`absolute right-0 top-[calc(100%+0.5rem)] z-50 w-56 rounded-xl border border-white/15 bg-background-card py-2 shadow-[0_16px_40px_rgba(0,0,0,0.5)] transition-[opacity,transform] duration-200 ease-out ${
+                menuOpen
+                  ? "pointer-events-auto translate-y-0 opacity-100"
+                  : "pointer-events-none -translate-y-1 opacity-0"
+              }`}
+              aria-label="Mobile primary"
+              aria-hidden={!menuOpen}
+            >
+              <ul className="flex flex-col gap-0.5 px-2">
+                {navLinks.map((link) => (
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      className="block rounded-lg px-3 py-2.5 text-sm font-medium text-white transition hover:bg-white/10"
+                      onClick={closeMenu}
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </div>
         </div>
       </div>
-
-      {menuOpen ? (
-        <button
-          type="button"
-          className="fixed inset-0 top-[65px] z-40 bg-black/50 lg:hidden"
-          aria-label="Close menu"
-          onClick={closeMenu}
-        />
-      ) : null}
-
-      <nav
-        id={menuId}
-        className={`absolute left-0 right-0 top-full z-50 border-b border-white/10 bg-background/95 backdrop-blur-xl transition-[opacity,transform] duration-200 ease-out lg:hidden ${
-          menuOpen
-            ? "pointer-events-auto translate-y-0 opacity-100"
-            : "pointer-events-none -translate-y-2 opacity-0"
-        }`}
-        aria-label="Mobile primary"
-        aria-hidden={!menuOpen}
-      >
-        <ul className="mx-auto flex max-w-content flex-col gap-1 px-gutter py-4">
-          {navLinks.map((link) => (
-            <li key={link.href}>
-              <Link
-                href={link.href}
-                className="block rounded-lg px-3 py-3 text-base font-medium text-white/80 transition hover:bg-white/5 hover:text-white"
-                onClick={closeMenu}
-              >
-                {link.label}
-              </Link>
-            </li>
-          ))}
-          <li className="mt-2 border-t border-white/10 pt-4">
-            <CtaButton
-              href="/waitlist"
-              size="md"
-              className="w-full justify-center"
-              onClick={closeMenu}
-            >
-              Join the Waitlist
-            </CtaButton>
-          </li>
-        </ul>
-      </nav>
     </header>
   );
 }
