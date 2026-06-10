@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { GmailSetupDemo } from "@/components/GmailSetupDemo";
 import { SectionHeader } from "@/components/SectionHeader";
 
 type ContentNode = {
@@ -65,33 +66,39 @@ const steps: Step[] = [
   },
 ];
 
-function ProviderCards() {
+function ProviderCopy({ title, body }: ContentNode) {
   return (
-    <div className="grid gap-3 sm:grid-cols-2">
-      <article className="glass-card p-5">
+    <div className="min-w-0 flex-1 text-left">
+      <h4 className="text-sm font-semibold text-white/90">{title}</h4>
+      <p className="mt-1.5 text-sm leading-snug text-white/55">{body}</p>
+    </div>
+  );
+}
+
+function MicrosoftProviderCard({ title, body }: ContentNode) {
+  return (
+    <article className="flex w-full items-center gap-3 rounded-xl border border-white/10 bg-white/[0.04] px-3 py-2.5 sm:px-4 sm:py-3">
+      <ProviderCopy title={title} body={body} />
+      <span className="relative flex aspect-[9/19.5] w-[96px] shrink-0 items-center justify-center overflow-hidden rounded-lg sm:w-[108px]">
         <Image
           src="/microsoft-logo.png"
           alt="Microsoft"
           width={120}
-          height={24}
-          className="h-6 w-auto object-contain object-left brightness-0 invert"
+          height={120}
+          className="h-8 w-auto object-contain brightness-0 invert sm:h-9"
         />
-        <p className="mt-4 text-sm leading-relaxed text-white/60">
-          Outlook, Live, MSN, and Hotmail—connect once for automatic scanning and analysis.
-        </p>
-      </article>
-      <article className="glass-card p-5">
-        <Image
-          src="/google-logo.png"
-          alt="Google"
-          width={96}
-          height={32}
-          className="h-8 w-auto object-contain object-left"
-        />
-        <p className="mt-4 text-sm leading-relaxed text-white/60">
-          Add your Occudule forwarding address and forward child-related emails with a single tap.
-        </p>
-      </article>
+      </span>
+    </article>
+  );
+}
+
+function ConnectProviderVisual({ nodes }: { nodes: ContentNode[] }) {
+  const [microsoft, gmail] = nodes;
+
+  return (
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6">
+      <MicrosoftProviderCard title={microsoft.title} body={microsoft.body} />
+      <GmailSetupDemo layout="full" title={gmail.title} body={gmail.body} />
     </div>
   );
 }
@@ -153,7 +160,6 @@ function ExecutionVisual() {
 }
 
 function StepVisual({ variant }: { variant: Step["visual"] }) {
-  if (variant === "providers") return <ProviderCards />;
   if (variant === "processing") return <ProcessingVisual />;
   return <ExecutionVisual />;
 }
@@ -179,29 +185,43 @@ export function StepsSection() {
         <ol className="relative mt-8 space-y-6 md:mt-0 md:space-y-8">
           {steps.map((s) => (
             <li key={s.step}>
-              <article className="glass-card overflow-hidden lg:grid lg:grid-cols-[1fr,minmax(280px,38%)] lg:gap-0">
-                <div className="border-b border-white/10 p-6 md:p-8 lg:border-b-0 lg:border-r">
-                  <div className="flex items-start justify-between gap-4">
+              {s.visual === "providers" ? (
+                <article className="glass-card overflow-hidden">
+                  <div className="p-6 md:p-8">
                     <p className="text-xs font-medium tracking-wide text-white/45">
                       [ {s.step} ]
                     </p>
+                    <h3 className="mt-4 text-xl font-semibold tracking-tight text-white md:text-2xl">
+                      {s.title}
+                    </h3>
                   </div>
-                  <h3 className="mt-4 text-xl font-semibold tracking-tight text-white md:text-2xl">
-                    {s.title}
-                  </h3>
-                  <ul className="mt-6 space-y-5">
-                    {s.nodes.map((node) => (
-                      <li key={node.title}>
-                        <h4 className="text-sm font-semibold text-white/90">{node.title}</h4>
-                        <p className="mt-2 text-sm leading-relaxed text-white/55">{node.body}</p>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                <div className="bg-background-card/50 p-6 md:p-8">
-                  <StepVisual variant={s.visual} />
-                </div>
-              </article>
+                  <div className="border-t border-white/10 bg-background-card/50 p-6 md:p-8">
+                    <ConnectProviderVisual nodes={s.nodes} />
+                  </div>
+                </article>
+              ) : (
+                <article className="glass-card overflow-hidden lg:grid lg:grid-cols-[1fr,minmax(280px,38%)] lg:gap-0">
+                  <div className="border-b border-white/10 p-6 md:p-8 lg:border-b-0 lg:border-r">
+                    <p className="text-xs font-medium tracking-wide text-white/45">
+                      [ {s.step} ]
+                    </p>
+                    <h3 className="mt-4 text-xl font-semibold tracking-tight text-white md:text-2xl">
+                      {s.title}
+                    </h3>
+                    <ul className="mt-6 space-y-5">
+                      {s.nodes.map((node) => (
+                        <li key={node.title}>
+                          <h4 className="text-sm font-semibold text-white/90">{node.title}</h4>
+                          <p className="mt-2 text-sm leading-relaxed text-white/55">{node.body}</p>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div className="bg-background-card/50 p-6 md:p-8">
+                    <StepVisual variant={s.visual} />
+                  </div>
+                </article>
+              )}
             </li>
           ))}
         </ol>
