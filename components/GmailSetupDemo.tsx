@@ -254,24 +254,21 @@ export function GmailSetupDemo({
                     </button>
                   </div>
 
-                  <div className="flex flex-wrap items-center justify-between gap-3 border-t border-white/10 px-5 py-3">
-                    <div className="flex items-center gap-2">
-                      {GMAIL_DEMO_IMAGES.map((image, dotIndex) => (
-                        <button
-                          key={image.src}
-                          type="button"
-                          onClick={() => goTo(dotIndex)}
-                          className={`h-2 rounded-full transition ${
-                            dotIndex === index
-                              ? "w-6 bg-accent"
-                              : "w-2 bg-white/25 hover:bg-white/45"
-                          }`}
-                          aria-label={`Go to step ${dotIndex + 1}`}
-                          aria-current={dotIndex === index ? "step" : undefined}
-                        />
-                      ))}
-                    </div>
-                    <p className="text-xs text-white/45">Microsoft account demo coming soon</p>
+                  <div className="flex items-center justify-center gap-2 border-t border-white/10 px-5 py-3">
+                    {GMAIL_DEMO_IMAGES.map((image, dotIndex) => (
+                      <button
+                        key={image.src}
+                        type="button"
+                        onClick={() => goTo(dotIndex)}
+                        className={`h-2 rounded-full transition ${
+                          dotIndex === index
+                            ? "w-6 bg-accent"
+                            : "w-2 bg-white/25 hover:bg-white/45"
+                        }`}
+                        aria-label={`Go to step ${dotIndex + 1}`}
+                        aria-current={dotIndex === index ? "step" : undefined}
+                      />
+                    ))}
                   </div>
                 </div>
               </div>
