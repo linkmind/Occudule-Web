@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { GmailSetupDemo } from "@/components/GmailSetupDemo";
+import { ProcessingDemo } from "@/components/ProcessingDemo";
 import { SectionHeader } from "@/components/SectionHeader";
 
 type ContentNode = {
@@ -103,37 +104,6 @@ function ConnectProviderVisual({ nodes }: { nodes: ContentNode[] }) {
   );
 }
 
-function ProcessingVisual() {
-  return (
-    <div className="glass-card p-5" aria-hidden>
-      <p className="text-xs font-medium tracking-wide text-white/45">[ DUAL STREAMS ]</p>
-      <div className="mt-4 grid gap-3 sm:grid-cols-2">
-        {[
-          { label: "Events", tone: "from-accent/50 to-accent" },
-          { label: "Info", tone: "from-success/50 to-success" },
-        ].map((stream) => (
-          <div key={stream.label} className="rounded-lg border border-white/10 bg-white/5 p-3">
-            <p className="text-sm font-semibold text-white">{stream.label}</p>
-            <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-white/10">
-              <div className={`h-full w-3/4 rounded-full bg-gradient-to-r ${stream.tone}`} />
-            </div>
-          </div>
-        ))}
-      </div>
-      <div className="mt-4 flex flex-wrap gap-2">
-        {["To-do", "Calendar", "Info card", "Draft reply"].map((tag) => (
-          <span
-            key={tag}
-            className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-xs text-white/70"
-          >
-            {tag}
-          </span>
-        ))}
-      </div>
-    </div>
-  );
-}
-
 function ExecutionVisual() {
   return (
     <div className="glass-card p-5" aria-hidden>
@@ -159,8 +129,7 @@ function ExecutionVisual() {
   );
 }
 
-function StepVisual({ variant }: { variant: Step["visual"] }) {
-  if (variant === "processing") return <ProcessingVisual />;
+function StepVisual() {
   return <ExecutionVisual />;
 }
 
@@ -199,6 +168,28 @@ export function StepsSection() {
                     <ConnectProviderVisual nodes={s.nodes} />
                   </div>
                 </article>
+              ) : s.visual === "processing" ? (
+                <article className="glass-card overflow-hidden lg:grid lg:grid-cols-[1fr,auto] lg:items-center lg:gap-0">
+                  <div className="border-b border-white/10 p-6 md:p-8 lg:border-b-0 lg:border-r">
+                    <p className="text-xs font-medium tracking-wide text-white/45">
+                      [ {s.step} ]
+                    </p>
+                    <h3 className="mt-4 text-xl font-semibold tracking-tight text-white md:text-2xl">
+                      {s.title}
+                    </h3>
+                    <ul className="mt-5 space-y-4">
+                      {s.nodes.map((node) => (
+                        <li key={node.title}>
+                          <h4 className="text-sm font-semibold text-white/90">{node.title}</h4>
+                          <p className="mt-1.5 text-sm leading-snug text-white/55">{node.body}</p>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div className="flex justify-center bg-background-card/50 p-4 sm:p-5">
+                    <ProcessingDemo />
+                  </div>
+                </article>
               ) : (
                 <article className="glass-card overflow-hidden lg:grid lg:grid-cols-[1fr,minmax(280px,38%)] lg:gap-0">
                   <div className="border-b border-white/10 p-6 md:p-8 lg:border-b-0 lg:border-r">
@@ -218,7 +209,7 @@ export function StepsSection() {
                     </ul>
                   </div>
                   <div className="bg-background-card/50 p-6 md:p-8">
-                    <StepVisual variant={s.visual} />
+                    <StepVisual />
                   </div>
                 </article>
               )}
