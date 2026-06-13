@@ -1,6 +1,8 @@
+import { FamilyHubDemo } from "@/components/FamilyHubDemo";
 import { GmailSetupDemo } from "@/components/GmailSetupDemo";
 import { MicrosoftSetupDemo } from "@/components/MicrosoftSetupDemo";
 import { ProcessingDemo } from "@/components/ProcessingDemo";
+import { RemindersDemo } from "@/components/RemindersDemo";
 import { SectionHeader } from "@/components/SectionHeader";
 
 type ContentNode = {
@@ -78,33 +80,15 @@ function ConnectProviderVisual({ nodes }: { nodes: ContentNode[] }) {
   );
 }
 
-function ExecutionVisual() {
+function ExecutionVisual({ nodes }: { nodes: ContentNode[] }) {
+  const [reminders, familyHub] = nodes;
+
   return (
-    <div className="glass-card p-5" aria-hidden>
-      <div className="flex items-center justify-between text-xs text-white/50">
-        <span>Family hub</span>
-        <span className="rounded-full border border-cta/30 bg-cta/10 px-2 py-0.5 text-cta">
-          Reminder · 2 days
-        </span>
-      </div>
-      <ul className="mt-4 space-y-2">
-        {[
-          { title: "Soccer practice", meta: "Thu · 4:30 PM" },
-          { title: "Permission slip due", meta: "Fri · Science trip" },
-          { title: "Piano recital", meta: "Sat · 2:00 PM" },
-        ].map((item) => (
-          <li key={item.title} className="rounded-lg border border-white/10 bg-white/5 px-3 py-2">
-            <p className="text-sm font-medium text-white">{item.title}</p>
-            <p className="text-xs text-white/50">{item.meta}</p>
-          </li>
-        ))}
-      </ul>
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6">
+      <RemindersDemo layout="full" title={reminders.title} body={reminders.body} />
+      <FamilyHubDemo layout="full" title={familyHub.title} body={familyHub.body} />
     </div>
   );
-}
-
-function StepVisual() {
-  return <ExecutionVisual />;
 }
 
 export function StepsSection() {
@@ -165,25 +149,17 @@ export function StepsSection() {
                   </div>
                 </article>
               ) : (
-                <article className="glass-card overflow-hidden lg:grid lg:grid-cols-[1fr,minmax(280px,38%)] lg:gap-0">
-                  <div className="border-b border-white/10 p-6 md:p-8 lg:border-b-0 lg:border-r">
+                <article className="glass-card overflow-hidden">
+                  <div className="p-6 md:p-8">
                     <p className="text-xs font-medium tracking-wide text-white/45">
                       [ {s.step} ]
                     </p>
                     <h3 className="mt-4 text-xl font-semibold tracking-tight text-white md:text-2xl">
                       {s.title}
                     </h3>
-                    <ul className="mt-6 space-y-5">
-                      {s.nodes.map((node) => (
-                        <li key={node.title}>
-                          <h4 className="text-sm font-semibold text-white/90">{node.title}</h4>
-                          <p className="mt-2 text-sm leading-relaxed text-white/55">{node.body}</p>
-                        </li>
-                      ))}
-                    </ul>
                   </div>
-                  <div className="bg-background-card/50 p-6 md:p-8">
-                    <StepVisual />
+                  <div className="border-t border-white/10 bg-background-card/50 p-6 md:p-8">
+                    <ExecutionVisual nodes={s.nodes} />
                   </div>
                 </article>
               )}
