@@ -1,5 +1,5 @@
-import Image from "next/image";
 import { GmailSetupDemo } from "@/components/GmailSetupDemo";
+import { MicrosoftSetupDemo } from "@/components/MicrosoftSetupDemo";
 import { ProcessingDemo } from "@/components/ProcessingDemo";
 import { SectionHeader } from "@/components/SectionHeader";
 
@@ -67,38 +67,12 @@ const steps: Step[] = [
   },
 ];
 
-function ProviderCopy({ title, body }: ContentNode) {
-  return (
-    <div className="min-w-0 flex-1 text-left">
-      <h4 className="text-sm font-semibold text-white/90">{title}</h4>
-      <p className="mt-1.5 text-sm leading-snug text-white/55">{body}</p>
-    </div>
-  );
-}
-
-function MicrosoftProviderCard({ title, body }: ContentNode) {
-  return (
-    <article className="flex w-full items-center gap-3 rounded-xl border border-white/10 bg-white/[0.04] px-3 py-2.5 sm:px-4 sm:py-3">
-      <ProviderCopy title={title} body={body} />
-      <span className="relative flex aspect-[9/19.5] w-[96px] shrink-0 items-center justify-center overflow-hidden rounded-lg sm:w-[108px]">
-        <Image
-          src="/microsoft-logo.png"
-          alt="Microsoft"
-          width={120}
-          height={120}
-          className="h-8 w-auto object-contain brightness-0 invert sm:h-9"
-        />
-      </span>
-    </article>
-  );
-}
-
 function ConnectProviderVisual({ nodes }: { nodes: ContentNode[] }) {
   const [microsoft, gmail] = nodes;
 
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6">
-      <MicrosoftProviderCard title={microsoft.title} body={microsoft.body} />
+      <MicrosoftSetupDemo layout="full" title={microsoft.title} body={microsoft.body} />
       <GmailSetupDemo layout="full" title={gmail.title} body={gmail.body} />
     </div>
   );
