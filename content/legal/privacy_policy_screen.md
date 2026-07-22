@@ -1,6 +1,6 @@
 # Privacy Policy
 
-**Last Updated: April 26, 2026**
+**Last Updated: July 22, 2026**
 
 ---
 
@@ -68,7 +68,7 @@ If you paste or describe information about children in chat, you do so at your o
 
 We use the information we collect for the following purposes:
 
-- **AI extraction:** To summarize school-related emails and help create calendar events (including from mail you **forward** into Occudule or from **connected** mailboxes, as described in the app). Where the app requires it, we ask you to **confirm** before a new event is added.
+- **AI extraction:** To summarize school-related emails and help create calendar events (including from mail you **forward** into Occudule or from **connected** mailboxes, as described in the app). Where the app requires it, we ask you to **confirm** before a new event is added. These AI features are provided through **OpenAI’s API** (for example, classification, extraction, summarization, translation, and optional draft replies). We send only the email content and related fields needed for that in-product processing. We do **not** use your data—or allow it to be used—to create, train, or improve foundational or generalized AI/ML models. Under OpenAI’s API terms, API inputs and outputs are not used by OpenAI to train or improve their models by default, and we do not opt in to any OpenAI data-sharing or training programs.
 - **Event management:** To detect scheduling conflicts between your children's activities.
 - **Notifications & alerts:** To send reminders and notifications about upcoming school deadlines and events.
 - **Rule matching:** To compare incoming mail (including forwarded mail and synced mail, depending on the feature) against domains and allowlists **you** entered in child profile settings.
@@ -76,6 +76,12 @@ We use the information we collect for the following purposes:
 - **Customer support:** To respond when you contact us, including through optional **live chat** operated by **Zoho SalesIQ** as described above.
 
 We do **not** sell your personal information. We do **not** use your email content for third-party advertising profiling.
+
+### Google Workspace APIs and Limited Use
+
+If you connect a Google account, Occudule may use Google Workspace APIs (such as Contacts and Calendar) only to provide the features you enable in the app (for example, creating a forwarding contact and calendar free/busy or event sync). **The use of raw or derived user data received from Google Workspace APIs will adhere to the Google User Data Policy, including the Limited Use requirements.**
+
+We do **not** transfer Google Workspace API user data (raw, aggregated, or derived) to OpenAI or any other third-party AI/ML service for model training or secondary purposes. Calendar and Contacts data obtained via Google APIs is used only to operate Occudule’s scheduling and contact features within our application and Google Calendar sync. We do **not** use Google user data to create, train, or improve foundational or generalized AI/ML models.
 
 ---
 
@@ -94,7 +100,7 @@ We do not sell, trade, or rent your personal information. We may share data only
 
 | Scenario | Details |
 |---|---|
-| **Service providers** | Trusted third-party providers who are contractually bound to keep your data confidential, including for example **cloud hosting**, **Apple** and **Google** (in-app purchases, sign-in, and platform services), **Microsoft** (Outlook / Microsoft 365 where you connect it), **RevenueCat** (subscription status and entitlement management), **Google (Firebase / Crashlytics)** when you opt in to crash reporting, **Zoho Corporation (Zoho SalesIQ / Mobilisten)** when you use in-app live chat, and a **provider we use to receive inbound email** when you forward messages to Occudule |
+| **Service providers** | Trusted third-party providers who are contractually bound to keep your data confidential, including for example **cloud hosting**, **Apple** and **Google** (in-app purchases, sign-in, and platform services), **Microsoft** (Outlook / Microsoft 365 where you connect it), **OpenAI** (AI classification, extraction, summarization, translation, and optional draft replies, as described in Section 3), **RevenueCat** (subscription status and entitlement management), **Google (Firebase / Crashlytics)** when you opt in to crash reporting, **Zoho Corporation (Zoho SalesIQ / Mobilisten)** when you use in-app live chat, and a **provider we use to receive inbound email** when you forward messages to Occudule |
 | **Legal requirements** | If required by law, court order, or governmental authority |
 | **Account deletion** | Upon account deletion, personal data is removed from our active systems per our retention policy |
 
