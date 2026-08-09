@@ -34,15 +34,15 @@ const planPricing = {
     name: "Premium",
     tagline: "Perfect for growing families",
     yearly: {
-      price: "$69.99",
+      price: "$39.99",
       period: "/yr",
-      detail: "Billed at $69.99/yr",
+      detail: "Billed at $39.99/yr",
       saveBadge: null,
     },
     monthly: {
-      price: "$6.99",
+      price: "$3.99",
       period: "/mo",
-      detail: "Only $6.99/mo",
+      detail: "Only $3.99/mo",
       saveBadge: null,
     },
   },
@@ -51,15 +51,15 @@ const planPricing = {
     name: "Diamond",
     tagline: "Perfect for busy households",
     yearly: {
-      price: "$89.99",
+      price: "$59.99",
       period: "/yr",
-      detail: "Only $7.49/mo",
-      saveBadge: "SAVE 19%",
+      detail: "Only $5.00/mo",
+      saveBadge: "SAVE 17%",
     },
     monthly: {
-      price: "$8.99",
+      price: "$5.99",
       period: "/mo",
-      detail: "Billed at $8.99/mo",
+      detail: "Billed at $5.99/mo",
       saveBadge: null,
     },
   },
@@ -141,7 +141,7 @@ export function PricingSection() {
             >
               {period}
               {period === "yearly" && tier === "diamond" ? (
-                <span className="ml-1 text-xs text-success">-15%</span>
+                <span className="ml-1 text-xs text-success">-17%</span>
               ) : null}
             </button>
           ))}

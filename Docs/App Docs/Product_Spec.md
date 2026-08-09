@@ -77,7 +77,7 @@ Limits:
 
 ---
 
-## Premium Plan — $6.99/month (or $69.99/year)
+## Premium Plan — $3.99/month (or $39.99/year)
 
 Includes **all Free plan features**, plus:
 
@@ -95,7 +95,7 @@ Includes **all Free plan features**, plus:
 
 ---
 
-## Diamond Plan — $8.99/month (or $89.99/year)
+## Diamond Plan — $5.99/month (or $59.99/year)
 
 Includes **all Premium plan features**, plus:
 

@@ -76,8 +76,8 @@ CREATE TABLE subscriptions (
 | Plan | Price | Max Emails/mo | Max Children | Max Institutions/child | Conflict Detection | Auto Reply | Action detection |
 |---|---|---|---|---|---|---|---|
 | FREE | $0 | 8 | 1 | 1 | ❌ | ❌ | ✅ |
-| PREMIUM | $6.99 | Unlimited (-1) | 2 | 3 | ✅ | ❌ | ✅ |
-| DIAMOND | $8.99 | Unlimited (-1) | 4 | 6 | ✅ | ✅ | ✅ |
+| PREMIUM | $3.99/mo · $39.99/yr | Unlimited (-1) | 2 | 3 | ✅ | ❌ | ✅ |
+| DIAMOND | $5.99/mo · $59.99/yr | Unlimited (-1) | 4 | 6 | ✅ | ✅ | ✅ |
 
 ---
 
