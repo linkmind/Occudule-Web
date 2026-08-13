@@ -6,6 +6,9 @@ import { isValidEmail } from "@/lib/validate-email";
 
 type FormStatus = "idle" | "loading" | "success" | "error";
 
+const inputClassName =
+  "mt-2 w-full rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-white outline-none transition placeholder:text-white/35 focus:border-accent/40 focus:ring-2 focus:ring-accent/20 disabled:opacity-60";
+
 export function WaitlistForm() {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
@@ -63,19 +66,19 @@ export function WaitlistForm() {
   if (status === "success") {
     return (
       <div
-        className="rounded-card border border-success/30 bg-success/5 p-8 text-center"
+        className="glass-card border-success/30 bg-success/10 p-8 text-center"
         role="status"
         aria-live="polite"
       >
-        <p className="text-lg font-semibold text-primary">You&apos;re on the list!</p>
-        <p className="mt-3 text-sm leading-relaxed text-primary/75">
+        <p className="text-lg font-semibold text-white">You&apos;re on the list!</p>
+        <p className="mt-3 text-sm leading-relaxed text-white/60">
           Thanks for joining. We&apos;ll reach out at{" "}
-          <span className="font-medium text-primary">{submittedEmail}</span> when early access
+          <span className="font-medium text-white">{submittedEmail}</span> when early access
           opens—usually with founding-member pricing and a short onboarding guide.
         </p>
         <Link
           href="/"
-          className="mt-6 inline-block text-sm font-medium text-primary underline decoration-primary/30 underline-offset-2 hover:decoration-primary"
+          className="mt-6 inline-block text-sm font-medium text-accent underline decoration-accent/30 underline-offset-2 transition hover:text-white hover:decoration-white/50"
         >
           Back to home
         </Link>
@@ -84,18 +87,20 @@ export function WaitlistForm() {
   }
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="rounded-card border border-border bg-surface p-6 shadow-card md:p-8"
-      noValidate
-    >
+    <form onSubmit={handleSubmit} className="glass-card p-6 md:p-8" noValidate>
+      <p className="text-xs font-medium tracking-wide text-white/45">[ JOIN THE WAITLIST ]</p>
+      <h2 className="mt-3 text-xl font-semibold tracking-tight text-white">Save your spot</h2>
+      <p className="mt-2 text-sm text-white/55">
+        We&apos;ll email you when early access opens.
+      </p>
+
       <div className="sr-only" aria-hidden>
         <label htmlFor="website">Website</label>
         <input id="website" name="website" type="text" tabIndex={-1} autoComplete="off" />
       </div>
 
-      <div>
-        <label htmlFor="waitlist-email" className="block text-sm font-medium text-primary">
+      <div className="mt-6">
+        <label htmlFor="waitlist-email" className="block text-sm font-medium text-white/80">
           Email address <span className="text-cta">*</span>
         </label>
         <input
@@ -108,14 +113,14 @@ export function WaitlistForm() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="you@example.com"
-          className="mt-2 w-full rounded-lg border border-border bg-surface px-4 py-3 text-primary outline-none transition placeholder:text-primary/40 focus:border-primary/30 focus:ring-2 focus:ring-accent/40"
+          className={inputClassName}
           disabled={status === "loading"}
         />
       </div>
 
       <div className="mt-5">
-        <label htmlFor="waitlist-name" className="block text-sm font-medium text-primary">
-          First name <span className="font-normal text-primary/50">(optional)</span>
+        <label htmlFor="waitlist-name" className="block text-sm font-medium text-white/80">
+          First name <span className="font-normal text-white/45">(optional)</span>
         </label>
         <input
           id="waitlist-name"
@@ -125,7 +130,7 @@ export function WaitlistForm() {
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="Alex"
-          className="mt-2 w-full rounded-lg border border-border bg-surface px-4 py-3 text-primary outline-none transition placeholder:text-primary/40 focus:border-primary/30 focus:ring-2 focus:ring-accent/40"
+          className={inputClassName}
           disabled={status === "loading"}
         />
       </div>
@@ -135,7 +140,7 @@ export function WaitlistForm() {
           {errorMessage}{" "}
           <a
             href="mailto:support@occudule.com?subject=Occudule%20waitlist"
-            className="font-medium underline underline-offset-2"
+            className="font-medium text-white underline underline-offset-2 hover:text-accent"
           >
             Email us instead
           </a>
@@ -150,9 +155,12 @@ export function WaitlistForm() {
         {status === "loading" ? "Joining…" : "Join the waitlist"}
       </button>
 
-      <p className="mt-4 text-xs leading-relaxed text-primary/55">
+      <p className="mt-4 text-xs leading-relaxed text-white/45">
         No spam—just launch updates and early access. By joining, you agree to our{" "}
-        <Link href="/privacy" className="underline underline-offset-2 hover:text-primary">
+        <Link
+          href="/privacy"
+          className="text-white/60 underline underline-offset-2 transition hover:text-accent"
+        >
           Privacy Policy
         </Link>
         . You can unsubscribe anytime.
