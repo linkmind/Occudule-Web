@@ -5,9 +5,12 @@ import { Header } from "@/components/Header";
 
 type ContentPageShellProps = {
   sectionLabel: string;
-  title: string;
+  title?: string;
   description?: string;
   children?: ReactNode;
+  after?: ReactNode;
+  backHref?: string;
+  backLabel?: string;
 };
 
 export function ContentPageShell({
@@ -15,7 +18,12 @@ export function ContentPageShell({
   title,
   description,
   children,
+  after,
+  backHref = "/",
+  backLabel = "← Back to home",
 }: ContentPageShellProps) {
+  const showIntroCard = Boolean(title || description || children);
+
   return (
     <>
       <Header />
@@ -28,10 +36,10 @@ export function ContentPageShell({
           />
           <div className="relative mx-auto max-w-content px-gutter pb-10 pt-8 md:pb-12">
             <Link
-              href="/"
+              href={backHref}
               className="text-sm font-medium text-white/50 transition hover:text-white"
             >
-              ← Back to home
+              {backLabel}
             </Link>
             <p className="mx-auto mt-10 max-w-3xl text-center text-xs font-medium tracking-wide text-white/45">
               [ {sectionLabel} ]
@@ -45,18 +53,33 @@ export function ContentPageShell({
         >
           <div className="mesh-overlay opacity-40" aria-hidden />
           <div className="relative mx-auto max-w-3xl px-gutter">
-            <div className="glass-card p-6 md:p-10">
-              <h1
-                id="content-page-heading"
-                className="text-gradient text-3xl font-semibold tracking-tight md:text-4xl"
-              >
-                {title}
+            {showIntroCard ? (
+              <div className="glass-card p-6 md:p-10">
+                {title ? (
+                  <h1
+                    id="content-page-heading"
+                    className="text-gradient text-3xl font-semibold tracking-tight md:text-4xl"
+                  >
+                    {title}
+                  </h1>
+                ) : (
+                  <h1 id="content-page-heading" className="sr-only">
+                    {sectionLabel}
+                  </h1>
+                )}
+                {description ? (
+                  <p className="mt-4 text-lg leading-relaxed text-white/60">{description}</p>
+                ) : null}
+                {children ? <div className="mt-8 text-white/65">{children}</div> : null}
+              </div>
+            ) : (
+              <h1 id="content-page-heading" className="sr-only">
+                {sectionLabel}
               </h1>
-              {description ? (
-                <p className="mt-4 text-lg leading-relaxed text-white/60">{description}</p>
-              ) : null}
-              {children ? <div className="mt-8 text-white/65">{children}</div> : null}
-            </div>
+            )}
+            {after ? (
+              <div className={showIntroCard ? "mt-6 space-y-6" : "space-y-6"}>{after}</div>
+            ) : null}
           </div>
         </section>
       </main>

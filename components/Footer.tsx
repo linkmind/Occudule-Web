@@ -1,7 +1,13 @@
 import Link from "next/link";
 import { Logo } from "@/components/Logo";
 
-const footerColumns = [
+type FooterLink = {
+  href: string;
+  label: string;
+  hidden?: boolean;
+};
+
+const footerColumns: { label: string; links: FooterLink[] }[] = [
   {
     label: "NAVIGATION",
     links: [
@@ -17,7 +23,8 @@ const footerColumns = [
     links: [
       { href: "/about", label: "About Us" },
       { href: "/news", label: "News" },
-      { href: "/articles", label: "Articles" },
+      { href: "/articles", label: "Articles", hidden: true },
+      { href: "/documentation", label: "Documentation" },
       { href: "/contact", label: "Contact" },
     ],
   },
@@ -56,7 +63,9 @@ export function Footer() {
                   [ {col.label} ]
                 </p>
                 <ul className="mt-4 space-y-3">
-                  {col.links.map((link) => (
+                  {col.links
+                    .filter((link) => !link.hidden)
+                    .map((link) => (
                     <li key={link.label}>
                       <Link
                         href={link.href}
