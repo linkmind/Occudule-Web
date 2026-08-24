@@ -2,8 +2,6 @@
 title: Occudule Features Outline
 ---
 
-# Explore the Features of the Occudule App
-
 The Occudule App is a comprehensive tool designed specifically to facilitate family management in educational contexts. Here’s an in-depth look at its features:
 
 ### Email Filtering and AI Analysis
