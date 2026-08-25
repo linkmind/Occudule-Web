@@ -6,6 +6,7 @@ import { Header } from "@/components/Header";
 type ContentPageShellProps = {
   sectionLabel: string;
   title?: string;
+  byline?: ReactNode;
   description?: string;
   children?: ReactNode;
   after?: ReactNode;
@@ -16,13 +17,14 @@ type ContentPageShellProps = {
 export function ContentPageShell({
   sectionLabel,
   title,
+  byline,
   description,
   children,
   after,
   backHref = "/",
   backLabel = "← Back to home",
 }: ContentPageShellProps) {
-  const showIntroCard = Boolean(title || description || children);
+  const showIntroCard = Boolean(title || byline || description || children);
 
   return (
     <>
@@ -67,6 +69,9 @@ export function ContentPageShell({
                     {sectionLabel}
                   </h1>
                 )}
+                {byline ? (
+                  <p className="mt-3 text-sm font-medium tracking-wide text-white/45">{byline}</p>
+                ) : null}
                 {description ? (
                   <p className="mt-4 text-lg leading-relaxed text-white/60">{description}</p>
                 ) : null}

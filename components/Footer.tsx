@@ -22,8 +22,8 @@ const footerColumns: { label: string; links: FooterLink[] }[] = [
     label: "CORPORATE",
     links: [
       { href: "/about", label: "About Us" },
-      { href: "/news", label: "News" },
-      { href: "/articles", label: "Articles", hidden: true },
+      { href: "/news", label: "News", hidden: true },
+      { href: "/articles", label: "Articles" },
       { href: "/documentation", label: "Documentation" },
       { href: "/contact", label: "Contact" },
     ],

@@ -1,4 +1,7 @@
-# How to Create and Set Up Your Free Occudule Account
+---
+title: How to Create and Set Up Your Free Occudule Account
+description: Create a free Occudule account, set up your family profile, and connect Gmail or Microsoft email so school messages become a trackable family schedule.
+---
 
 Welcome to Occudule! This step-by-step guide will walk you through creating your free account, configuring your family profile, and connecting your email for seamless tracking.
 
@@ -60,3 +63,5 @@ To allow Occudule to process school-related updates, you need to link your email
 ---
 
 Finally, click **Save Profile**, and you are all set to start using your free Occudule account!
+
+Next, review the [Occudule features outline](/documentation/features/occudule-features-outline), or [join the waitlist](/waitlist) for early access.

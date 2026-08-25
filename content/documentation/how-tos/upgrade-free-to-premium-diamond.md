@@ -1,4 +1,7 @@
-# Upgrade Your Occudule Account: A Step-by-Step Guide
+---
+title: "Upgrade Your Occudule Account: A Step-by-Step Guide"
+description: Upgrade a free Occudule account to Premium or Diamond, choose monthly or yearly billing, and reconnect email sync after purchase.
+---
 
 Welcome to the exciting journey of upgrading your Occudule account! We're here to guide you smoothly through each step so you can enjoy additional features and benefits in no time.
 
@@ -39,3 +42,5 @@ With your upgraded plan, it's time to sync your email for seamless event trackin
 - A final message will confirm “Your email account is linked for syncing.”
 
 Congratulations! You've now upgraded your account.
+
+Need a refresher on what each plan includes? See the [Occudule features outline](/documentation/features/occudule-features-outline).

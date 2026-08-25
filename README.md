@@ -11,6 +11,8 @@ Landing page for **Occudule**, an AI email productivity product for busy parents
 | `app/globals.css` | **Single source of truth** for CSS variables (colors, radii, shadows, spacing) |
 | `tailwind.config.ts` | Maps CSS variables to Tailwind tokens (`bg-primary`, `text-cta`, etc.) |
 | `lib/theme.ts` | Short semantic notes (optional reference) |
+| `content/articles/` | Drop Markdown here to publish at `/articles` |
+| `content/documentation/` | Product docs rendered at `/documentation` |
 | `components/` | Modular UI blocks: `Header`, `Hero`, `Features`, `SocialProof`, `ClosingCta`, `Footer`, `CtaButton` |
 
 ## Scripts

@@ -17,6 +17,21 @@ const components: Components = {
     <h3 className="mt-6 text-lg font-semibold text-white/90">{children}</h3>
   ),
   p: ({ children }) => <p className="mt-4 leading-relaxed text-white/65">{children}</p>,
+  blockquote: ({ children }) => (
+    <blockquote className="mt-6 border-l-2 border-accent/50 pl-4 text-white/70 italic">
+      {children}
+    </blockquote>
+  ),
+  img: ({ src, alt }) =>
+    src ? (
+      // Markdown images are authored as /images/articles/... files in public/
+      // eslint-disable-next-line @next/next/no-img-element
+      <img
+        src={src}
+        alt={alt ?? ""}
+        className="mt-6 h-auto w-full rounded-card border border-white/10"
+      />
+    ) : null,
   ul: ({ children }) => (
     <ul className="mt-4 list-disc space-y-2 pl-6 text-white/65">{children}</ul>
   ),
