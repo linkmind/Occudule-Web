@@ -15,6 +15,7 @@ export type DocumentationDoc = {
   lede?: string;
   content: string;
   section: DocSectionSlug;
+  order: number;
 };
 
 export type HowToStep = {
@@ -116,6 +117,11 @@ function filenameToSlug(filename: string): string {
   return slugify(filename.replace(/\.md$/i, ""));
 }
 
+function parseOrder(value?: string): number {
+  const order = Number(value);
+  return Number.isFinite(order) ? order : Number.POSITIVE_INFINITY;
+}
+
 function readDoc(section: DocSectionSlug, filename: string): DocumentationDoc {
   const raw = fs.readFileSync(path.join(DOCS_DIR, section, filename), "utf-8").replace(/^\uFEFF/, "");
   const { data, body } = parseFrontmatter(raw);
@@ -131,20 +137,24 @@ function readDoc(section: DocSectionSlug, filename: string): DocumentationDoc {
     lede,
     content,
     section,
+    order: parseOrder(data.order),
   };
 }
 
 export function getDocsBySection(section: DocSectionSlug): Omit<DocumentationDoc, "content">[] {
-  return listMarkdownFiles(section).map((filename) => {
-    const doc = readDoc(section, filename);
-    return {
-      slug: doc.slug,
-      title: doc.title,
-      description: doc.description,
-      lede: doc.lede,
-      section: doc.section,
-    };
-  });
+  return listMarkdownFiles(section)
+    .map((filename) => {
+      const doc = readDoc(section, filename);
+      return {
+        slug: doc.slug,
+        title: doc.title,
+        description: doc.description,
+        lede: doc.lede,
+        section: doc.section,
+        order: doc.order,
+      };
+    })
+    .sort((a, b) => a.order - b.order || a.slug.localeCompare(b.slug));
 }
 
 export function getDoc(section: DocSectionSlug, slug: string): DocumentationDoc | null {
@@ -175,5 +185,5 @@ export function getHowToSteps(content: string): HowToStep[] {
         text,
       };
     })
-    .filter((step) => step.name);
+    .filter((step) => /^step\s+\d+/i.test(step.name));
 }

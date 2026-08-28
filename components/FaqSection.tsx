@@ -1,9 +1,32 @@
+import type { ReactNode } from "react";
+import Link from "next/link";
 import { SectionHeader } from "@/components/SectionHeader";
 
-const faqs = [
+const faqs: { q: string; a: ReactNode }[] = [
   {
     q: "How does Occudule connect to my email?",
     a: "You authorize read access through standard OAuth providers (e.g. Google or Microsoft). We sync threads to prioritize and draft—never to sell your data.",
+  },
+  {
+    q: "Why would I need to reconnect my email account?",
+    a: "Reconnect if your email session expired for security, you upgraded to Premium or Diamond (calendar sync needs extra permission), or Occudule lost its connection to Gmail or Microsoft. Until you reconnect, school-email syncing can pause.",
+  },
+  {
+    q: "How do I reconnect my email in Occudule?",
+    a: (
+      <>
+        From Home, tap Profile, then User Profile. Under Syncing | Integration, tap your linked
+        address, complete the Google or Microsoft prompts, and syncing resumes automatically. For
+        the full walkthrough, see{" "}
+        <Link
+          href="/documentation/how-tos/how-to-reconnect-email-account"
+          className="font-medium text-accent underline decoration-accent/30 underline-offset-2 transition hover:text-white hover:decoration-white/50"
+        >
+          how to reconnect your email account
+        </Link>
+        .
+      </>
+    ),
   },
   {
     q: "Will Occudule send emails without me?",
@@ -34,9 +57,9 @@ export function FaqSection() {
           {faqs.map((item, index) => (
             <details key={item.q} className="group px-5 py-1 sm:px-6">
               <summary className="flex cursor-pointer list-none items-center justify-between gap-4 py-4 text-left font-semibold text-white marker:content-none [&::-webkit-details-marker]:hidden">
-                <span className="flex items-start gap-3">
-                  <span className="mt-0.5 text-xs font-medium tabular-nums text-white/40">
-                    [ {String(index + 1).padStart(2, "0")} ]
+                <span className="flex min-w-0 items-start gap-3">
+                  <span className="mt-0.5 inline-block shrink-0 self-start whitespace-nowrap leading-none text-xs font-medium tabular-nums text-white/40">
+                    {`[${String(index + 1).padStart(2, "0")}]`}
                   </span>
                   <span>{item.q}</span>
                 </span>

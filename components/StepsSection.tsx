@@ -115,8 +115,8 @@ export function StepsSection() {
               {s.visual === "providers" ? (
                 <article className="glass-card overflow-hidden">
                   <div className="p-6 md:p-8">
-                    <p className="text-xs font-medium tracking-wide text-white/45">
-                      [ {s.step} ]
+                    <p className="whitespace-nowrap text-xs font-medium tracking-wide text-white/45">
+                      {`[${s.step}]`}
                     </p>
                     <h3 className="mt-4 text-xl font-semibold tracking-tight text-white md:text-2xl">
                       {s.title}
@@ -129,8 +129,8 @@ export function StepsSection() {
               ) : s.visual === "processing" ? (
                 <article className="glass-card overflow-hidden lg:grid lg:grid-cols-[1fr,auto] lg:items-center lg:gap-0">
                   <div className="border-b border-white/10 p-6 md:p-8 lg:border-b-0 lg:border-r">
-                    <p className="text-xs font-medium tracking-wide text-white/45">
-                      [ {s.step} ]
+                    <p className="whitespace-nowrap text-xs font-medium tracking-wide text-white/45">
+                      {`[${s.step}]`}
                     </p>
                     <h3 className="mt-4 text-xl font-semibold tracking-tight text-white md:text-2xl">
                       {s.title}
@@ -151,8 +151,8 @@ export function StepsSection() {
               ) : (
                 <article className="glass-card overflow-hidden">
                   <div className="p-6 md:p-8">
-                    <p className="text-xs font-medium tracking-wide text-white/45">
-                      [ {s.step} ]
+                    <p className="whitespace-nowrap text-xs font-medium tracking-wide text-white/45">
+                      {`[${s.step}]`}
                     </p>
                     <h3 className="mt-4 text-xl font-semibold tracking-tight text-white md:text-2xl">
                       {s.title}

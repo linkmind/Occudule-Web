@@ -1,6 +1,7 @@
 ---
 title: Occudule Features Outline
 description: See how Occudule filters school email, extracts events and to-dos, detects schedule conflicts, and keeps every child’s activities in one place.
+order: 1
 ---
 
 The Occudule App is a comprehensive tool designed specifically to facilitate family management in educational contexts. Here’s an in-depth look at its features:

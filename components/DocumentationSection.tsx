@@ -31,8 +31,8 @@ export function DocumentationSection({ section, label, docs }: DocumentationSect
                 className="group flex items-start justify-between gap-4 px-6 py-5 transition hover:bg-white/[0.04] md:px-10"
               >
                 <span className="flex min-w-0 items-start gap-3">
-                  <span className="mt-0.5 text-xs font-medium tabular-nums text-white/40">
-                    [ {String(index + 1).padStart(2, "0")} ]
+                  <span className="mt-0.5 inline-block shrink-0 self-start whitespace-nowrap leading-none text-xs font-medium tabular-nums text-white/40">
+                    {`[${String(index + 1).padStart(2, "0")}]`}
                   </span>
                   <span className="min-w-0">
                     <span className="block font-semibold text-white transition group-hover:text-accent">
