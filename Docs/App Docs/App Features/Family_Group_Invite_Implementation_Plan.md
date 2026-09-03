@@ -1,7 +1,7 @@
 # Family Group invite — implementation plan
 
 **Status:** Phases 1–8 implemented (join paths for invitees with existing child profiles + notification push fan-out)  
-**Last updated:** 2026-05-18  
+**Last updated:** 2026-09-03  
 
 This document defines **family group** membership: the account owner invites Gmail/Microsoft family members by email; invitees join via a **web flow**, then install the app. It records **locked product decisions** from product review and outlines backend, web, and mobile work.
 
@@ -16,7 +16,7 @@ This document defines **family group** membership: the account owner invites Gma
 | **Purpose** | Let spouse/parents share one Occudule household: same children, events, todos, notifications. |
 | **Who invites** | **Owner only** (original account that created the family). |
 | **Invite channel** | Transactional email (Postmark) with link → **web** join flow → success screen → App Store / Play Store. |
-| **Invitee email** | Must be **Gmail or Microsoft** domain (same allowlist as registration). |
+| **Invitee email** | Must be **Gmail or Microsoft** domain (same allowlist as email/password registration). Apple Sign in with a non-Gmail/Microsoft address can create an owner account, but that address **cannot** be used as an invitee email. |
 | **Invitee permissions** | **Same read/write** on shared family data as owner. |
 | **Relationship label** | **Optional** (e.g. Spouse, Mom, Dad) — display only. |
 | **Plan limits** | **FREE:** cannot invite. **PREMIUM:** 1 member. **DIAMOND:** up to 3 members (excluding owner). |
@@ -175,7 +175,7 @@ Update **RLS** policies in PostgreSQL to match `family_group_id` + membership (n
 
 1. Owner taps **Invite family member**.
 2. Enter email (+ optional relationship).
-3. Client validates Gmail/Microsoft domain (reuse `assertAllowedEmail` / `isAllowedEmailDomain`).
+3. Client validates Gmail/Microsoft domain (reuse `assertAllowedEmail` / `isAllowedEmailDomain`). Apple iCloud / Hide My Email addresses are **not** valid invitees.
 4. `POST /family/invites` → Postmark email.
 5. List shows **pending** / **active** members; actions: resend, cancel pending.
 

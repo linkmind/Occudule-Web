@@ -1,8 +1,8 @@
 # OAuth and API Scopes — Matrix (Occudule)
 
-This matrix records **which Google and Microsoft permissions** apply to which features, so engineering, support, and compliance stay aligned. It is a **living document** — update it whenever scopes or features change.
+This matrix records **which Google, Microsoft, and Apple permissions** apply to which features, so engineering, support, and compliance stay aligned. It is a **living document** — update it whenever scopes or features change.
 
-**Related:** [Inbound Forward Email Spec](Inbound_Forward_Email_Spec.md) (active forward path) · [Microsoft OAuth setup](Microsoft_OAuth_Setup.md) · [Gmail metadata doc](Gmail_Metadata_Notifications.md) (deprecated)
+**Related:** [Inbound Forward Email Spec](Inbound_Forward_Email_Spec.md) (active forward path) · [Microsoft OAuth setup](Microsoft_OAuth_Setup.md) · [registration / Apple identity](Screens/registration_login_screen_spec.md) · [Gmail metadata doc](Gmail_Metadata_Notifications.md) (deprecated)
 
 ---
 
@@ -34,17 +34,27 @@ This matrix records **which Google and Microsoft permissions** apply to which fe
 
 ---
 
-## 3. OAuth consent & verification
+## 3. Apple (Sign in with Apple) — identity only
 
-- **Google Cloud:** OAuth consent screen and any **verification** requirements depend on scopes and app type; coordinate with compliance before adding sensitive scopes.
-- **Incremental auth:** Request **Gmail / Google** scopes only when needed for features that use the Gmail API (e.g. sync); **forward-to-inbound** does not require extra Gmail API scopes for body ingestion.
+| Surface | Purpose | Scopes / APIs | Notes |
+|---------|---------|----------------|-------|
+| **Sign in with Apple** (iOS native) | Authenticate the user to Occudule | Native `FULL_NAME` + `EMAIL` via `expo-apple-authentication`. Backend verifies the identity-token JWT at `POST /auth/apple/mobile`. | **Identity only.** Any verified email Apple returns may create an Occudule account (Gmail, Microsoft, iCloud, Hide My Email `@privaterelay.appleid.com`, others). Apple tokens are **never** used for mail, contacts, or calendar. Mail sync still requires a separate Google or Microsoft mailbox OAuth on User Profile. Configure `APPLE_CLIENT_ID` / `APPLE_CLIENT_IDS` to the iOS bundle ID(s). See [registration_login_screen_spec.md](Screens/registration_login_screen_spec.md) §2.3–2.4. |
 
 ---
 
-## 4. Revision history
+## 4. OAuth consent & verification
+
+- **Google Cloud:** OAuth consent screen and any **verification** requirements depend on scopes and app type; coordinate with compliance before adding sensitive scopes.
+- **Incremental auth:** Request **Gmail / Google** scopes only when needed for features that use the Gmail API (e.g. sync); **forward-to-inbound** does not require extra Gmail API scopes for body ingestion.
+- **Apple:** No mail or calendar scopes. Do not treat Sign in with Apple as a mailbox connection.
+
+---
+
+## 5. Revision history
 
 | Date | Change |
 |------|--------|
 | 2026-04-09 | Initial matrix for Gmail metadata + Pub/Sub; Outlook marked unchanged |
 | 2026-04-10 | Active path: Postmark inbound forward; deprecated metadata row; ADR 002 |
 | 2026-04-12 | Google `contacts` + Microsoft `Contacts.ReadWrite` for cloud “Add to Contacts” (Occudule forward). |
+| 2026-09-03 | Apple Sign in: identity-only; any Apple-provided verified email may create an account; mail sync still Google/Microsoft. |

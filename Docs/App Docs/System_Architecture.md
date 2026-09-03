@@ -31,7 +31,7 @@ Mobile App (React Native + Expo)
 | Property | Detail |
 |---|---|
 | Framework | Node.js or NestJS |
-| Responsibilities | User accounts, subscription management, triggering AI processing jobs, webhook handling |
+| Responsibilities | User accounts (email/password; Google/Microsoft OAuth; **Sign in with Apple on iOS — identity only, no mail API**), subscription management, triggering AI processing jobs, webhook handling |
 
 ---
 

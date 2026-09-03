@@ -77,28 +77,47 @@ Users can register or log in using any of the following social accounts. No emai
 
 | Provider | Protocol | Notes |
 |---|---|---|
-| **Google** | OAuth 2.0 | Automatically qualifies as a Gmail account for email syncing |
-| **Microsoft** | OAuth 2.0 | Automatically qualifies as an Microsoft email account for email syncing |
-| **Apple ID** | Sign in with Apple | Required for iOS App Store compliance |
+| **Google** | OAuth 2.0 | Must be a Gmail address on the registration allowlist. Automatically qualifies as a Gmail account for email syncing. |
+| **Microsoft** | OAuth 2.0 | Must be a Microsoft address on the registration allowlist. Automatically qualifies as a Microsoft email account for email syncing. |
+| **Apple ID** | Sign in with Apple | Required for iOS App Store compliance. **Any email Apple returns may create an Occudule account** (Gmail, Microsoft, iCloud, Hide My Email / private relay, work domains, and others). Sign in with Apple is **identity only** — it does not grant Gmail or Outlook API access. |
 
 ### 2.1 Behaviour on First Social Login (Registration)
 
 - If the social account **does not exist** in the system → create a new account automatically.
 - Pre-populate the user's **first name, last name, and email** from the social provider's profile data (where permitted).
+- **Google and Microsoft:** still reject emails that are not on the Gmail / Microsoft allowlist (same message as email/password registration).
+- **Apple:** do **not** apply that allowlist. If Apple provides a verified email, create the account even when the domain is not Gmail or Microsoft. Store `users.email_host` as `GMAIL` / `OUTLOOK` when the Apple email is on the allowlist; otherwise store `email_host` as `NULL`.
 - Redirect the user to complete their **Profile setup** (preferred name, child information, etc.).
 
 ### 2.2 Behaviour on Subsequent Social Login
 
 - If the social account **already exists** in the system → log the user in directly.
 - Redirect to the **Home screen**.
+- Returning Apple users whose login email is not Gmail or Microsoft can only sign in with Apple (email/password registration remains Gmail/Microsoft-only).
 
 ### 2.3 Email Syncing Eligibility from Social Login
 
-| Social Provider | Email Sync Eligible | Auto-populate Email Sync Field? |
+Mail sync still requires a **Gmail or Microsoft mailbox** connected on User Profile. Social login email is the **account** address, not automatically a connected mailbox.
+
+| Social Provider | Can create an Occudule account | Auto-populate Email Sync Field? |
 |---|---|---|
-| Google | ✅ Yes (Gmail) | ✅ Yes |
-| Microsoft | ✅ Yes (Outlook) | ✅ Yes |
-| Apple ID | ❌ No (Apple private relay email not supported) | ❌ No — leave blank, prompt user to add a Gmail or Microsoft email address in Profile settings |
+| Google | ✅ Yes (allowlisted Gmail only) | ✅ Yes — copy the Google email into `sync_email` |
+| Microsoft | ✅ Yes (allowlisted Microsoft only) | ✅ Yes — copy the Microsoft email into `sync_email` |
+| Apple ID, and the Apple email **is** Gmail or Microsoft | ✅ Yes | ✅ Yes — copy that address into `sync_email`. User still taps **here** on User Profile to complete Google or Microsoft OAuth (Apple tokens cannot sync mail). |
+| Apple ID, and the Apple email **is not** Gmail or Microsoft (iCloud, Hide My Email / `@privaterelay.appleid.com`, Yahoo, work domains, etc.) | ✅ Yes | ❌ No — leave `sync_email` **blank**. Do not copy Hide My Email or other unsupported addresses into the sync field. |
+
+User Profile copy and connect behaviour for the blank Apple case: [profile_screen_spec.md §1.3](profile_screen_spec.md#13-email-account-for-account-syncing).
+
+**Unchanged restrictions:** email/password registration, Google/Microsoft social login, and **family member invites** stay Gmail/Microsoft-only. An Apple user whose account email is iCloud or Hide My Email may be a **family owner**, but that address cannot be used as an invitee email.
+
+### 2.4 Sign in with Apple — implementation (as shipped)
+
+- **Platform:** iOS only. The native button uses `expo-apple-authentication`. On Android the app explains that Apple sign-in is iOS-only.
+- **API:** `POST /auth/apple/mobile` with `identity_token` (required). Optional `email`, `given_name`, and `family_name` — Apple often returns name and email only on the **first** authorization for the app.
+- **Verification:** The backend verifies the identity-token JWT against Apple’s JWKS (`iss` = `https://appleid.apple.com`; `aud` must match `APPLE_CLIENT_ID` / `APPLE_CLIENT_IDS`, typically the iOS bundle ID such as `com.occudule.app`).
+- **Email required:** If the token has no email, the API tells the user to remove the app under iOS **Settings → Apple ID → Sign in with Apple** and try again.
+- **Verified email:** Apple must mark the address `email_verified`. Hide My Email (`@privaterelay.appleid.com`) still counts as verified.
+- **Allowlist:** Not applied for Apple **account creation**. `users.email_host` is `GMAIL` / `OUTLOOK` when the Apple email is on the Gmail/Microsoft allowlist; otherwise `NULL`. `sync_email` is prefilled only when `email_host` is set.
 
 ---
 
@@ -106,7 +125,8 @@ Users can register or log in using any of the following social accounts. No emai
 
 | Scenario | Behaviour |
 |---|---|
-| Email domain not Gmail or Microsoft email accounts (email registration) | Show error: *"Only Gmail and Microsoft email accounts are supported. Please register with one of these accounts."* |
+| Email domain not Gmail or Microsoft email accounts (email/password registration, Google sign-in, or Microsoft sign-in) | Show error: *"Only Gmail and Microsoft email accounts are supported. Please register with one of these accounts."* |
+| Apple sign-in email is not Gmail or Microsoft | **Allow** account creation. Do not show the registration domain error. Leave the User Profile sync-email field blank and remind them there (see §2.3). |
 | Email already registered | Show error: *"An account with this email already exists. Please log in or use a different email."* |
 | Incorrect password on login | Show error: *"Incorrect email or password."* (do not specify which field is wrong — security best practice) |
 | Too many failed login attempts | Temporarily lock account or show CAPTCHA after 5 consecutive failed attempts |

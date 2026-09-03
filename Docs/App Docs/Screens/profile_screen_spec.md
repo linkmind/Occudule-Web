@@ -32,24 +32,52 @@ When the user opens **Profile** from the home dropdown, they land on **Family Pr
 
 ### 1.2 User Account
 
-- **Email Address:** The email used to sign up or sign in to the app.
-- **Connection Status:** `Connected` / `Disconnected`
+- **Email Address:** Read-only. The email used to sign up or sign in (email/password, Google, Microsoft, or Apple).
+- This is the **login identity**, not the mailbox used for school-mail sync. For Apple it may be Gmail, Microsoft, iCloud, Hide My Email (`@privaterelay.appleid.com`), or another address Apple returns.
 
-#### Connection Status Logic
-
-| Scenario | Connection Status | Message Shown |
-|---|---|---|
-| Gmail or Microsoft email account — connection test passed | `Connected` | *(none)* |
-| Gmail or Microsoft email account — connection test failed | `Disconnected` | *"Please check with your email provider. Syncing has failed."* |
-| Neither Gmail nor Microsoft email account | `Not Supported` | *"This app supports syncing with Gmail and Microsoft email accounts only. Please add a Gmail or Microsoft email account to get started."* |
+Email syncing status lives under **Email Account (for syncing)** (§1.3), not on this login field.
 
 ### 1.3 Email Account (for Account Syncing)
 
-- Automatically populated with the User Account email if it is a Gmail or Microsoft email account.
-- If the User Account is neither Gmail nor Microsoft email accounts, this field is left **empty**.
-- After the user manually enters an email address, the app runs a **validation check**:
-  - Only Gmail and Microsoft email accounts are accepted.
-- This email account is used for **email syncing**.
+Field label: **Email Account (for syncing)**. Placeholder: **Gmail or Microsoft email**.
+
+This field is `users.sync_email`. It is the mailbox Occudule connects (Gmail/Outlook OAuth, forwarding, calendar). **Connection / “Tap here” logic follows this field, not the login email in §1.2.**
+
+#### Prefill
+
+- Automatically populated with the User Account email **only if** that address is a Gmail or Microsoft email on the allowlist (Google sign-in, Microsoft sign-in, email/password, or Apple when the Apple email is Gmail/Microsoft).
+- If the User Account email is **not** Gmail or Microsoft (typical: Apple iCloud, Hide My Email, Yahoo, work domain), leave this field **empty**. Never copy a private-relay or other unsupported address into `sync_email`.
+- After a successful Google or Microsoft **mailbox** OAuth connect, **do not** overwrite `sync_email`. Save the box before opening OAuth. The connected account must match the address in this box (Microsoft **aliases** on the same account still count). If the user signs in with a **different** Microsoft/Google account, show an error and keep the box unchanged.
+- **Microsoft mailbox connect** (User Profile “Tap here”): treat this as linking a Microsoft **account**, not a specific alias. Authorize with `prompt=select_account` and **do not** send `login_hint` (a leftover Outlook session in the in-app browser otherwise ignores the hint and stays on the wrong account). The picker lists Microsoft accounts already in that browser; Hotmail and Outlook that share one Microsoft account still appear as **one** row. If SSO still skips the picker, use `prompt=select_account login` (`prompt=login`).
+- **Google mailbox connect:** keep the existing Google authorize behaviour (`prompt=consent`, optional `login_hint`). Google already shows an account chooser.
+
+#### Empty box (unsupported Apple login)
+
+When the box is empty because the login email cannot be used for sync:
+
+- Show a **helper directly under the input** (always visible until they enter a supported address), for example:  
+  *“Enter a Gmail or Microsoft email here to sync school mail. Your Apple sign-in address cannot be used for syncing.”*
+- **Email syncing** status: `Disconnected`.
+- Do **not** show **Tap here to connect** (nothing to connect yet).
+- Do **not** show `Not Supported` for the Apple login identity — that would make the whole feature look unavailable.
+- Calendar integration: `Not connected`.
+- Do **not** use an alert as the first reminder (easy to miss; do not alert on every field blur). The helper under the box is the teaching copy.
+
+#### After the user types an address
+
+- **Supported Gmail or Microsoft:** hide the Apple helper. Email syncing becomes `Not connected yet`. Show: *Tap **here** to connect and start syncing.* Tapping starts Google or Microsoft OAuth (same as today). Apple tokens are never used for mail sync.
+- **Unsupported address** (iCloud, Hide My Email, Yahoo, etc.): keep the field, show the inline error *“Only Gmail and Microsoft email accounts are accepted.”* Do not start OAuth. Email syncing may show `Not Supported` **only** because the address **in this box** cannot be synced.
+- **Empty or unsupported, and they tap “here” anyway:** show an alert that only Gmail and Microsoft emails are supported (backup, not the primary empty-state reminder).
+
+#### Email syncing status (driven by the sync field)
+
+| Scenario | Email syncing status | Under the status row |
+|---|---|---|
+| Sync field empty | `Disconnected` | *(none — helper sits under the input when login email is not Gmail/Microsoft)* |
+| Sync field is Gmail or Microsoft — not yet OAuth-connected | `Not connected yet` | *Tap **here** to connect and start syncing.* |
+| Sync field is Gmail or Microsoft — OAuth connected / connection test passed | `Connected` | *(none)* |
+| Sync field is Gmail or Microsoft — connection test failed | `Disconnected` | *"Please check with your email provider. Syncing has failed."* |
+| Sync field has a value that is neither Gmail nor Microsoft | `Not Supported` | Inline error on the field (and optional status copy). Do not start OAuth. |
 
 #### Family member restrictions (User Profile)
 
@@ -178,5 +206,6 @@ Deleting the owner account **dissolves** the family: members lose access to shar
 - All form fields should include appropriate validation (required vs. optional clearly indicated).
 - Email domain fields use placeholder text to guide input format.
 - The **`+`** controls for email addresses, children, and Other Education Institutions should be clearly accessible and intuitive.
-- Connection Status should update dynamically after the email validation check runs.
+- Connection / email-syncing status should follow the **sync email** field and update after validation or OAuth, not the Apple/Google/Microsoft **login** email.
+- When Apple login is not a Gmail or Microsoft address, the empty sync field must show the helper under the box (see §1.3); do not leave the row looking like the account cannot use email sync at all.
 - Extend or modify content as needed based on project requirements and evolving product needs.

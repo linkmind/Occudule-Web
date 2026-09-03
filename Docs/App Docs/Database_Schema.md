@@ -39,7 +39,7 @@ CREATE TABLE users (
   last_name            VARCHAR NOT NULL,
   preferred_name       VARCHAR,
   email_address        VARCHAR UNIQUE NOT NULL,
-  email_host           VARCHAR CHECK (email_host IN ('GMAIL', 'OUTLOOK')),
+  email_host           VARCHAR CHECK (email_host IN ('GMAIL', 'OUTLOOK') OR email_host IS NULL),
   preferred_language   VARCHAR DEFAULT 'English',  -- e.g. 'English', 'Chinese', 'French', 'Spanish'
   subscription_id      UUID REFERENCES subscriptions(id),
   billing_customer_id  VARCHAR,                    -- links local user to billing provider customer/app user records
@@ -48,6 +48,8 @@ CREATE TABLE users (
   created_at           TIMESTAMP DEFAULT NOW()
 );
 ```
+
+`email_host` is `GMAIL` or `OUTLOOK` when the **account** email is on the Gmail/Microsoft allowlist. It is **`NULL`** when the user signed in with Apple using an address that is not Gmail or Microsoft (iCloud, Hide My Email, etc.). Mail sync still uses `sync_email` (Gmail/Microsoft only). See [registration_login_screen_spec.md](Screens/registration_login_screen_spec.md) §2.3.
 
 > **Family billing:** Quotas and IAP entitlements resolve to the **family owner's** `subscription_id` / RevenueCat `app_user_id` for all active members. Members store their own `subscription_id` row but effective plan comes from the owner in application code (`FamilyAccessService.resolveBillingUserId`).
 
@@ -351,7 +353,7 @@ interface User {
   last_name: string;
   preferred_name?: string;
   email_address: string;
-  email_host: EmailHost;
+  email_host: EmailHost | null;
   preferred_language: string;
   subscription_id?: string;
   billing_customer_id?: string;

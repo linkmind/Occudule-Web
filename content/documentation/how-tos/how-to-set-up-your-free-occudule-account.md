@@ -10,13 +10,16 @@ Welcome to Occudule! This step-by-step guide will walk you through creating your
 
 ## Step 1: Account Creation & Social Sign-In
 
-Occudule supports sign-ins using Google and Microsoft email accounts, which includes **Gmail, Outlook, Live, MSN, and Hotmail**. You can easily sign up using Google, Microsoft, or Apple social sign-in options.
+You can create an Occudule account with **Google**, **Microsoft**, **Apple** (iOS), or email and password.
+
+* **Google** and **Microsoft** sign-in, and email/password registration, require a **Gmail** or **Microsoft** address (Outlook, Hotmail, Live, or MSN).
+* **Sign in with Apple** can create an account with **any email Apple returns**, including iCloud and Hide My Email. Apple is used to sign you in only. It does **not** connect Gmail or Outlook for school-mail sync.
 
 1. Open the app and review the **Terms of Service and Privacy Policy**.
 2. Check the box labeled **“I agree to Occudule’s Terms of Services and Privacy Policy”** (this is required to use Occudule). 
    * *Note:* The social sign-in buttons will remain inactive until you check this box.
 3. *(Optional)* Check the box for sending anonymous crash reports. This helps us improve stability and user experience, and your privacy remains fully protected as data is used strictly for fixing technical issues. You can change this setting anytime later.
-4. Tap your preferred social sign-in provider (**Google**, **Microsoft**, or **Apple**).
+4. Tap your preferred social sign-in provider (**Google**, **Microsoft**, or **Apple**). Apple is available on **iOS** only.
 5. When prompted by your provider, confirm that you allow the app/website to share your necessary information with Occudule, then tap **Continue**.
 
 ---
@@ -35,17 +38,18 @@ Once the sign-in process is complete, your account is created and you will be di
 
 ## Step 3: Complete Your User Profile
 
-On the **User Profile** page, your name and email address will be prefilled based on your social sign-in information. 
+On the **User Profile** page, your name is prefilled from sign-in when the provider shares it. Your **account email** (the address you signed in with) is read-only.
 
 1. Review your details and make modifications if necessary.
-2. If everything is correct, scroll down to the **Syncing | Integration** section. 
-   * By default, the email address you used to sign up is used as your synced account. You can change this to any other valid provider address (Gmail, Outlook, Live, MSN, or Hotmail) at any time.
+2. Scroll down to the **Syncing | Integration** section and check **Email Account (for syncing)**. This is the Gmail or Microsoft mailbox Occudule uses for school mail — it is separate from Apple sign-in.
+   * If you signed in with **Google** or **Microsoft**, or with **Apple using a Gmail or Microsoft address**, that address is already filled in.
+   * If you signed in with **Apple using iCloud, Hide My Email, or another unsupported address**, the box is **empty**. A reminder under the box asks you to enter a Gmail or Microsoft email. Type a supported address before connecting. Your Apple sign-in address cannot be used for syncing. See [how to connect email after Sign in with Apple](/documentation/how-tos/how-to-connect-email-after-sign-in-with-apple).
 
 ---
 
 ## Step 4: Connect and Sync Your Email
 
-To allow Occudule to process school-related updates, you need to link your email account:
+To allow Occudule to process school-related updates, you need to link a **Gmail or Microsoft** mailbox. If you signed in with Apple, complete Step 3 first so the sync box has a supported address.
 
 1. Tap **"here"** (highlighted in green in the sentence *"Tap here to connect and start syncing"*).
 2. A confirmation pop-up window will appear asking your permission to allow your email service provider to share your information with Occudule. Select **Continue**.

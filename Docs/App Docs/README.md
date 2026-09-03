@@ -18,11 +18,12 @@ High-signal entry points for engineers and operators.
 | [Gmail_PubSub_Watch.md](Gmail_PubSub_Watch.md) | Ops guide for watch/Pub/Sub; **superseded** unless revived. |
 | [ADR/001-gmail-metadata-forward-only-outlook-unchanged.md](ADR/001-gmail-metadata-forward-only-outlook-unchanged.md) | Partially superseded by ADR 002. |
 
-## OAuth & Microsoft Outlook
+## OAuth, Apple Sign In & Microsoft Outlook
 
 | Document | Description |
 |----------|-------------|
-| [OAuth_And_Scopes_Matrix.md](OAuth_And_Scopes_Matrix.md) | Google vs Microsoft scopes; inbound forward path. |
+| [OAuth_And_Scopes_Matrix.md](OAuth_And_Scopes_Matrix.md) | Google vs Microsoft scopes; **Sign in with Apple is identity-only**; inbound forward path. |
+| [Screens/registration_login_screen_spec.md](Screens/registration_login_screen_spec.md) | Login/register rules: Apple may create an account with any Apple-provided email; mail sync still Gmail/Microsoft. |
 | [Microsoft_OAuth_Setup.md](Microsoft_OAuth_Setup.md) | Entra redirect URIs and local setup. |
 | [Microsoft_Outlook_Implementation_Checklist.md](Microsoft_Outlook_Implementation_Checklist.md) | Outlook implementation checklist. |
 
@@ -46,4 +47,4 @@ High-signal entry points for engineers and operators.
 
 ---
 
-*Last updated: 2026-05-18 (family group invite plan index)*
+*Last updated: 2026-09-03 (Sign in with Apple: identity-only; any Apple-provided email may create an account)*

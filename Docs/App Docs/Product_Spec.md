@@ -152,10 +152,12 @@ Frontend framework: **React Native**
 
 Supported login methods:
 
-- Email + password
-- Google account
-- Microsoft account
-- Apple ID
+- Email + password (Gmail and Microsoft addresses only)
+- Google account (Gmail allowlist)
+- Microsoft account (Microsoft allowlist)
+- Apple ID — **any email Apple returns** may create an Occudule account (including iCloud and Hide My Email). Sign in with Apple is identity only.
+
+**Mail sync** still requires a Gmail or Microsoft mailbox on User Profile. If the Apple login email is Gmail or Microsoft, prefill the sync-email field; otherwise leave it blank and remind the user to type a supported address there. See [registration_login_screen_spec.md](Screens/registration_login_screen_spec.md) §2.3 and [profile_screen_spec.md](Screens/profile_screen_spec.md) §1.3.
 
 ---
 

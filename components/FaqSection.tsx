@@ -2,10 +2,30 @@ import type { ReactNode } from "react";
 import Link from "next/link";
 import { SectionHeader } from "@/components/SectionHeader";
 
-const faqs: { q: string; a: ReactNode }[] = [
+const faqs: { q: string; a: ReactNode; text?: string }[] = [
   {
     q: "How does Occudule connect to my email?",
     a: "You authorize read access through standard OAuth providers (e.g. Google or Microsoft). We sync threads to prioritize and draft—never to sell your data.",
+  },
+  {
+    q: "I signed in with Apple. Why is the sync email box empty?",
+    text: "Sign in with Apple only creates your Occudule account. School-mail sync still needs a Gmail or Microsoft mailbox. If you used iCloud or Hide My Email, Email Account (for syncing) stays empty until you type a supported address and tap here to connect. See how to connect email after Sign in with Apple.",
+    a: (
+      <>
+        Sign in with Apple only creates your Occudule account. School-mail sync still needs a Gmail
+        or Microsoft mailbox. If you used iCloud or Hide My Email,{" "}
+        <span className="text-white/70">Email Account (for syncing)</span> stays empty until you
+        type a supported address and tap <span className="text-white/70">here</span> to connect. For
+        the full walkthrough, see{" "}
+        <Link
+          href="/documentation/how-tos/how-to-connect-email-after-sign-in-with-apple"
+          className="font-medium text-accent underline decoration-accent/30 underline-offset-2 transition hover:text-white hover:decoration-white/50"
+        >
+          how to connect email after Sign in with Apple
+        </Link>
+        .
+      </>
+    ),
   },
   {
     q: "Why would I need to reconnect my email account?",
@@ -13,6 +33,7 @@ const faqs: { q: string; a: ReactNode }[] = [
   },
   {
     q: "How do I reconnect my email in Occudule?",
+    text: "From Home, tap Profile, then User Profile. Under Syncing | Integration, tap your linked address, complete the Google or Microsoft prompts, and syncing resumes automatically. For the full walkthrough, see how to reconnect your email account.",
     a: (
       <>
         From Home, tap Profile, then User Profile. Under Syncing | Integration, tap your linked
@@ -42,9 +63,28 @@ const faqs: { q: string; a: ReactNode }[] = [
   },
 ];
 
+function faqAnswerText(item: { a: ReactNode; text?: string }): string {
+  if (item.text) return item.text;
+  return typeof item.a === "string" ? item.a : "";
+}
+
 export function FaqSection() {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((item) => ({
+      "@type": "Question",
+      name: item.q,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: faqAnswerText(item),
+      },
+    })),
+  };
+
   return (
     <section id="faq" className="section-gradient py-section" aria-labelledby="faq-heading">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <div className="relative mx-auto max-w-content px-gutter">
         <div className="mx-auto text-center">
           <SectionHeader

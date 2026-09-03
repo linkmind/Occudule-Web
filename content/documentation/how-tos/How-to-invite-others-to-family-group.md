@@ -13,7 +13,7 @@ Family Group lets you invite another parent, guardian, or caregiver to help mana
 **Family group owners**
 
 * Family Group is available on **Premium** or **Diamond** plans. See [how to upgrade your Occudule account](/documentation/how-tos/upgrade-free-to-premium-diamond) if you are still on the free plan.
-* You can invite family members who use **Gmail** or a **Microsoft email account** (Outlook, Hotmail, Live, or MSN).
+* You can invite family members who use **Gmail** or a **Microsoft email account** (Outlook, Hotmail, Live, or MSN). An iCloud or Hide My Email address from Sign in with Apple cannot be used as the invitee email.
 
 **Invited family members**
 
@@ -37,7 +37,7 @@ As the family group owner:
 
 1. Tap **Invite family member**.
 2. In the pop-up window, enter the family member's email address.
-   * The address must be a **Gmail** or **Microsoft** account (Outlook, Hotmail, Live, or MSN).
+   * The address must be a **Gmail** or **Microsoft** account (Outlook, Hotmail, Live, or MSN). iCloud and Hide My Email addresses cannot be invited.
 3. *(Optional)* Add a relationship label.
 4. Tap **Send invitation**.
 
