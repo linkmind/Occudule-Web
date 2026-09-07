@@ -4,6 +4,12 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
+        source: "/:path*",
+        has: [{ type: "host", value: "occudule.com" }],
+        destination: "https://www.occudule.com/:path*",
+        permanent: true,
+      },
+      {
         source: "/waitlist",
         destination: "/download",
         permanent: true,

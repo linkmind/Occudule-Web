@@ -1,4 +1,5 @@
-export const SITE_URL = "https://occudule.com";
+/** Production canonical host (www). Apex occudule.com redirects here. */
+export const SITE_URL = "https://www.occudule.com";
 
 /** Official iOS listing. */
 export const APP_STORE_URL = "https://apps.apple.com/us/app/occudule/id6761225313";
