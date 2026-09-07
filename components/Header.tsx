@@ -44,21 +44,29 @@ export function Header() {
   const pathname = usePathname();
   const menuId = useId();
   const [heroInView, setHeroInView] = useState(pathname === "/");
-  const [showEarlyAccess, setShowEarlyAccess] = useState(pathname !== "/");
+  const [showDownloadCta, setShowDownloadCta] = useState(
+    pathname !== "/" && pathname !== "/download",
+  );
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
+    if (pathname === "/download") {
+      setHeroInView(false);
+      setShowDownloadCta(false);
+      return;
+    }
+
     const hero = document.getElementById(HERO_SECTION_ID);
     if (!hero) {
       setHeroInView(false);
-      setShowEarlyAccess(true);
+      setShowDownloadCta(true);
       return;
     }
 
     const observer = new IntersectionObserver(
       ([entry]) => {
         setHeroInView(entry.isIntersecting);
-        setShowEarlyAccess(!entry.isIntersecting);
+        setShowDownloadCta(!entry.isIntersecting);
       },
       {
         threshold: 0,
@@ -123,14 +131,14 @@ export function Header() {
         <div className="flex shrink-0 items-center gap-2 sm:gap-3">
           <div
             className={`overflow-hidden transition-[max-width,opacity] duration-300 ease-out ${
-              showEarlyAccess
+              showDownloadCta
                 ? "max-w-[14rem] opacity-100"
                 : "pointer-events-none max-w-0 opacity-0"
             }`}
-            aria-hidden={!showEarlyAccess}
+            aria-hidden={!showDownloadCta}
           >
-            <CtaButton href="/waitlist" size="sm" className="whitespace-nowrap">
-              Join the Waitlist
+            <CtaButton href="/download" size="sm" className="whitespace-nowrap">
+              Download App
             </CtaButton>
           </div>
 

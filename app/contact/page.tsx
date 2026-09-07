@@ -36,7 +36,7 @@ export default function ContactPage() {
               <SectionHeader
                 label="CONTACT US"
                 title="We're here to help"
-                description="Questions about Occudule, early access, or your account? Send a message, email us, or start a live chat."
+                description="Questions about Occudule, downloading the app, or your account? Send a message, email us, or start a live chat."
                 titleId="contact-heading"
               />
             </div>

@@ -82,4 +82,4 @@ Use Occudule if you want school and after-school mail—from Gmail or Microsoft�
 
 They can even sit side by side. Gemini does not replace Occudule’s family hub, and Occudule does not try to be a general Gmail assistant.
 
-[Join the waitlist](/waitlist) for early access, or [see how Occudule works](/#how-it-works).
+[Download the app](/download) to get started, or [see how Occudule works](/#how-it-works).

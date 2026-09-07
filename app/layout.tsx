@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { SITE_URL } from "@/lib/site";
+import { APP_STORE_ID, SITE_URL } from "@/lib/site";
 import "./globals.css";
 
 const inter = Inter({
@@ -23,6 +23,9 @@ export const metadata: Metadata = {
     "busy parents",
     "inbox zero",
   ],
+  itunes: {
+    appId: APP_STORE_ID,
+  },
   openGraph: {
     title: "Occudule — AI email productivity for busy parents",
     description:

@@ -55,4 +55,4 @@ Managing a family is a team sport, but dividing labor can be tricky. With Occudu
 
 You shouldn't have to spend your evenings playing air traffic controller for your family's schedule. By consolidating your inbox, making sense of multiple children's commitments, and automating the heavy lifting of extracting and organizing details, Occudule lets you step back from the admin work and focus on what actually matters: being present with your family.
 
-[Join the waitlist](/waitlist) to get early access, or [see how Occudule works](/#how-it-works).
+[Download the app](/download) to get started, or [see how Occudule works](/#how-it-works).

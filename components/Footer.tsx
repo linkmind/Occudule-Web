@@ -12,6 +12,7 @@ const footerColumns: { label: string; links: FooterLink[] }[] = [
     label: "NAVIGATION",
     links: [
       { href: "/", label: "Home" },
+      { href: "/download", label: "Download App" },
       { href: "/#features", label: "Features" },
       { href: "/#how-it-works", label: "How it works" },
       { href: "/#pricing", label: "Pricing" },
@@ -84,6 +85,10 @@ export function Footer() {
           <p>© {new Date().getFullYear()} Outvblue Technology Inc. All rights reserved.</p>
           <p>Made by parents for parents</p>
         </div>
+        <p className="mt-4 max-w-3xl text-xs leading-relaxed text-white/35">
+          Apple, the Apple logo, and App Store are trademarks of Apple Inc. Google Play and the
+          Google Play logo are trademarks of Google LLC.
+        </p>
       </div>
     </footer>
   );

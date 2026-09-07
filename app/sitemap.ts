@@ -8,7 +8,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/",
     "/about",
     "/contact",
-    "/waitlist",
+    "/download",
     "/documentation",
     "/articles",
     "/privacy",

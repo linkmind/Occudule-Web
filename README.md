@@ -40,16 +40,19 @@ npm run lint
 
 Contact: **support@occudule.com**. Company: **Outvblue Technology Inc.** (Suite 500, 7030 Woodbine Avenue, Markham, Ontario L3R 6G2). Legal pages: `/privacy` and `/terms` (source: `content/legal/*.md`, synced from the mobile app).
 
-## Waitlist form (Postmark)
+## Download the app
 
-The `/waitlist` form posts to `/api/waitlist`, which uses **Postmark** (same transactional stack as the Occudule app) when configured:
+The `/download` page is the primary CTA. iOS uses the official App Store badge and links to `APP_STORE_URL` in `lib/site.ts`. When the Android listing is live, set `PLAY_STORE_URL` in that file (and add the official Google Play badge at `public/badges/google-play-badge.svg`).
+
+Old `/waitlist` URLs permanently redirect to `/download`. The unused `/api/waitlist` route remains for any leftover integrations.
+
+The contact form still uses **Postmark** when configured:
 
 1. In [Postmark](https://postmarkapp.com), use your **Server API token** and a **verified sender** (`POSTMARK_FROM_EMAIL`).
 2. In Vercel → **Environment Variables**, set:
    - `POSTMARK_SERVER_TOKEN`
    - `POSTMARK_FROM_EMAIL` (e.g. `Occudule <support@occudule.com>`)
-   - Optional: `WAITLIST_NOTIFY_EMAIL` (defaults to `support@occudule.com`)
 3. Redeploy.
 
-On each signup, Postmark sends a **team notification** (with `Reply-To` set to the subscriber) and a **confirmation email** to the person who joined. See `.env.example` for local testing (create `.env.local` with the same vars).
+See `.env.example` for local testing (create `.env.local` with the same vars).
 

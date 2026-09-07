@@ -54,8 +54,8 @@ export function Hero() {
           the ball on what matters for your family.
         </p>
         <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-5">
-          <CtaButton href="/waitlist" size="lg">
-            Join the waitlist
+          <CtaButton href="/download" size="lg">
+            Download App
           </CtaButton>
           <CtaButton href="/#how-it-works" variant="ghost" size="lg">
             See how it works

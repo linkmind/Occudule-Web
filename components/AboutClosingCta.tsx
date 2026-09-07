@@ -8,7 +8,7 @@ export function AboutClosingCta() {
     >
       <div className="mesh-overlay opacity-30" aria-hidden />
       <div className="relative mx-auto max-w-content px-gutter text-center">
-        <p className="text-xs font-medium tracking-wide text-white/45">[ GET EARLY ACCESS ]</p>
+        <p className="text-xs font-medium tracking-wide text-white/45">[ GET THE APP ]</p>
         <h2
           id="about-cta-heading"
           className="text-gradient mx-auto mt-4 max-w-2xl text-3xl font-semibold tracking-tight md:text-4xl"
@@ -20,8 +20,8 @@ export function AboutClosingCta() {
           schedules.
         </p>
         <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
-          <CtaButton href="/waitlist" size="lg">
-            Get early access
+          <CtaButton href="/download" size="lg">
+            Download App
           </CtaButton>
           <CtaButton href="/contact" variant="ghost" size="lg">
             Contact us
