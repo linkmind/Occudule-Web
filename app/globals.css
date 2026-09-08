@@ -76,6 +76,14 @@ body {
   z-index: 999999 !important;
 }
 
+/* Launcher is contact-only; the widget still loads site-wide for visitor tracking */
+html:not([data-zoho-chat="on"]) #zsiq_float,
+html:not([data-zoho-chat="on"]) #zsiqbtn {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
 @layer components {
   .text-gradient {
     @apply bg-gradient-to-br from-white from-[20%] to-accent to-[65%] bg-clip-text text-transparent;

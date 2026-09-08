@@ -5,7 +5,6 @@ import { ContactLiveChat } from "@/components/ContactLiveChat";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { SectionHeader } from "@/components/SectionHeader";
-import { ZohoSalesIQ } from "@/components/ZohoSalesIQ";
 
 export const metadata: Metadata = {
   title: "Contact — Occudule",
@@ -17,7 +16,6 @@ export default function ContactPage() {
   return (
     <>
       <Header />
-      <ZohoSalesIQ />
       <main>
         <section className="relative overflow-hidden border-b border-white/10 bg-background">
           <div className="mesh-overlay" aria-hidden />

@@ -1,5 +1,6 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 
 type ZohoSalesiqApi = {
@@ -18,6 +19,12 @@ type ZohoSalesiqApi = {
   };
   chat?: {
     start?: () => void;
+  };
+  tracking?: {
+    on?: () => void;
+  };
+  visitor?: {
+    pagetitle?: (title: string) => void;
   };
 };
 
@@ -108,6 +115,37 @@ const stateListeners = new Set<(state: ZohoLoadState) => void>();
 
 function getZohoSalesiq(): ZohoSalesiqApi | undefined {
   return window.$zoho?.salesiq ?? window.$zoho?.livedesk;
+}
+
+function isContactPath(pathname: string) {
+  return pathname === "/contact";
+}
+
+function setChatLauncherAllowed(allowed: boolean) {
+  if (allowed) {
+    document.documentElement.setAttribute("data-zoho-chat", "on");
+  } else {
+    document.documentElement.removeAttribute("data-zoho-chat");
+  }
+
+  const salesiq = getZohoSalesiq();
+  if (typeof salesiq?.floatbutton?.visible === "function") {
+    salesiq.floatbutton.visible(allowed ? "show" : "hide");
+  }
+}
+
+function syncVisitorPage() {
+  const salesiq = getZohoSalesiq();
+  salesiq?.tracking?.on?.();
+  const title = document.title?.trim();
+  if (title && typeof salesiq?.visitor?.pagetitle === "function") {
+    salesiq.visitor.pagetitle(title);
+  }
+}
+
+function applyRoutePolicy(pathname: string) {
+  setChatLauncherAllowed(isContactPath(pathname));
+  syncVisitorPage();
 }
 
 function setLoadState(next: ZohoLoadState) {
@@ -258,6 +296,7 @@ function pollUntilReady(maxMs = 30000) {
   const started = Date.now();
   const tick = () => {
     if (isZohoWidgetReady()) {
+      applyRoutePolicy(window.location.pathname);
       setLoadState("ready");
       return;
     }
@@ -299,6 +338,7 @@ function installZohoEmbed() {
       (priorReady as (...inner: unknown[]) => void).apply(window.$zoho?.salesiq, args);
     }
     zohoEmbedInitialized = true;
+    applyRoutePolicy(window.location.pathname);
     window.setTimeout(() => {
       if (isZohoWidgetReady()) setLoadState("ready");
     }, 0);
@@ -351,9 +391,23 @@ export function isZohoLiveChatConfigured(): boolean {
 }
 
 export function ZohoSalesIQ() {
+  const pathname = usePathname();
+
   useEffect(() => {
     installZohoEmbed();
   }, []);
+
+  useEffect(() => {
+    applyRoutePolicy(pathname);
+
+    const stopReady = whenZohoReady(() => applyRoutePolicy(pathname));
+    const titleTimer = window.setTimeout(() => applyRoutePolicy(pathname), 150);
+
+    return () => {
+      stopReady();
+      window.clearTimeout(titleTimer);
+    };
+  }, [pathname]);
 
   return null;
 }
