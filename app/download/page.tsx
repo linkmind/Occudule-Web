@@ -140,9 +140,6 @@ export default function DownloadPage() {
                 [ APP PREVIEW ]
               </p>
               <AppPreviewVideo />
-              <p className="mt-4 max-w-[16rem] text-center text-xs text-white/40">
-                A 7-second look at Occudule on iPhone. Sound is off.
-              </p>
             </div>
           </div>
         </section>

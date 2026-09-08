@@ -12,7 +12,7 @@ Occudule's advanced AI technology automatically scans incoming school emails and
 
 ## Email Processing (Gmail and Outlook)
 
-Connect your Gmail or Outlook accounts with ease. The integration allows Occudule to process emails automatically, extracting pertinent details and ensuring that nothing important slips through the cracks.
+Connect your Gmail or Outlook accounts with ease. The integration allows Occudule to process emails automatically, extracting pertinent details and ensuring that nothing important slips through the cracks. For the confirmation flow in the app, see [how to process school emails in Occudule](/documentation/how-tos/how-to-process-school-emails-in-occudule).
 
 ## Attachment Analysis
 

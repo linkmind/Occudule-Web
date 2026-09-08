@@ -60,6 +60,6 @@ Apple sign-in is not used in this step. You are connecting Gmail or Microsoft fo
 ## Step 5: Finish Gmail or Microsoft setup
 
 * **Microsoft (Outlook, Live, MSN, or Hotmail):** Setup is complete. Occudule can process incoming school mail that matches the schools and institutions on your Family Profile.
-* **Gmail:** Forward school emails to your Occudule address. On User Profile, use **Add to Contacts** in the **Email Forwarding** section so **Occudule Forward** is saved in Google Contacts. Details are in [how to create and set up your free Occudule account](/documentation/how-tos/how-to-set-up-your-free-occudule-account).
+* **Gmail:** Forward school emails to your Occudule address. On User Profile, use **Add to Contacts** in the **Email Forwarding** section so **Occudule Forward** is saved in Google Contacts. Details are in [how to create and set up your free Occudule account](/documentation/how-tos/how-to-set-up-your-free-occudule-account). Then follow [how to process school emails in Occudule](/documentation/how-tos/how-to-process-school-emails-in-occudule).
 
 If a later connection drops, follow [how to reconnect your email account in Occudule](/documentation/how-tos/how-to-reconnect-email-account). To see what Occudule does with school mail after you connect, review the [Occudule features outline](/documentation/features/occudule-features-outline).

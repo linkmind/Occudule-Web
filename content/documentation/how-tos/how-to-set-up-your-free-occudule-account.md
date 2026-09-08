@@ -69,4 +69,4 @@ To allow Occudule to process school-related updates, you need to link a **Gmail 
 
 Finally, click **Save Profile**, and you are all set to start using your free Occudule account!
 
-Next, review the [Occudule features outline](/documentation/features/occudule-features-outline), or [download the app](/download).
+Next, follow [how to process school emails in Occudule](/documentation/how-tos/how-to-process-school-emails-in-occudule), review the [Occudule features outline](/documentation/features/occudule-features-outline), or [download the app](/download).
