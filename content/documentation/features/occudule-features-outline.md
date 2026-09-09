@@ -44,4 +44,4 @@ Aiming for inclusivity, Occudule offers its interface in several languages inclu
 
 The Occudule App is here to help parents streamline their interactions with educational information, providing peace of mind and efficiency.
 
-Ready to get started? Follow [how to create and set up your free Occudule account](/documentation/how-tos/how-to-set-up-your-free-occudule-account), or [see how Occudule works](/#how-it-works).
+Ready to get started? Follow [how to create and set up your free Occudule account](/documentation/how-tos/how-to-set-up-your-free-occudule-account), take [a walk through the Occudule app](/documentation/features/a-walk-through-the-occudule-app), or [see how Occudule works](/#how-it-works).

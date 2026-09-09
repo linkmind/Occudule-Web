@@ -1,20 +1,54 @@
+import type { ReactNode } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import type { Components } from "react-markdown";
 
+function textFromChildren(node: ReactNode): string {
+  if (node == null || typeof node === "boolean") return "";
+  if (typeof node === "string" || typeof node === "number") return String(node);
+  if (Array.isArray(node)) return node.map(textFromChildren).join("");
+  if (typeof node === "object" && "props" in node) {
+    return textFromChildren((node as { props: { children?: ReactNode } }).props.children);
+  }
+  return "";
+}
+
+function headingId(children: ReactNode): string {
+  return textFromChildren(children)
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/['’]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
 const components: Components = {
   h1: ({ children }) => (
-    <h1 className="text-gradient text-3xl font-semibold tracking-tight md:text-4xl">
+    <h1
+      id={headingId(children)}
+      className="scroll-mt-28 text-gradient text-3xl font-semibold tracking-tight md:text-4xl"
+    >
       {children}
     </h1>
   ),
   h2: ({ children }) => (
-    <h2 className="mt-10 text-xl font-semibold tracking-tight text-white md:text-2xl">
+    <h2
+      id={headingId(children)}
+      className="mt-10 scroll-mt-28 text-xl font-semibold tracking-tight text-white md:text-2xl"
+    >
       {children}
     </h2>
   ),
   h3: ({ children }) => (
-    <h3 className="mt-6 text-lg font-semibold text-white/90">{children}</h3>
+    <h3 id={headingId(children)} className="mt-6 scroll-mt-28 text-lg font-semibold text-white/90">
+      {children}
+    </h3>
+  ),
+  h4: ({ children }) => (
+    <h4 id={headingId(children)} className="mt-5 scroll-mt-28 text-base font-semibold text-white/90">
+      {children}
+    </h4>
   ),
   p: ({ children }) => <p className="mt-4 leading-relaxed text-white/65">{children}</p>,
   blockquote: ({ children }) => (
