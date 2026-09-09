@@ -1,6 +1,18 @@
 /** Production canonical host (www). Apex occudule.com redirects here. */
 export const SITE_URL = "https://www.occudule.com";
 
+export const BRAND_NAME = "Occudule";
+export const COMPANY_LEGAL_NAME = "Outvblue Technology Inc.";
+export const SUPPORT_EMAIL = "support@occudule.com";
+
+export const COMPANY_ADDRESS = {
+  streetAddress: "Suite 500, 7030 Woodbine Avenue",
+  addressLocality: "Markham",
+  addressRegion: "ON",
+  postalCode: "L3R 6G2",
+  addressCountry: "CA",
+} as const;
+
 /** Official iOS listing. */
 export const APP_STORE_URL = "https://apps.apple.com/us/app/occudule/id6761225313";
 export const APP_STORE_ID = "6761225313";

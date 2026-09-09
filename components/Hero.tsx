@@ -41,7 +41,7 @@ export function Hero() {
 
       <div className="relative mx-auto max-w-content px-gutter pb-16 pt-section md:pb-20 md:pt-24">
         <p className="mb-4 text-center text-xs font-medium tracking-wide text-white/45">
-          [ AI EMAIL FOR BUSY PARENTS ]
+          [ OCCUDULE — AI EMAIL FOR BUSY PARENTS ]
         </p>
         <h1
           id="hero-heading"
