@@ -15,7 +15,7 @@ Two icons displayed right to left:
 | Icon | Action |
 |---|---|
 | 🔍 Magnifying Glass | Opens **Global Search** (semantic search across to-dos and events) |
-| ➕ Plus | Opens the **Add To-do** screen for the selected day |
+| ➕ Plus | Opens the **Add To-do** sheet (see [Add To-do](#add-to-do-sheet)). In the current app this is a floating **+** button (also offered from the empty-state hint). |
 
 ---
 
@@ -55,15 +55,18 @@ Displayed beneath the monthly calendar when a date is selected.
 | Element | Description |
 |---|---|
 | Status Indicator | ⚫ Solid dot = completed / ⭕ Circle = not completed |
-| To-do Title | Tappable — opens the full **Event Detail** screen |
-| Deadline Time | Shown beside the to-do; defaults to the event's time if no specific deadline is set |
+| To-do Title | Tappable — opens the detail surface for that to-do’s type (see below) |
+| Deadline Time | Shown beside the to-do; tap to edit deadline (and assignee when family assignment is on). Independent of any parent event’s time. |
 
 **Interactions:**
-- Tapping the **circle** marks the to-do as complete; the circle becomes a solid dot.
-- Tapping the **to-do title** opens the Event Detail screen, which displays all event information and allows to-dos to be ticked off inline.
-- The deadline time is **adjustable** per to-do; changing it does not update the parent event's time — it only sets a deadline for that specific to-do.
+- Tapping the **status** control (○ / ✓) marks the to-do complete or incomplete.
+- Tapping the **to-do title** depends on how it is stored (`is_standalone` when there is no `event_id` and no `info_email_id`):
+  - **Standalone** → **To-do** sheet: edit child, deadline date/time, optional assignee, description; trash deletes the row. Does **not** open Event Detail.
+  - **Event-related** (`event_id`) → **Event Detail** modal (to-dos can be ticked off inline). Time conflict UI: [Event Detail — time conflict](#event-detail--time-conflict).
+  - **Info-related** (`info_email_id`) → **Info detail** modal (not created from this Add To-do sheet; those to-dos are added from Info confirmation / edit).
+- Changing a to-do deadline never updates a parent event’s time.
 
-**Empty State:** If no to-dos exist for the selected day, display a friendly empty state message.
+**Empty state:** If no to-dos exist for the selected day, show a friendly message plus **Tap ➕ to add one**, which opens the same Add To-do sheet.
 
 ---
 
@@ -78,22 +81,60 @@ Canonical behavior: [Product Spec §14](../Product_Spec.md#14-time-conflict-dete
 
 ---
 
-## Add To-do Screen
+## Add To-do sheet
 
-Opened by tapping the **➕ Plus** icon in the header.
+Opened by the floating **+** (or the empty-state hint). Title: **Add To-do**. The current app UI is the source of truth: `mobile/app/(tabs)/todos.tsx`.
 
-**Fields & Controls:**
+The first control is **To-do type** (required before the rest of the form). Placeholder: **Please select a type**. Two options:
 
-| Element | Description |
+| Type (EN copy) | Meaning |
 |---|---|
-| Event Dropdown | Select an existing event or choose "Add New Event" |
-| Time Picker | Set a **deadline** for this to-do (does not update the event time) |
-| To-do Text Box | Free-text field to write the to-do details |
-| Save Button | Saves the to-do; displayed below the text box |
+| **Add a standalone To-do** | A task for a child with its own deadline. **Not** linked to an event or Info email. |
+| **Add an event-related To-do** | A task attached to an existing event, or created together with a new event. |
 
-**Flow:**
-- **Existing event selected** → user fills in the to-do text box, then taps Save.
-- **"Add New Event" selected** → navigates to a separate **Adding Event Screen** for the user to create a new event, then the flow goes back to monthly view. Adding To-do is done.
+Save stays disabled until the fields for the chosen type are valid. Family groups on Premium/Diamond may also show **Assigned to**.
+
+API: `POST /users/me/to-dos`. Exactly one of: `child_id` (standalone), `event_id` (event-related), or `info_email_id` (Info path — not this sheet). `child_id` is rejected if `event_id` or `info_email_id` is set.
+
+---
+
+### Standalone
+
+Shown after the user picks **Add a standalone To-do**.
+
+| Field | Required | Notes |
+|---|---|---|
+| Child | Yes | Roster children. Save is blocked until a child is selected. |
+| Deadline date | Yes | Calendar day the to-do appears on the To-dos tab. |
+| Deadline time | Yes | Does not belong to an event. |
+| Assigned to | No | Family assignment only. |
+| To-do details | Yes | Free text. |
+
+**Save** creates a row with `child_id` set and `event_id` / `info_email_id` null.
+
+---
+
+### Event-related
+
+Shown after the user picks **Add an event-related To-do**. Hint: select an event, or tap **Add New Event** to create an event and add to-dos there (the user does not need to return to this sheet).
+
+| Field | Required | Notes |
+|---|---|---|
+| Event list | Yes to save here | Existing events (`GET /users/me/to-dos/events-for-picker`), filtered by the header child when one is selected. |
+| **＋ Add New Event** | — | Tapping this row **immediately** closes the sheet and opens the [Add Event](addnewevent_screen_spec.md) screen (date + child query). To-dos added there are event-related. |
+| Deadline date / time | Yes when saving against an existing event | Independent of the event’s start time. Prefills from the selected event, then the user can change them. |
+| Assigned to | No | Family assignment only. |
+| To-do details | Yes | Free text. |
+
+**Save** (existing event selected) creates a row with `event_id` (child comes from that event). If no event is selected, the app prompts that an event is required (or to add a new event first).
+
+---
+
+### Other ways to-dos are created (not this sheet)
+
+- **Add Event** / Event confirmation / Edit Event: to-dos saved with `event_id`.
+- **Info confirmation / Edit Info:** to-dos saved with `info_email_id`.
+- **AI extraction:** event or Info checklists per the extraction specs.
 
 ---
 
@@ -109,7 +150,8 @@ Activated by tapping the **🔍 magnifying glass** icon.
 ## Notes for Implementation
 
 - Deadline times on to-dos are independent of event times — updating a to-do deadline must never modify the parent event's time.
-- Status indicators (solid dot / circle) must stay in sync between the Daily To-dos List and the Event Detail screen.
+- Status indicators must stay in sync between the list and Event Detail / Info detail when the to-do is linked.
+- Standalone to-dos have no Event Detail; edit/delete is the standalone **To-do** sheet.
 - Apply industry best practices for calendar navigation, empty states, and gesture handling.
 - Extend or modify content as needed based on project requirements and evolving product needs.
 - Refer to `home_screen_spec` for shared global header and bottom navigation bar behavior.

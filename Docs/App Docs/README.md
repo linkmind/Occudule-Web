@@ -33,6 +33,10 @@ High-signal entry points for engineers and operators.
 |----------|-------------|
 | [System_Architecture.md](System_Architecture.md) | Stack and layers. |
 | [Product_Spec.md](Product_Spec.md) | Product specification. |
+| [Screens/calendar_screen_spec.md](Screens/calendar_screen_spec.md) | **Calendar (Events) tab:** Daily / Weekly / All date filter, week strip, event list. |
+| [Screens/info_screen_spec.md](Screens/info_screen_spec.md) | **Info tab:** Daily / Weekly / All on received date; Info cards and detail. |
+| [Screens/todos_screen_spec.md](Screens/todos_screen_spec.md) | **To-dos tab:** manual Add To-do is **standalone** or **event-related**. |
+| [App Features/Info_Email_Child_Extraction_Spec.md](App%20Features/Info_Email_Child_Extraction_Spec.md) | **Info emails:** original email sections in order; Info tab listing uses Daily / Weekly / All on received date. |
 | [App Features/Multi_Language_Implementation_Plan.md](App%20Features/Multi_Language_Implementation_Plan.md) | **i18n plan:** locales (en, fr, es, zh-CN, zh-TW), scope, tone, legal vs About, errors, accessibility. |
 | [App Features/Account_Email_Verification_Implementation_Plan.md](App%20Features/Account_Email_Verification_Implementation_Plan.md) | **Auth plan:** email/password registration must verify inbox before JWT; Postmark + backfill for existing users. |
 | [App Features/Family_Group_Invite_Implementation_Plan.md](App%20Features/Family_Group_Invite_Implementation_Plan.md) | **Family plan:** owner invites Gmail/Microsoft members; shared plan & data; owner-only email sync; member calendar sync; web join flow. |
@@ -47,4 +51,4 @@ High-signal entry points for engineers and operators.
 
 ---
 
-*Last updated: 2026-09-03 (Sign in with Apple: identity-only; any Apple-provided email may create an account)*
+*Last updated: 2026-09-09 (Event/Info Daily/Weekly/All; To-dos: standalone vs event-related Add To-do)*

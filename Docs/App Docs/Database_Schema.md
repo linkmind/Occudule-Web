@@ -17,7 +17,8 @@ Users
   └── Children (via parent_id; also family_group_id)
         └── Institutions (via child_id)
         └── Events (via child_id + inst_id)
-              └── To_Dos (via child_id + event_id)
+        └── Info_Emails (via child_id + inst_id; one row per child per source email when keepable content exists)
+        └── To_Dos (always `child_id`; optional `event_id` **or** `info_email_id`; neither = standalone)
 
 Family_Groups
   ├── Family_Members (invites + active members)
@@ -51,7 +52,7 @@ CREATE TABLE users (
 
 `email_host` is `GMAIL` or `OUTLOOK` when the **account** email is on the Gmail/Microsoft allowlist. It is **`NULL`** when the user signed in with Apple using an address that is not Gmail or Microsoft (iCloud, Hide My Email, etc.). Mail sync still uses `sync_email` (Gmail/Microsoft only). See [registration_login_screen_spec.md](Screens/registration_login_screen_spec.md) §2.3.
 
-> **Family billing:** Quotas and IAP entitlements resolve to the **family owner's** `subscription_id` / RevenueCat `app_user_id` for all active members. Members store their own `subscription_id` row but effective plan comes from the owner in application code (`FamilyAccessService.resolveBillingUserId`).
+> **Family billing:** Quotas and IAP entitlements resolve to the **family owner's** `subscription_id` / RevenueCat `app_user_id` for all active members. Members store their own `subscription_id` row but effective plan comes from the owner in application code (`FamilyAccessService.resolveBillingUserId`). Full matrix of correct vs gap code paths: [Family_Subscription_Entitlements.md](App%20Features/Family_Subscription_Entitlements.md).
 
 ---
 
@@ -78,8 +79,8 @@ CREATE TABLE subscriptions (
 | Plan | Price | Max Emails/mo | Max Children | Max Institutions/child | Conflict Detection | Auto Reply | Action detection |
 |---|---|---|---|---|---|---|---|
 | FREE | $0 | 8 | 1 | 1 | ❌ | ❌ | ✅ |
-| PREMIUM | $3.99/mo · $39.99/yr | Unlimited (-1) | 2 | 3 | ✅ | ❌ | ✅ |
-| DIAMOND | $5.99/mo · $59.99/yr | Unlimited (-1) | 4 | 6 | ✅ | ✅ | ✅ |
+| PREMIUM | $3.99/mo ($39.99/yr) | Unlimited (-1) | 2 | 3 | ✅ | ❌ | ✅ |
+| DIAMOND | $5.99/mo ($59.99/yr) | Unlimited (-1) | 4 | 6 | ✅ | ✅ | ✅ |
 
 ---
 
@@ -159,7 +160,7 @@ CREATE TABLE institutions (
   email_domain  VARCHAR,             -- used for rule-based email filtering
   address       TEXT,
   email_address VARCHAR              -- Sender email whitelist (at frontend, user can add multiple emails based on different plans)
-  keywords      TEXT[]               -- custom keywords for email detection
+  keywords      TEXT[]               -- Teacher’s names from Family Profile (UI: "Teacher’s Names"); used in filter scoring and Info child-matching
 );
 ```
 
@@ -183,6 +184,7 @@ CREATE TABLE email_logs (
   confidence_score     INTEGER,                -- AI classifier score; ≥50 = school email
   is_school_confirmed  BOOLEAN DEFAULT FALSE,  -- true if user manually confirmed a grey-area email (score 40–60)
   detected_language    VARCHAR,                -- optional future use
+  email_type           VARCHAR,                -- 'EVENT' | 'INFO' after extraction
   body_plain           TEXT                    -- raw body for filtering/extraction (not exposed as user summary)
 );
 ```
@@ -221,20 +223,62 @@ CREATE TABLE events (
 
 ### 7. `to_dos`
 
-Actionable checklist items extracted from emails or attachments.
+Actionable checklist items: AI-extracted, added on Event/Info confirmation, or **manual** from the To-dos tab. See [To-dos screen spec — Add To-do](Screens/todos_screen_spec.md#add-to-do-sheet).
+
+A row is always tied to a **child**. Linkage is exclusive:
+
+| Kind | How it is stored |
+|---|---|
+| **Standalone** | `child_id` set; `event_id` and `info_email_id` **null**. Created from To-dos **Add a standalone To-do**. |
+| **Event-related** | `event_id` set; `info_email_id` null; `child_id` taken from the event. |
+| **Info-related** | `info_email_id` set; `event_id` null; `child_id` taken from the Info row. |
+
+`POST /users/me/to-dos` requires `child_id` when neither `event_id` nor `info_email_id` is sent, and rejects `child_id` when a link id is sent.
 
 ```sql
 CREATE TABLE to_dos (
   id                   UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   child_id             UUID NOT NULL REFERENCES children(id) ON DELETE CASCADE,
-  event_id             UUID REFERENCES events(id) ON DELETE SET NULL,  -- optional link to an event
+  event_id             UUID REFERENCES events(id) ON DELETE SET NULL,       -- event-related; null if standalone or Info
+  info_email_id        UUID REFERENCES info_emails(id) ON DELETE SET NULL,  -- Info-related; null otherwise
   description          TEXT NOT NULL,
   is_completed         BOOLEAN DEFAULT FALSE,
-  deadline             TIMESTAMP,
-  action_link          VARCHAR,   -- URL to permission form, sign-up page, etc.
-  original_email_link  VARCHAR    -- direct link to source email
+  deadline             TIMESTAMP,                 -- calendar day + time the to-do appears on the To-dos tab
+  action_link          VARCHAR,                   -- URL to permission form, sign-up page, etc.
+  original_email_link  VARCHAR,                   -- direct link to source email
+  source               VARCHAR,                   -- e.g. email vs attachment (AI path)
+  assigned_to_user_id  UUID REFERENCES users(id) ON DELETE SET NULL  -- family assignee (Premium/Diamond family)
 );
 ```
+
+---
+
+### 7a. `info_emails`
+
+Informational (non-calendar) emails saved after AI extraction. Child-scoped: only content related to a Family Profile child is stored. See [Info_Email_Child_Extraction_Spec.md](App%20Features/Info_Email_Child_Extraction_Spec.md).
+
+```sql
+CREATE TABLE info_emails (
+  id                   UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id              UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  child_id             UUID REFERENCES children(id) ON DELETE SET NULL,
+  inst_id              UUID REFERENCES institutions(id) ON DELETE SET NULL,
+  email_log_id         UUID REFERENCES email_logs(id) ON DELETE SET NULL,
+  child_name           VARCHAR,
+  institution_name     VARCHAR,
+  summary              TEXT NOT NULL,   -- Info outline: original email sections in order; nested bullets + Related Link; inner child-specific + all-student filter
+  original_email_link  TEXT,
+  created_at           TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at           TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- One Info row per child per source email (not one row per email)
+CREATE UNIQUE INDEX idx_info_emails_email_log_child
+  ON info_emails(email_log_id, child_id)
+  WHERE email_log_id IS NOT NULL AND child_id IS NOT NULL;
+```
+
+High-confidence Info with **nothing keepable** (only other grades/classes/programs, and no all-student content) does **not** insert a row. The `email_logs` row is marked `COMPLETED` with `email_type = 'INFO'` and an `INFO_SKIPPED` notification is created (`linked_entity_id` = email log id). All-student-only mail inserts **one row per roster child**.
 
 ---
 
@@ -249,13 +293,18 @@ CREATE TABLE notifications (
   title             VARCHAR NOT NULL,
   body              TEXT,
   type              VARCHAR CHECK (type IN (
-                      'EMAIL_RECEIVED',
-                      'EVENT_REMINDER',
-                      'CONFLICT_ALERT',
-                      'ACTION_REQUIRED'
+                      'EVENT_CONFIRMATION',
+                      'INFO_CONFIRMATION',
+                      'NEW_EVENT_ADDED',
+                      'NEW_INFO_ADDED',
+                      'INFO_SKIPPED',
+                      'FAMILY_MEMBER_JOINED',
+                      'TODO_ASSIGNED',
+                      'UPCOMING_EVENT',
+                      'UPCOMING_EVENT_SECOND'
                     )) NOT NULL,
   status            VARCHAR CHECK (status IN ('SENT', 'READ', 'DISMISSED')) DEFAULT 'SENT',
-  linked_entity_id  UUID,   -- polymorphic: points to an Event or To-Do
+  linked_entity_id  UUID,   -- polymorphic: Event, Info email, To-Do, or email_log (INFO_SKIPPED)
   created_at        TIMESTAMP DEFAULT NOW()
 );
 ```
@@ -317,6 +366,7 @@ All child records cascade-delete when the parent is removed:
 
 ```
 users → children → institutions → events → to_dos
+users → children → info_emails
 users → email_logs
 users → notifications
 users → subscription_logs
@@ -343,7 +393,16 @@ COMMIT;
 type EmailHost = 'GMAIL' | 'OUTLOOK';
 type PlanName = 'FREE' | 'PREMIUM' | 'DIAMOND';
 type ProcessingStatus = 'PENDING' | 'COMPLETED' | 'FAILED';
-type NotificationType = 'EMAIL_RECEIVED' | 'EVENT_REMINDER' | 'CONFLICT_ALERT' | 'ACTION_REQUIRED';
+type NotificationType =
+  | 'EVENT_CONFIRMATION'
+  | 'INFO_CONFIRMATION'
+  | 'NEW_EVENT_ADDED'
+  | 'NEW_INFO_ADDED'
+  | 'INFO_SKIPPED'
+  | 'FAMILY_MEMBER_JOINED'
+  | 'TODO_ASSIGNED'
+  | 'UPCOMING_EVENT'
+  | 'UPCOMING_EVENT_SECOND';
 type NotificationStatus = 'SENT' | 'READ' | 'DISMISSED';
 type PaymentStatus = 'SUCCESS' | 'PENDING' | 'FAILED';
 
@@ -401,7 +460,7 @@ interface Institution {
   name: string;
   email_domain?: string;
   address?: string;
-  keywords?: string[];
+  keywords?: string[];  // Teacher’s names (Family Profile UI)
 }
 
 interface EmailLog {
@@ -417,6 +476,19 @@ interface EmailLog {
   confidence_score?: number;
   is_school_confirmed: boolean;
   detected_language?: string;
+  email_type?: 'EVENT' | 'INFO' | null;
+}
+
+interface InfoEmail {
+  id: string;
+  user_id: string;
+  child_id?: string | null;
+  inst_id?: string | null;
+  email_log_id?: string | null;
+  child_name?: string | null;
+  institution_name?: string | null;
+  summary: string; // Info outline: original sections; nested bullets + Related Link; inner child-specific + all-student filter
+  original_email_link?: string | null;
 }
 
 interface Event {
@@ -436,12 +508,15 @@ interface Event {
 interface ToDo {
   id: string;
   child_id: string;
-  event_id?: string;
+  event_id?: string | null;
+  info_email_id?: string | null;
   description: string;
   is_completed: boolean;
   deadline?: Date;
   action_link?: string;
   original_email_link?: string;
+  source?: string | null;
+  assigned_to_user_id?: string | null;
 }
 
 interface Notification {

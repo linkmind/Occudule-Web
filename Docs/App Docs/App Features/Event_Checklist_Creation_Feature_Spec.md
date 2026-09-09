@@ -1,6 +1,6 @@
 # Feature Spec: Event & Checklist Creation — Occudule
 
-> This feature is the **write operation** of the backend. It takes the validated JSON output from the AI Email Analysis pipeline and populates the `events` and `to_dos` tables while maintaining full relational integrity across the user's profile.
+> This feature is the **AI write operation** of the backend. It takes the validated JSON output from the AI Email Analysis pipeline and populates the `events` and `to_dos` tables while maintaining full relational integrity across the user's profile. **Manual** to-dos from the To-dos tab (standalone vs event-related) are specified in [todos_screen_spec.md](../Screens/todos_screen_spec.md#add-to-do-sheet), not this pipeline.
 
 ---
 

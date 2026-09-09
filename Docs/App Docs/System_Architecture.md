@@ -22,7 +22,7 @@ Mobile App (React Native + Expo)
 |---|---|
 | Framework | React Native + Expo |
 | Platform | iOS and Android |
-| Responsibilities | Display processed email data, manage child profiles, review AI results, in-app calendar, checklist UI, settings |
+| Responsibilities | Display processed email data, manage child profiles, review AI results, in-app Calendar (Events) and Info tabs with Daily / Weekly / All date filters, checklist UI, settings |
 
 ---
 

@@ -24,16 +24,19 @@ The global header appears on all screens.
 
 ## Bottom Navigation Bar (All Screens)
 
-The bottom navigation bar is persistent across all main screens. Items:
+The bottom navigation bar is persistent across all main screens. Items (left to right):
 
 | Label | Destination |
 |---|---|
 | Home | Home Screen |
-| Calendar | Calendar Screen |
+| Calendar | Calendar (Events) Screen — [calendar_screen_spec](calendar_screen_spec.md) |
+| Info | Info Screen — [info_screen_spec](info_screen_spec.md) |
 | To-dos | To-dos Screen |
 | Notification | Notification Screen |
 
 All items are tappable and navigate to the corresponding screen.
+
+**Calendar** and **Info** share a **Daily / Weekly / All** date filter (default **Daily**). That control is independent of this header’s child **All**. See [Calendar — Date modes](calendar_screen_spec.md#date-modes-daily--weekly--all) and [Info — Date modes](info_screen_spec.md#date-modes-daily--weekly--all).
 
 ---
 
@@ -94,7 +97,7 @@ The Home Screen contains two sections.
 | Event Date | |
 | Event Time | |
 | Location | Only shown if content exists |
-| Email Summary | Subject + main body summary |
+| Email Summary | Subject + main body summary. **Info** cards: short preview of the stored outline (original email sections; child-specific + all-student facts inside each; detail uses nested bullets and Related Link) — [Info_Email_Child_Extraction_Spec.md](../App%20Features/Info_Email_Child_Extraction_Spec.md). |
 | To-dos | |
 | Link | Link to the original email |
 | Reply Required | `"Yes, email drafted"` / `"Yes, no email drafted"` / `"No"` |

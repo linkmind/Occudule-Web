@@ -1,6 +1,6 @@
 ---
 title: A Walk Through the Occudule App
-description: Walk through the Occudule app Home screen, child picker, Profile menu, Today's Events, Calendar, Info, To-dos, and Notification Center.
+description: Walk through the Occudule app Home screen, child picker, Profile menu, Event and Info Daily/Weekly/All filters, To-dos, and Notification Center.
 order: 2
 ---
 
@@ -36,8 +36,11 @@ Occudule keeps three areas on every main screen.
 
 - [Home tab](#home-tab)
 - [Event (Calendar) tab](#event-calendar-tab)
+  - [Daily, Weekly, and All on Event](#daily-weekly-and-all-on-event)
 - [Info tab](#info-tab)
+  - [Daily, Weekly, and All on Info](#daily-weekly-and-all-on-info)
 - [To-dos tab](#to-dos-tab)
+  - [Adding a to-do](#adding-a-to-do)
 - [Notification center tab](#notification-center-tab)
 
 ---
@@ -53,6 +56,8 @@ The header sits at the top of every main screen. It has two menus: the **Child p
 The child picker is in the **top-left** corner. It lists every child on your account, plus **All**.
 
 **All** is selected by default. In that view, Occudule shows events, info, and to-dos for every child. Color-coded tags on cards show which child each item belongs to. If you uploaded a photo for a child, that photo appears next to the name.
+
+The child picker **All** is whose children you see. On the [Event](#event-calendar-tab) and [Info](#info-tab) tabs, a separate **Daily / Weekly / All** control filters by date. Both can apply at the same time.
 
 Tap the picker, then tap a child's name to see only that child's events, info, and to-dos.
 
@@ -178,14 +183,30 @@ The **Home** tab opens the [Home screen](#home-screen): [Today's Events](#todays
 
 ### Event (Calendar) tab
 
-The **Event** (Calendar) tab is a **7-day weekly view** that starts on today. Today's date is highlighted. Events under each day are listed earliest to latest. Days with no events show **No events**.
+The **Event** (Calendar) tab is your in-app schedule of school events. At the top, **Daily**, **Weekly**, and **All** choose the date range. The tab opens in **Daily**. Weeks start on **Sunday**.
 
-- Swipe left or right to change weeks, or use the week and month arrows.
-- Tap **Today** to jump back to the current week.
-- Tap the calendar icon for a monthly picker, then tap a date to open that week.
-- A small red dot on a date means at least one event that day has a time conflict (another Occudule event and/or your connected calendar). Open the event for the two-line breakdown. Conflict detection and calendar sync are Premium and Diamond.
+#### Daily, Weekly, and All on Event
 
-Each event card matches Home: name, institution, time, location, summary, to-dos, email link, reply and action flags, and **Show More**. You can also add an event by hand when something never arrived by email.
+These date filters are not the same as **All** in the [child picker](#child-picker-menu). Use both together: one for whose kids, the other for which dates.
+
+- Tap **Daily** to see one day. Occudule also jumps to **today**.
+- Tap **Weekly** to see Sunday–Saturday. It keeps the week you are already viewing.
+- Tap **All** for events from that week through the next four months. It also keeps the week you are viewing.
+- Tap the **month and year** to open a monthly picker, then tap a date.
+- Tap **Today** to jump to today without changing Daily, Weekly, or All.
+- Use the week arrows to move the Sunday–Saturday strip. In Daily, tap a day on the strip to select it. In Weekly and All, the strip is dimmed.
+
+What you see:
+
+- **Daily** — events for the selected day, listed by time. Cards omit the date.
+- **Weekly** — seven day sections. Today's date is highlighted. Days with no events show **No events**.
+- **All** — one section per date, oldest first. Today's heading is **Today**. If nothing falls in that window, Occudule shows **No events from this week onward.**
+
+A readiness bar under the strip shows completed to-dos versus total for the dates on screen (**Daily Readiness**, **Weekly Readiness**, or **All Readiness**; red 0–30%, yellow 31–70%, green 71–100%). Tap **View To-dos** to open the [To-dos tab](#to-dos-tab).
+
+A small red dot on a date means at least one event that day has a time conflict (another Occudule event and/or your connected calendar). Open the event for the two-line breakdown. Conflict detection and calendar sync are Premium and Diamond.
+
+Each event card matches Home: name, institution, time, location, summary, to-dos, email link, reply and action flags, and **Show More**. Tap **+** to add an event by hand when something never arrived by email. In Daily, the new event is dated for the day you selected; in Weekly and All it defaults to today.
 
 ### Info tab
 
@@ -193,17 +214,38 @@ The **Info** tab holds **reference material** you saved from emails Occudule cla
 
 When a message is informational rather than a scheduled activity, confirmation asks you to treat it as **Info**. Choosing **Yes, process** saves it here instead of on the calendar. The Event versus Info choice is explained in [how to process school emails in Occudule](/documentation/how-tos/how-to-process-school-emails-in-occudule).
 
-Use the child picker to show info for one child or for **All**.
+#### Daily, Weekly, and All on Info
+
+At the top, **Daily**, **Weekly**, and **All** work like the Event tab, but they filter by **when the email was received**, not an event date. The tab opens in **Daily**.
+
+- **Daily** — Info received that day, newest first.
+- **Weekly** — one list for the whole week (not grouped by day).
+- **All** — grouped by received date, from the week you are viewing through the next four months. If nothing falls in that window, Occudule shows **No info emails from this week onward.**
+
+A readiness bar under the strip shows completed to-dos versus total for the Info items on screen. Tap **View To-dos** to open the [To-dos tab](#to-dos-tab).
+
+Use the [child picker](#child-picker-menu) to show info for one child or for **All**. There is no **+** on this tab: Info is saved from email confirmation, not added by hand here.
 
 ### To-dos tab
 
 The **To-dos** tab is a year → month → day view of tasks Occudule extracted from email or that you added yourself.
 
 - Tap the **year** (top left) for a 12-month grid, then a month, then a day.
-- Each to-do shows a status control and a deadline. An empty circle means not done; tap it to complete (solid dot). Tap the **title** to open event details and tick to-dos there too.
-- A to-do deadline can differ from the parent event time. Changing the deadline does not move the event.
-- Tap **+** to add a to-do for the selected day (attach it to an existing event, or add a new event first).
+- Each to-do shows a status control and a deadline. An empty circle means not done; tap it to complete (solid dot).
+- Tap the **title** to open details. An **event-related** to-do opens event details, where you can tick to-dos too. A **standalone** to-do opens a To-do sheet, where you can edit or delete it — not event details.
+- A to-do deadline can differ from a parent event time. Changing the deadline does not move the event.
 - Tap the magnifying glass for search across to-dos and events.
+
+If the selected day has no to-dos, Occudule invites you to **Tap ➕ to add one**.
+
+#### Adding a to-do
+
+Tap **+** (or the empty-state hint) to open **Add To-do**. First choose a **To-do type**:
+
+- **Add a standalone To-do** — pick a child, a deadline date and time, and the details. The item appears on this tab on that deadline. It is not linked to an event.
+- **Add an event-related To-do** — pick an existing event, set a deadline (it can differ from the event time), and save. Or tap **Add New Event** to create an event and add to-dos there; you do not need to return to this sheet.
+
+On Premium or Diamond family groups, you can also assign either type to someone.
 
 When someone in your [Family Group](/documentation/how-tos/how-to-invite-others-to-family-group) assigns you a to-do, you also get a notification. **See details** on that notification opens this tab with the item highlighted.
 

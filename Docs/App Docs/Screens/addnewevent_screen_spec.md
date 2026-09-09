@@ -5,8 +5,8 @@
 This screen allows users to manually input events and tasks that may not have been captured by the AI, or were received via paper or other non-digital channels.
 
 - **UI Pattern:** Modal / Bottom Sheet
-- **Triggered From:** Home screen, Calendar screen, or To-dos screen
-- **Purpose:** Covers the gap between AI-extracted events and real-world events the user needs to add manually
+- **Triggered From:** Home screen, Calendar screen, or To-dos screen (**Add an event-related To-do** → **＋ Add New Event**)
+- **Purpose:** Covers the gap between AI-extracted events and real-world events the user needs to add manually. To-dos entered here are **event-related** (`event_id` set). Standalone to-dos are created only from the To-dos **Add To-do** sheet — [todos_screen_spec](todos_screen_spec.md#add-to-do-sheet).
 
 ---
 

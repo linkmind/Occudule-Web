@@ -253,9 +253,11 @@ Processing steps:
 
 Detected information is converted into structured data.
 
--For grey-area, the App extracts the information first then asks the user to confirm if to add it as a new event.
-- If the email's confidence score is above the grey-area score, the App extracts the information and then directly add it as a new event on the frontend.
-Please refer to the email confirmation flow specification for details.
+-For grey-area, the App extracts the information first then asks the user to confirm if to add it as a new event **or** Info item.
+- If the email's confidence score is above the grey-area score:
+  - **Event:** extract and add the event on the frontend.
+  - **Info:** save a recap (original sections, child-specific + all-student facts inside each) on the Info screen when anything keepable remains; otherwise skip save and notify (`INFO_SKIPPED`). The Info tab lists saved items with **Daily / Weekly / All** on received date ([Info screen spec](Screens/info_screen_spec.md)).
+Please refer to the email confirmation flow specification and [Info_Email_Child_Extraction_Spec.md](App%20Features/Info_Email_Child_Extraction_Spec.md) for details.
 
 Stored in:
 
@@ -263,6 +265,13 @@ Stored in:
 - Linked to the original email
 
 The original email **remains in the user's email provider**.
+
+Parents can also **add to-dos manually** from the To-dos tab, after choosing a type:
+
+- **Add a standalone To-do** — child + deadline; not linked to an event or Info email.
+- **Add an event-related To-do** — attached to an existing event, or via **Add New Event** (to-dos saved with the new event).
+
+Screen behavior: [To-dos screen spec](Screens/todos_screen_spec.md#add-to-do-sheet).
 
 ---
 
@@ -390,7 +399,7 @@ The application will:
 - Sync events to the parent’s:
   - Google Calendar
   - Outlook Calendar
-- Display an **in‑app calendar view**
+- Display an **in‑app Calendar (Events) tab** and an **Info tab**, each with a **Daily / Weekly / All** date filter (default Daily; weeks start Sunday). Screen behavior: [Calendar screen spec](Screens/calendar_screen_spec.md), [Info screen spec](Screens/info_screen_spec.md).
 - Detect conflicts between children’s / sibling (Occudule) events and the parent’s **primary** external calendar, within the **Event conflict check range**, as specified in **§14 Time Conflict Detection** (two-line UI, batching, failure messaging, Outlook vs Google rollout).
 
 ---
